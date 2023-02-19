@@ -19,6 +19,8 @@ from within the Anaconda environment.
 
 Test that everything is working by running the server 
 	python manage.py runserver 0.0.0.0:8000
+Access the website at the following url:
+  http://127.0.0.1:8000/eeg_app/
 	
 To allow yourself admin access on the server. Create a superuser
 	python manage.py createsuperuser
