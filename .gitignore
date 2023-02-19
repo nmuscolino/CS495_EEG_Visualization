@@ -1,6 +1,12 @@
+*.log
+*.pot
 *.pyc
 venv/*
 */**/*.pyc
+*/*/*/__pycache__/
+*/*/__pycache__/
+*/pycache__/
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
+eeg_visualization/db.sqlite3
