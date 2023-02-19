@@ -1,0 +1,6 @@
+*.pyc
+venv/*
+*/**/*.pyc
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
