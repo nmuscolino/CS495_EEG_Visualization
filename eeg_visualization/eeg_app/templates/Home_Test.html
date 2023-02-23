@@ -1,13 +1,26 @@
 <html>
   <head>
     <title>BCI Vis Test</title>
-    <script src="https://threejs.org/build/three.min.js"></script>
+
+    <!-- Import three.js Libraries from a CDN -->
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.150.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.150.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <!-- Styling -->
     <style>
       body { margin: 0; }
       canvas { display: block; }
     </style>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <!-- Setup Sensitivity Slider -->
     <p>Camera Sensitivity</p>
@@ -18,7 +31,11 @@
       <input type="file" id="file-selector" accept=".txt" />
     </p>
     
-    <script>
+    <!-- Main Script -->
+    <script type="module">  // Script type must be 'module' for imports
+      import * as THREE from 'three';
+      import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+      
       var text; //File data
 
       // Setup File Input
@@ -86,8 +103,9 @@
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         var renderer = new THREE.WebGLRenderer();
-        var sensitivity = 0.005;    // Default sensitivity
+        const controls = new OrbitControls(camera, renderer.domElement);
         var leftButtonDown = false; // Left mouse button flag
+        controls.rotateSpeed = 0.5; // Default camera sensitivity
         
         // Add the group to the scene and setup default camera position
         scene.add(group);
@@ -99,46 +117,23 @@
         // Append the renderer to the body
         document.body.appendChild(renderer.domElement);
         
-        // Listen for mousedown events
-        document.addEventListener("mousedown", (event) => {
-          if (event.button === 0) {
-            leftButtonDown = true;
-          }
-        });
-        
-        // Listen for mouseup events
-        document.addEventListener("mouseup", (event) => {
-          if (event.button === 0) {
-            leftButtonDown = false;
-          }
-        });
-        
-        // Listen for mousemove events
-        document.addEventListener("mousemove", (event) => {
-          //Apply Rotation to the group of spheres
-          if (leftButtonDown) {
-            group.rotation.y += event.movementX * sensitivity;
-            group.rotation.x += event.movementY * sensitivity;
-          }
-        });
-  
-        //Mouse sensitivity slider
+        // Camera sensitivity slider
         var sensSlider = document.getElementById("sensSlider");
   
         // Prevent moving camera when using slider
         sensSlider.addEventListener("mousedown", function() {
-          sensitivity = 0.0;
+          controls.rotateSpeed = 0.0;
         });
   
         //Update mouse sensitivity when slider is released
         sensSlider.addEventListener("mouseup", function() {
-          sensitivity = sensSlider.value * 0.001;
+          controls.rotateSpeed = sensSlider.value * 0.1;
         });
   
         // Listen for mouse wheel events
         window.addEventListener("wheel", (event) => {
           event.preventDefault();   // FIXME: Doesn't prevent page scrolling
-          var delta = event.deltaY; //changes sign depending on scroll direction
+          var delta = event.deltaY; // Changes sign depending on scroll direction
   
           // Zoom in or out
           camera.position.z += delta * 0.01;
@@ -147,6 +142,7 @@
         // Render scene
         var render = function () {
           requestAnimationFrame(render);
+          controls.update();
           renderer.render(scene, camera);
         };
         
