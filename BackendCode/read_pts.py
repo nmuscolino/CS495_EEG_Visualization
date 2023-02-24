@@ -1,5 +1,4 @@
 import pandas as pd
-import colorsys
 
 
 def read_pts(filename: str):
@@ -23,16 +22,29 @@ def update_with_colors(df: pd.DataFrame):
     if df['r'].dtype == int:
         df[['r', 'g', 'b']] /= 255
 
-    df['luminosity'] = df[['r', 'g', 'b']].apply(
-        lambda row: colorsys.rgb_to_yiq(*row)[0],
-        axis=1,
-        result_type='reduce'
-    )
-    df[['h', 's', 'v']] = df[['r', 'g', 'b']].apply(
-        lambda row: colorsys.rgb_to_hsv(*row),
-        axis=1,
-        result_type='expand'
-    )
+    df['luminance'] = 0.30*df['r'] + 0.59*df['g'] + 0.11*df['b']
+
+    maxc = df[['r', 'g', 'b']].max(axis=1)
+    minc = df[['r', 'g', 'b']].min(axis=1)
+    diff = maxc - minc
+    rc = (maxc-df['r']) / (maxc-minc)
+    gc = (maxc-df['g']) / (maxc-minc)
+    bc = (maxc-df['b']) / (maxc-minc)
+
+    df['h'] = 0.0
+    df['s'] = 0.0
+    df['v'] = maxc
+
+    not_gray = (minc != maxc)
+    df.loc[not_gray, 's'] = diff.loc[not_gray] / maxc.loc[not_gray]
+
+    rm = not_gray & (df['r'] == maxc)
+    df.loc[rm, 'h'] = bc.loc[rm] - gc.loc[rm]
+    gm = not_gray & (df['g'] == maxc)
+    df.loc[gm, 'h'] = rc.loc[gm] - bc.loc[gm] + 2.0
+    bm = not_gray & (df['b'] == maxc)
+    df.loc[bm, 'h'] = gc.loc[bm] - rc.loc[bm] + 4.0
+    df['h'] = (df['h']/6.0) % 1.0
 
     return df
 
