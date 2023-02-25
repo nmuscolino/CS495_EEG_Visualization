@@ -1,7 +1,16 @@
 fileToSend = "";
 
 
-
+const file_element = document.getElementById('file_element');
+file_element.addEventListener("change", function () {
+    const reader = new FileReader();
+    reader.onload = function() {
+        fileToSend = reader.result;
+        console.log(fileToSend);
+    }
+    reader.readAsDataURL(file_element.files[0])
+    //maybe read as text for the actual file?
+});
 
 function Post() {
     if (fileToSend == "") {
@@ -10,6 +19,6 @@ function Post() {
     }
     'use strict';
     const request = new XMLHttpRequest();
-    request.open('POST', 'http://127.0.0.1:8000/eeg_visualization/getdata', true);
+    request.open('POST', 'postdata', true);
     request.send(fileToSend);
 }

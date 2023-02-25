@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 import json
 
 
@@ -10,10 +11,11 @@ def home(request):
 def input(request):
     return render(request, "input.html")
 
+@csrf_exempt
 def handlePost(request):
-    print("print working")
-    print(request.body)
-    print("after second print")
+    #print("print working")
+    #print(request.body)
+    #print("after second print")
     
     x = {
     "sensor1": [1, 5, 7],
@@ -21,4 +23,5 @@ def handlePost(request):
     "sensor3": [5, 3, 1]
     }
     y = json.dumps(x)
-    return render(request, "home.html")
+    print("here")
+    return HttpResponse(y)

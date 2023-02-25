@@ -2,12 +2,12 @@
 <head>
     <title>Data Input</title>
     {% load static %}
-    <script src="{% static 'communication.js' %}"></script>
+    <script src="{% static 'communication.js' %}" defer></script>
 </head>
 
 
 <div id='input'>
-    <input type='file' id='uploaded_file' accept="image/png, image/jpg">
+    <input type='file' id='file_element' accept="image/png, image/jpg">
 </div>
 <div id='thumbnail'><div>
 
