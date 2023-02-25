@@ -1,12 +1,13 @@
-fileToSend = "";
+var fileToSend = "";
 
 
-const file_element = document.getElementById('file_element');
+const file_element = document.getElementById('file-button');
 file_element.addEventListener("change", function () {
     const reader = new FileReader();
     reader.onload = function() {
         fileToSend = reader.result;
         console.log(fileToSend);
+        Post();
     }
     reader.readAsDataURL(file_element.files[0])
     //maybe read as text for the actual file?
