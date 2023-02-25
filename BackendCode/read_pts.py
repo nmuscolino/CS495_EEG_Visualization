@@ -52,7 +52,7 @@ def update_with_colors(df: pd.DataFrame):
 def write_pts(filename: str, df: pd.DataFrame):
     if df['r'].dtype == float:
         df = df.copy()  # Do not change original data when writing
-        df[['r', 'g', 'b']] = round(df[['r', 'g', 'b']]).astype(int)
+        df[['r', 'g', 'b']] = round(df[['r', 'g', 'b']] * 255).astype(int)
    
     rows = zip(df['x'], df['y'], df['z'], df['intensity'], df['r'], df['g'], df['b'])
 
