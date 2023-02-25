@@ -21,4 +21,8 @@ function Post() {
     const request = new XMLHttpRequest();
     request.open('POST', 'postdata', true);
     request.send(fileToSend);
+
+    request.onreadystatechange = function() {
+        console.log(request.response);
+    }
 }
