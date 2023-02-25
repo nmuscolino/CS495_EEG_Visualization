@@ -1,6 +1,8 @@
 <html>
   <head>
     <title>BCI Vis Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Import three.js Libraries from a CDN -->
     <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
@@ -12,30 +14,39 @@
         }
       }
     </script>
+    <!-- Import CSS from static files -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"></script>
 
     <!-- Styling -->
     <style>
       body { margin: 0; }
       canvas { display: block; }
     </style>
-    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <!-- Setup Sensitivity Slider -->
-    <p>Camera Sensitivity</p>
-    <input type="range" min="1" max="10" value="5" step="0.5" class="slider" id="sensSlider">
+    <!-- Navigation Bar Header -->
+    <div class="navbar">
+      <h2>EEG Visualization</h2>
+      <a href="/" class="active">Home</a>
+      
+      <!-- Setup File Selector -->
+      <label for="file-selector" class="file-btn">Choose a File</label>
+      <input type="file" id="file-selector" accept=".txt"/>
+      
+      <!-- Setup Sensitivity Slider -->
+      <label for="sensSlider">Adjust Camera Sensitivity:</label>
+      <input type="range" min="1" max="10" value="5" step="0.5" class="slider" id="sensSlider">
 
-    <!-- Setup File Selector -->
-    <p class="positioned">
-      <input type="file" id="file-selector" accept=".txt" />
-    </p>
+      <a href="#" style="float: right;">Help</a>
+    </div>
     
     <!-- Main Script -->
     <script type="module">  // Script type must be 'module' for imports
       import * as THREE from 'three';
       import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-      
+
       var text; //File data
 
       // Setup File Input
@@ -84,6 +95,7 @@
           // Create a sphere
           var sphere = new THREE.SphereGeometry(0.1, 32, 32); // (size, resolution.x, resolution.y)
           sphere.translate(x, y, z);  // Translate sphere to it's position
+          sphere.name = name;
           spheres.push(sphere);
         }
       }
@@ -137,6 +149,17 @@
   
           // Zoom in or out
           camera.position.z += delta * 0.01;
+        });
+
+        const resizeUpdateInterval = 500;
+        
+        // Listen for window resize events
+        window.addEventListener("resize", (event) => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix(); // Update camera positioning
+            renderer.setSize(width, height); // Update scene size to match window
         });
   
         // Render scene
