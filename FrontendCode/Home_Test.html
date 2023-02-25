@@ -53,6 +53,7 @@
         fr.addEventListener('load', () => {
           text = fr.result;
           console.log(text);  // Debug output
+          clearScene();       // Clear the scene
           genSpheres();       // Create spheres from data
           createScene();      // Create scene and handle events
         });
@@ -60,8 +61,23 @@
         fr.readAsText(file) // Calls 'load' event
       });
 
-      // Create a global array for sphere objects
+      // Create global variables for sphere objects and scene
       var spheres = [];
+      var scene = new THREE.Scene();
+
+      // Clear scene for reload
+      function clearScene() {
+        if (scene.children.length > 0){
+          // Clear spheres array
+          for (var i = spheres.length; i > 0; i--) {
+            spheres.pop();
+          }  
+          // Clear scene objects
+          while (scene.children.length > 0) {
+            scene.remove(scene.children[0]);
+          }
+        }
+      }
 
       // Generate spheres from node data
       function genSpheres() {
@@ -100,27 +116,27 @@
           group.add(mesh);
         }
         
-        // Create a scene, camera, and renderer
-        var scene = new THREE.Scene();
+        // Initialization
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         var renderer = new THREE.WebGLRenderer();
-        const meshLoader = new OBJLoader();
+        const meshLoader = new OBJLoader(); 
         const controls = new OrbitControls(camera, renderer.domElement);
         var leftButtonDown = false; // Left mouse button flag
         controls.rotateSpeed = 0.5; // Default camera sensitivity
-        
-        // Load mesh
+
+        // Load mesh  (WIP)
         meshLoader.load(
           'HeadModel.obj',  // Path to mesh file
 
           // Add mesh to the scene
           function (object) {
+            // object.scale.set(-500, -500, -500);  // Change mesh size
             scene.add(object);
           },
 
           // Output http request progress
           function (hr) {
-            console.log( (hr.loaded / xhr.total * 100) + '% loaded...');
+            console.log( (hr.loaded / hr.total * 100) + '% loaded...');
           },
 
           // Error handling
