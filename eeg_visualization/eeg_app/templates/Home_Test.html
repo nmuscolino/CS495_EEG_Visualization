@@ -17,8 +17,7 @@
     <!-- Import CSS from static files -->
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <script type="text/javascript" src="{% static 'js/visualization.js' %}" defer></script>
-    <script type="text/javascript" src="{% static 'js/communication.js' %}" defer></script>
+    <script type="module" src="{% static 'js/communication.js' %}" defer></script>
 
     <!-- Styling -->
     <style>
@@ -45,7 +44,6 @@
     </div>
     
     <!-- Main Script -->
-    <script type="module">  // Script type must be 'module' for imports
-    </script>
+    <script type="module" src="{% static 'js/visualization.js' %}" defer></script>
   </body>
 </html>
