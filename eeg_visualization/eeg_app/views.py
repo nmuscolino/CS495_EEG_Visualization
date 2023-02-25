@@ -7,6 +7,9 @@ import json
 def home(request):
     return render(request, "home.html")
 
+def input(request):
+    return render(request, "input.html")
+
 def handlePost(request):
     print("print working")
     print(request.body)
@@ -18,4 +21,4 @@ def handlePost(request):
     "sensor3": [5, 3, 1]
     }
     y = json.dumps(x)
-    return HttpResponse(y)
+    return render(request, "home.html")
