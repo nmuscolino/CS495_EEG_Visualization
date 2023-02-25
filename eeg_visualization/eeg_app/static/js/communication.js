@@ -1,6 +1,5 @@
 var fileToSend = "";
 
-
 const file_element = document.getElementById('file-button');
 file_element.addEventListener("change", function () {
     const reader = new FileReader();
