@@ -14,7 +14,7 @@ def input(request):
 @csrf_exempt
 def handlePost(request):
     #print("print working")
-    #print(request.body)
+    print(request.body)
     #print("after second print")
     
     x = {
