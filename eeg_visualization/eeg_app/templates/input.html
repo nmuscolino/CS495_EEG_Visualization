@@ -1,9 +1,16 @@
 <!DOCTYPE>
-<html>
+<head>
+    <title>Data Input</title>
+    {% load static %}
+    <script src="{% static 'communication.js' %}"></script>
+</head>
 
- <form action="postdata" method="post">{% csrf_token %}
-    <input type="file">
-    <input type="submit">
-</form>
 
-</html>
+<div id='input'>
+    <input type='file' id='uploaded_file' accept="image/png, image/jpg">
+</div>
+<div id='thumbnail'><div>
+
+<div>
+<button type="button" onclick="Post()">Process Data</button>
+</div>
