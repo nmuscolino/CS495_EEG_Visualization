@@ -1,3 +1,6 @@
+body { margin: 0; }
+canvas { display: block; }
+
 .navbar {
     background-color: #333;
     color: #f2f2f2;

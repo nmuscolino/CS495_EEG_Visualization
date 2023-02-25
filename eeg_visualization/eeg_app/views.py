@@ -6,7 +6,7 @@ import json
 
 # Create your views here.
 def home(request):
-    return render(request, "Home_Test.html")
+    return render(request, "home.html")
 
 def input(request):
     return render(request, "input.html")
