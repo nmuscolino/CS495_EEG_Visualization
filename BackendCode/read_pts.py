@@ -1,3 +1,5 @@
+import numpy as np
+import open3d as o3d
 import pandas as pd
 
 
@@ -16,6 +18,26 @@ def read_pts(filename: str):
     df[['intensity', 'r', 'g', 'b']] = df[['intensity', 'r', 'g', 'b']].astype(int)
 
     return df
+
+
+def pcd_to_df(pcd: o3d.geometry.PointCloud):
+    df1 = pd.DataFrame(
+        np.asarray(pcd.points),
+        columns=['x', 'y', 'z']
+    )
+    df2 = pd.DataFrame(
+        np.asarray(pcd.colors),
+        columns=['r', 'g', 'b']
+    )
+    df = pd.merge(df1, df2, left_index=True, right_index=True)
+    return update_with_colors(df)
+
+
+def df_to_pcd(df: pd.DataFrame):
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(np.asarray(df[['x', 'y', 'z']]))
+    pcd.colors = o3d.utility.Vector3dVector(np.asarray(df[['r', 'g', 'b']]))
+    return pcd
 
 
 def update_with_colors(df: pd.DataFrame):
@@ -53,6 +75,9 @@ def write_pts(filename: str, df: pd.DataFrame):
     if df['r'].dtype == float:
         df = df.copy()  # Do not change original data when writing
         df[['r', 'g', 'b']] = round(df[['r', 'g', 'b']] * 255).astype(int)
+    if 'intensity' not in df:
+        df = df.copy()  # Do not change original data when writing
+        df['intensity'] = 0
    
     rows = zip(df['x'], df['y'], df['z'], df['intensity'], df['r'], df['g'], df['b'])
 
