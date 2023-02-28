@@ -10,10 +10,9 @@ class PointCloudDataFrame(pd.DataFrame):
 
     @classmethod
     def read_pts(cls, filename: str):
-        f = open(filename)
-        num_points = int(f.readline())
-        point_data = [line.strip().split() for line in f.readlines()]
-        f.close()
+        with open(filename) as f:
+            num_points = int(f.readline())
+            point_data = [line.strip().split() for line in f.readlines()]
 
         df = cls(
             data=point_data,
@@ -77,14 +76,12 @@ class PointCloudDataFrame(pd.DataFrame):
     
         rows = df[['x', 'y', 'z', 'intensity', 'r', 'g', 'b']].itertuples(index=False)
 
-        f = open(filename, 'w')
-        f.write(f'{len(df)}\n')
-        f.writelines([' '.join(map(str, row)) + '\n' for row in rows])
-        f.close()
+        with open(filename, 'w') as f:
+            f.write(f'{len(df)}\n')
+            f.writelines([' '.join(map(str, row)) + '\n' for row in rows])
 
     def write_xyz(self, filename: str):
         rows = self[['x', 'y', 'z']].itertuples(index=False)
 
-        f = open(filename, 'w')
-        f.writelines([' '.join(map(str, row)) + '\n' for row in rows])
-        f.close()
+        with open(filename, 'w') as f:
+            f.writelines([' '.join(map(str, row)) + '\n' for row in rows])
