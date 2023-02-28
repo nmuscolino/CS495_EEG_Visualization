@@ -1,0 +1,191 @@
+<html>
+  <head>
+    <title>BCI Vis Test</title>
+
+    <!-- Import three.js Libraries from a CDN -->
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.150.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.150.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <!-- Styling -->
+    <style>
+      body { margin: 0; }
+      canvas { display: block; }
+    </style>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Setup Sensitivity Slider -->
+    <p>Camera Sensitivity</p>
+    <input type="range" min="1" max="10" value="5" step="0.5" class="slider" id="sensSlider">
+
+    <!-- Setup File Selector -->
+    <p class="positioned">
+      <input type="file" id="file-selector" accept=".txt" />
+    </p>
+    
+    <!-- Main Script -->
+    <script type="module">  // Script type must be 'module' for imports
+      import * as THREE from 'three';
+      import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+      import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+      
+      var text; //File data
+
+      // Setup File Input
+      const fileSelector = document.getElementById('file-selector');
+      fileSelector.addEventListener('change', (event) => {
+        // Get selected files
+        const fileList = event.target.files;
+        var file = fileList[0]; // First file
+
+        // Create file reader
+        var fr = new FileReader();
+
+        // Load event
+        fr.addEventListener('load', () => {
+          text = fr.result;
+          console.log(text);  // Debug output
+          clearScene();       // Clear the scene
+          genSpheres();       // Create spheres from data
+          createScene();      // Create scene and handle events
+        });
+
+        fr.readAsText(file) // Calls 'load' event
+      });
+
+      // Create global variables for sphere objects and scene
+      var spheres = [];
+      var scene = new THREE.Scene();
+
+      // Clear scene for reload
+      function clearScene() {
+        if (scene.children.length > 0){
+          // Clear spheres array
+          for (var i = spheres.length; i > 0; i--) {
+            spheres.pop();
+          }  
+          // Clear scene objects
+          while (scene.children.length > 0) {
+            scene.remove(scene.children[0]);
+          }
+        }
+      }
+
+      // Generate spheres from node data
+      function genSpheres() {
+        var nodes = text.split('\n');
+        // Create a sphere for each node
+        for (var i = 0; i < nodes.length; i++) {
+          var node = nodes[i];
+          
+          // Extract name or ID
+          var name = node.split(" ")[0];
+
+          // Get Coordinate Data
+          var coords = node.substring(node.indexOf("(") + 1, node.indexOf(")"));
+          var xyz = coords.split(", "); //store values as array of strings
+
+          // Convert each from string to float
+          var x = parseFloat(xyz[0]);
+          var y = parseFloat(xyz[1]);
+          var z = parseFloat(xyz[2]);
+
+          // Create a sphere
+          var sphere = new THREE.SphereGeometry(0.1, 32, 32); // (size, resolution.x, resolution.y)
+          sphere.translate(x, y, z);  // Translate sphere to it's position
+          spheres.push(sphere);
+        }
+      }
+
+      function createScene() {
+        // Create a group to hold the spheres
+        var group = new THREE.Group();
+      
+        // Add each sphere to the group
+        for (var i = 0; i < spheres.length; i++) {
+          var sphere = spheres[i];
+          var mesh = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xffffff })); //white sphere mesh
+          group.add(mesh);
+        }
+        
+        // Initialization
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        const meshLoader = new OBJLoader(); 
+        const controls = new OrbitControls(camera, renderer.domElement);
+        var leftButtonDown = false; // Left mouse button flag
+        controls.rotateSpeed = 0.5; // Default camera sensitivity
+
+        // Load mesh  (WIP)
+        meshLoader.load(
+          'HeadModel.obj',  // Path to mesh file
+
+          // Add mesh to the scene
+          function (object) {
+            // object.scale.set(-500, -500, -500);  // Change mesh size
+            scene.add(object);
+          },
+
+          // Output http request progress
+          function (hr) {
+            console.log( (hr.loaded / hr.total * 100) + '% loaded...');
+          },
+
+          // Error handling
+          function (error) {
+            console.error('Failed to load mesh', error);
+          }
+        );
+
+        // Add the groupof spheres to the scene and setup default camera position
+        scene.add(group);
+        camera.position.z = 5; 
+        
+        // Set the renderer size
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        // Append the renderer to the body
+        document.body.appendChild(renderer.domElement);
+        
+        // Camera sensitivity slider
+        var sensSlider = document.getElementById("sensSlider");
+  
+        // Prevent moving camera when using slider
+        sensSlider.addEventListener("mousedown", function() {
+          controls.rotateSpeed = 0.0;
+        });
+  
+        //Update mouse sensitivity when slider is released
+        sensSlider.addEventListener("mouseup", function() {
+          controls.rotateSpeed = sensSlider.value * 0.1;
+        });
+  
+        // Listen for mouse wheel events
+        window.addEventListener("wheel", (event) => {
+          event.preventDefault();   // FIXME: Doesn't prevent page scrolling
+          var delta = event.deltaY; // Changes sign depending on scroll direction
+  
+          // Zoom in or out
+          camera.position.z += delta * 0.01;
+        });
+  
+        // Render scene
+        var render = function () {
+          requestAnimationFrame(render);
+          controls.update();
+          renderer.render(scene, camera);
+        };
+        
+        render();
+      }    
+    </script>
+  </body>
+</html>

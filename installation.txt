@@ -3,7 +3,7 @@ After cloning the repository, there are a few steps that need to be taken before
 The first step is creating an Anaconda environment with python3.
 If python3 is not installed, install now with the appropriate package manager. It may take some time to complete this step.
 	
-  conda create -n djangoenv python=3.6 anaconda // This creates a new anaconda environment called djangoenv which includes Python 3.6	
+  conda create -n djangoenv python=3.10 anaconda // This creates a new anaconda environment called djangoenv which includes Python 3.6	
  
 Activate the new environment.
   
@@ -13,14 +13,16 @@ Install Django in the new environment if it is not already installed. Approve an
   
   conda install -c anaconda django
 
+This should automatically install Django version 4.1.
+
 You should now be able to make migrations with 
 	python manage.py migrate
 from within the Anaconda environment.
 
 Test that everything is working by running the server 
-	python manage.py runserver 0.0.0.0:8000
+	python manage.py runserver
 Access the website at the following url:
-  http://127.0.0.1:8000/eeg_app/
+  http://127.0.0.1:8000
 	
 To allow yourself admin access on the server. Create a superuser
 	python manage.py createsuperuser
