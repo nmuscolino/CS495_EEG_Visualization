@@ -11,6 +11,10 @@ canvas { display: block; }
     overflow: hidden;   
 }
 
+.navbar h2 {
+    padding-left: 20px;
+}
+
 .navbar a {
     float: left;
     color: #f2f2f2;
@@ -44,14 +48,12 @@ canvas { display: block; }
 .navbar .file-btn:hover {
     background-color: #ddd;
     color: black;
+    cursor: pointer;
 }
-
-
-
-
 
 .navbar input[type="range"] {
     padding: 14px 16px;
+    cursor: pointer;
 }
 
 /*
