@@ -5,16 +5,18 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 export function genSpheres(coordinates) {
     var spheres = [];
     var coordinateObj = JSON.parse(coordinates);
-
-    for (var i = 0; i < Object.keys(coordinateObj).length; i++) {
-        var cur = coordinateObj[Object.keys(coordinateObj)[i]];
+    var coordinateObj2 = JSON.parse(coordinateObj);
+    //something weird where i had to parse twice to get an object
+    for (var i = 0; i < Object.keys(coordinateObj2).length; i++) {
+        var cur = coordinateObj2[Object.keys(coordinateObj2)[i]];
         var sphere = new THREE.SphereGeometry(0.01, 32, 32); // (size, resolution.x, resolution.y)
         sphere.translate(cur[0]*5, cur[1]*5, cur[2]*5);  // Translate sphere to it's position
-        sphere.name = Object.keys(coordinateObj)[i];
+        sphere.name = Object.keys(coordinateObj2)[i];
         spheres.push(sphere);
     }
     createScene(spheres);
 };
+
 
 export function createScene(spheres) {
     // Create a group to hold the spheres

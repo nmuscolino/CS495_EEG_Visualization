@@ -131,8 +131,8 @@ def Combine(chunkList):
 
     return dataString
 
-def ProcessFile():
-    pcd = o3d.io.read_point_cloud('eeg_app/media/point_cloud.pts')
+def ProcessFile(path):
+    pcd = o3d.io.read_point_cloud(path)
     pcd_down = pcd.voxel_down_sample(voxel_size=0.001)  # 1mm
     df = PointCloudDataFrame.from_pcd(pcd_down)
     df_filter1 = df[(df['s'] < 0.075) & (df['v'] > 0.2)]
@@ -149,19 +149,18 @@ def ProcessFile():
     return json_object
 
 def process_data(input):
-    print("in process")
+    #print("in process")
 
     for chunk in input:
         Parse(chunk)
 
     dataString = Combine(chunks)
-    print(len(dataString))
-    print(dataString[0:100])
 
     f = open("eeg_app/media/point_cloud.pts", "w")
     f.write(dataString)
+    f.close()
 
-    positions = ProcessFile()
-    os.remove("eeg_app/media/point_cloud.pts")
+    positions = ProcessFile('eeg_app/media/point_cloud.pts')
+    #os.remove("eeg_app/media/point_cloud.pts")
     return positions
     

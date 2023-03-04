@@ -29,7 +29,7 @@ function Chunk(fileBinString) {
     var endIdx = chunkSize;
     var chunk = "";
     var numChunks = parseInt((fileBinString.length / chunkSize) + 1);
-    console.log(numChunks);
+    //console.log(numChunks);
 
     for (let i = 0; i < numChunks; i++) {
         chunk = fileBinString.substring(startIdx, endIdx);
@@ -40,31 +40,33 @@ function Chunk(fileBinString) {
         }
 
         chunk = i + "#" + chunk;
-        console.log(chunk);
+        //console.log(chunk);
         Post(chunk);
     }
 };
 
 function Get() {
     'use strict';
-    const request = new XMLHttpRequest();
-    request.open('GET', 'getdata', true);
-    request.send();
+    const getRequest = new XMLHttpRequest();
+    getRequest.open('GET', 'getdata', true);
+    getRequest.send();
 
-    request.onreadystatechange = function() {
-        //console.log(request.response);
-        coordinates = request.response;
+    getRequest.onreadystatechange = function() {
+        //console.log(getRequest.response);
+        coordinates = getRequest.response;
         //localStorage.setItem('coordinateData', JSON.stringify(request.response))
     }
 };
 
 function Post(chunk) {
     'use strict';
-    const request = new XMLHttpRequest();
-    request.open('POST', 'postdata', true);
-    request.send(chunk);
-
-    request.onreadystatechange = function() {
+    const postRequest = new XMLHttpRequest();
+    postRequest.open('POST', 'postdata', true);
+    postRequest.send(chunk);
+    //console.log(chunk.substring(4900, 5000));
+    /*
+    postRequest.onreadystatechange = function() {
         console.log(request.response);
     }
+    */
 };
