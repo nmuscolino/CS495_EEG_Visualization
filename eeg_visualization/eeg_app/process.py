@@ -161,6 +161,6 @@ def process_data(input):
     f.close()
 
     positions = ProcessFile('eeg_app/media/point_cloud.pts')
-    #os.remove("eeg_app/media/point_cloud.pts")
+    os.remove("eeg_app/media/point_cloud.pts")
     return positions
     
