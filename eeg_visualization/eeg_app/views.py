@@ -23,5 +23,4 @@ def handlePost(request):
     "sensor3": [5.2, 3.1, 1.6]
     }
     y = json.dumps(x)
-    print("here")
     return HttpResponse(y)

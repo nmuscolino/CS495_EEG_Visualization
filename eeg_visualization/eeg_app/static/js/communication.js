@@ -1,3 +1,4 @@
+/*
 var fileToSend = "";
 
 const file_element = document.getElementById('file-button');
@@ -26,3 +27,4 @@ function Post() {
         console.log(request.response);
     }
 }
+*/

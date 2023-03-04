@@ -5,17 +5,21 @@ var fileToSend = "";
 
 const file_element = document.getElementById('file-button');
 file_element.addEventListener("change", function () {
+    console.log("in outer fun");
     const reader = new FileReader();
     reader.onload = function() {
+        console.log("here");
         fileToSend = reader.result;
-        //console.log(fileToSend);
-        Post();
+        console.log(fileToSend);
+        //Post();
     }
-    reader.readAsDataURL(file_element.files[0])
+    reader.readAsDataURL(file_element.files[0]);
     //maybe read as text for the actual file?
 });
 
+
 function Post() {
+    console.log("in post");
     if (fileToSend == "") {
         console.log("No file selected");
         return;
@@ -24,13 +28,13 @@ function Post() {
     const request = new XMLHttpRequest();
     request.open('POST', 'postdata', true);
     request.send(fileToSend);
-
     request.onreadystatechange = function() {
         if (request.readyState === 4) {
             genSpheres(request.response);
         }
     }
-}
+};
+
 
 //global array for spheres
 var spheres = [];
@@ -38,20 +42,20 @@ var spheres = [];
 // Generate spheres from node data
 function genSpheres(coordinates) {
         console.log("in genSpheres");
-        console.log(coordinates);
-        console.log(typeof coordinates);
+        //console.log(coordinates);
+        //console.log(typeof coordinates);
         const coordinateObj = JSON.parse(coordinates);
-        console.log(coordinateObj);
-        console.log(typeof coordinateObj);
+        //console.log(coordinateObj);
+        //console.log(typeof coordinateObj);
 
-        console.log(Object.keys(coordinateObj).length);
+        //console.log(Object.keys(coordinateObj).length);
 
         for (var i = 0; i < Object.keys(coordinateObj).length; i++) {
              // Create a sphere
              var cur = coordinateObj[Object.keys(coordinateObj)[i]];
-             console.log(cur[0]);
-             console.log(cur[1]);
-             console.log(typeof cur[2]);
+             //console.log(cur[0]);
+             //console.log(cur[1]);
+             //console.log(typeof cur[2]);
 
             var sphere = new THREE.SphereGeometry(0.1, 32, 32); // (size, resolution.x, resolution.y)
             sphere.translate(cur[0], cur[1], cur[2]);  // Translate sphere to it's position
