@@ -16,7 +16,7 @@ def input(request):
 @csrf_exempt
 def handlePost(request):
     #print("print working")
-    print(len(request.body))
+    #print(len(request.body))
     #print("after second print")
     data.append(request.body)
 
@@ -29,6 +29,6 @@ def handlePost(request):
     return HttpResponse(y)
 
 def handleGet(request):
-    print("in get")
-    process.process_data(data)
-    return HttpResponse("Reached Get")
+    positions = process.process_data(data)
+    positions = json.dumps(positions)
+    return HttpResponse(positions)
