@@ -3,6 +3,7 @@ import open3d as o3d
 import pandas as pd
 from sklearn import cluster
 import json
+import os
 
 class PointCloudDataFrame(pd.DataFrame):
     @property
@@ -161,5 +162,6 @@ def process_data(input):
     f.write(dataString)
 
     positions = ProcessFile()
+    os.remove("eeg_app/media/point_cloud.pts")
     return positions
     

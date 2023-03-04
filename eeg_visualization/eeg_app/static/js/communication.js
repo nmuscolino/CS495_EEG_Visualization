@@ -1,18 +1,27 @@
+import { genSpheres } from "./visualization.js";
 
 var fileToSend = "";
+var coordinates = "";
 
 const file_element = document.getElementById('file-button');
 file_element.addEventListener("change", function () {
     const reader = new FileReader();
     reader.onload = function() {
         fileToSend = reader.result;
-        //console.log(fileToSend);
         Chunk(fileToSend);
-        //Post();
     }
     reader.readAsBinaryString(file_element.files[0])
-    //maybe read as text for the actual file?
 });
+
+const process_button = document.getElementById('process-button');
+process_button.addEventListener('click', Get);
+
+const visualize_button = document.getElementById('visualize-button');
+visualize_button.addEventListener('click', Visualize);
+
+function Visualize() {
+    genSpheres(coordinates);
+}
 
 function Chunk(fileBinString) {
     var chunkSize = 5000000;
@@ -43,9 +52,11 @@ function Get() {
     request.send();
 
     request.onreadystatechange = function() {
-        console.log(request.response);
+        //console.log(request.response);
+        coordinates = request.response;
+        //localStorage.setItem('coordinateData', JSON.stringify(request.response))
     }
-}
+};
 
 function Post(chunk) {
     'use strict';

@@ -1,72 +1,24 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    
 
-var fileToSend = "";
+export function genSpheres(coordinates) {
+    var spheres = [];
+    var coordinateObj = JSON.parse(coordinates);
 
-const file_element = document.getElementById('file-button');
-file_element.addEventListener("change", function () {
-    console.log("in outer fun");
-    const reader = new FileReader();
-    reader.onload = function() {
-        console.log("here");
-        fileToSend = reader.result;
-        console.log(fileToSend);
-        //Post();
+    for (var i = 0; i < Object.keys(coordinateObj).length; i++) {
+        var cur = coordinateObj[Object.keys(coordinateObj)[i]];
+        var sphere = new THREE.SphereGeometry(0.01, 32, 32); // (size, resolution.x, resolution.y)
+        sphere.translate(cur[0]*5, cur[1]*5, cur[2]*5);  // Translate sphere to it's position
+        sphere.name = Object.keys(coordinateObj)[i];
+        spheres.push(sphere);
     }
-    reader.readAsDataURL(file_element.files[0]);
-    //maybe read as text for the actual file?
-});
-
-
-function Post() {
-    console.log("in post");
-    if (fileToSend == "") {
-        console.log("No file selected");
-        return;
-    }
-    'use strict';
-    const request = new XMLHttpRequest();
-    request.open('POST', 'postdata', true);
-    request.send(fileToSend);
-    request.onreadystatechange = function() {
-        if (request.readyState === 4) {
-            genSpheres(request.response);
-        }
-    }
+    createScene(spheres);
 };
 
-
-//global array for spheres
-var spheres = [];
-
-// Generate spheres from node data
-function genSpheres(coordinates) {
-        console.log("in genSpheres");
-        //console.log(coordinates);
-        //console.log(typeof coordinates);
-        const coordinateObj = JSON.parse(coordinates);
-        //console.log(coordinateObj);
-        //console.log(typeof coordinateObj);
-
-        //console.log(Object.keys(coordinateObj).length);
-
-        for (var i = 0; i < Object.keys(coordinateObj).length; i++) {
-             // Create a sphere
-             var cur = coordinateObj[Object.keys(coordinateObj)[i]];
-             //console.log(cur[0]);
-             //console.log(cur[1]);
-             //console.log(typeof cur[2]);
-
-            var sphere = new THREE.SphereGeometry(0.1, 32, 32); // (size, resolution.x, resolution.y)
-            sphere.translate(cur[0], cur[1], cur[2]);  // Translate sphere to it's position
-            sphere.name = Object.keys(coordinateObj)[i];
-            spheres.push(sphere);
-        }
-        createScene();
-}
-
-function createScene() {
+export function createScene(spheres) {
     // Create a group to hold the spheres
+    console.log("in create scene");
     var group = new THREE.Group();
 
     // Add each sphere to the group
@@ -94,18 +46,9 @@ function createScene() {
     // Append the renderer to the body
     document.body.appendChild(renderer.domElement);
 
+    
     // Camera sensitivity slider
     var sensSlider = document.getElementById("sensSlider");
-
-    // Prevent moving camera when using slider
-    sensSlider.addEventListener("mousedown", function() {
-        controls.rotateSpeed = 0.0;
-    });
-
-    //Update mouse sensitivity when slider is released
-    sensSlider.addEventListener("mouseup", function() {
-        controls.rotateSpeed = sensSlider.value * 0.1;
-    });
 
     // Listen for mouse wheel events
     window.addEventListener("wheel", (event) => {
@@ -126,13 +69,13 @@ function createScene() {
         camera.updateProjectionMatrix(); // Update camera positioning
         renderer.setSize(width, height); // Update scene size to match window
     });
-
+    
     // Render scene
     var render = function () {
         requestAnimationFrame(render);
-        controls.update();
+        //controls.update();
         renderer.render(scene, camera);
     };
 
     render();
-}    
+}   

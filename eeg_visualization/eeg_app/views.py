@@ -29,6 +29,10 @@ def handlePost(request):
     return HttpResponse(y)
 
 def handleGet(request):
-    positions = process.process_data(data)
-    positions = json.dumps(positions)
+    #positions = process.process_data(data)
+    #positions = json.dumps(positions)
+    f = open('eeg_app/media/clusters.json')
+    data = json.load(f)
+    positions = json.dumps(data)
     return HttpResponse(positions)
+
