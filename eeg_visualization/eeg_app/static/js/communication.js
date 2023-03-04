@@ -30,12 +30,10 @@ function Chunk(fileBinString) {
             endIdx = fileBinString.length;
         }
 
-        chunk = numChunks + "#" + i + "#" + chunk;
+        chunk = i + "#" + chunk;
         console.log(chunk);
         Post(chunk);
     }
-
-    Get();
 };
 
 function Get() {
