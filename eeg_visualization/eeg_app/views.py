@@ -19,10 +19,12 @@ def handlePost(request):
     return HttpResponse()
 
 def handleGet(request):
+    print(len(data))
     positions = process.process_data(data)
     positions = json.dumps(positions)
     #f = open('eeg_app/media/clusters.json')
     #data = json.load(f)
     #positions = json.dumps(data)
+    data.clear()
     return HttpResponse(positions)
 
