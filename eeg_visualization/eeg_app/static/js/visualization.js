@@ -14,12 +14,10 @@ export function genSpheres(coordinates) {
         sphere.name = Object.keys(coordinateObj2)[i];
         spheres.push(sphere);
     }
-    createScene(spheres);
+    createScene(spheres, coordinateObj2);
 };
 
-
-
-export function createScene(spheres) {
+export function createScene(spheres, coordinateObj) {
         // Used to calculate the camera's starting position
         var minX = null;
         var maxX = null;
@@ -63,10 +61,10 @@ export function createScene(spheres) {
         }
         var startingX = (minX + maxX) / 2;
         var startingY = (minY + maxY) / 2;
-        createScene(startingX, startingY, startingZ);
+        renderScene(startingX, startingY, startingZ, spheres);
 }
 
-function createScene(startingX, startingY, startingZ) {
+function renderScene(startingX, startingY, startingZ, spheres) {
     // Create a group to hold the spheres
     console.log("in create scene");
     var group = new THREE.Group();
