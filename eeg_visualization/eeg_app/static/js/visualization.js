@@ -18,7 +18,55 @@ export function genSpheres(coordinates) {
 };
 
 
+
 export function createScene(spheres) {
+        // Used to calculate the camera's starting position
+        var minX = null;
+        var maxX = null;
+        var minY = null;
+        var maxY = null;
+        var startingZ = 5;
+
+        for (var i = 0; i < Object.keys(coordinateObj).length; i++) {
+            // Create a sphere
+            var cur = coordinateObj[Object.keys(coordinateObj)[i]];
+            console.log(cur[0]);
+            console.log(cur[1]);
+            console.log(cur[2])
+            console.log(typeof cur[2]);
+
+            // Initialize the bounds of the x coordinates with the first x-value
+            if (minX == null && maxX == null) {
+                minX = cur[0]; 
+                maxX = cur[0];
+            }
+            // Update the bounds of the x coordinate as needed
+            else if (cur[0] < minX) minX = cur[0];
+            else if (cur[0] > maxX) maxX = cur[0];
+
+            // Initialize the bounds of the y coordinates with the first y-value
+            if (minY == null && maxX == null) {
+                minY = cur[1]; 
+                maxY = cur[1];
+            }
+            // Update the bounds of the y coordinates as needed
+            else if (cur[1] < minY) minY = cur[1];
+            else if (cur[1] > maxY) maxY = cur[1];
+            
+            // Update the starting z coordinate as needed
+            if (cur[2] > startingZ) startingZ = cur[2] + 5;
+
+            var sphere = new THREE.SphereGeometry(0.1, 32, 32); // (size, resolution.x, resolution.y)
+            sphere.translate(cur[0], cur[1], cur[2]);  // Translate sphere to it's position
+            sphere.name = Object.keys(coordinateObj)[i];
+            spheres.push(sphere);
+        }
+        var startingX = (minX + maxX) / 2;
+        var startingY = (minY + maxY) / 2;
+        createScene(startingX, startingY, startingZ);
+}
+
+function createScene(startingX, startingY, startingZ) {
     // Create a group to hold the spheres
     console.log("in create scene");
     var group = new THREE.Group();
@@ -40,7 +88,14 @@ export function createScene(spheres) {
 
     // Add the group to the scene and setup default camera position
     scene.add(group);
-    camera.position.z = 5; 
+
+    // Update the camera's starting position using the computed 
+    camera.position.x = startingX;
+    camera.position.y = startingY;
+    camera.position.z = startingZ;
+    console.log(camera.position.x);
+    console.log(camera.position.y);
+    console.log(camera.position.z); 
 
     // Set the renderer size
     renderer.setSize(window.innerWidth, window.innerHeight);
