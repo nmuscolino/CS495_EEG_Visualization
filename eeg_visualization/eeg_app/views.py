@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from . import process
 
+data = []
 
 # Create your views here.
 def home(request):
@@ -13,15 +15,16 @@ def input(request):
 
 @csrf_exempt
 def handlePost(request):
-    #print("print working")
-    print(request.body)
-    #print("after second print")
-    
-    x = {
-    "sensor1": [1, 5, 7],
-    "sensor2": [2, 3, 6],
-    "sensor3": [5.2, 3.1, 1.6]
-    }
-    y = json.dumps(x)
-    print("here")
-    return HttpResponse(y)
+    data.append(request.body)
+    return HttpResponse()
+
+def handleGet(request):
+    print(len(data))
+    positions = process.process_data(data)
+    positions = json.dumps(positions)
+    #f = open('eeg_app/media/clusters.json')
+    #data = json.load(f)
+    #positions = json.dumps(data)
+    data.clear()
+    return HttpResponse(positions)
+

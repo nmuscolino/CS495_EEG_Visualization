@@ -16,28 +16,33 @@
     </script>
     <!-- Import CSS from static files -->
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-   <!-- <script type="module" src="{% static 'js/communication.js' %}" defer></script> -->
+   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+   <script type="module" src="{% static 'js/visualization.js' %}" defer></script>
+   <script type="module" src="{% static 'js/communication.js' %}" defer></script>
+   
+ 
   </head>
 
   <body>
     <!-- Navigation Bar Header -->
     <div class="navbar">
       <h2>EEG Visualization</h2>
-      <a href="/" class="active">Home</a>
+
+      <label for="file-button" class="btn-label">Upload File</label>
+      <input type="file" id="file-button" class="btn-css">
       
-      <!-- Setup File Selector -->
-      <label for="file-button" class="file-btn">Choose a File</label>
-      <input type="file" id="file-button" accept="image/png, image/jpg">
+      <label for="process-button" class="btn-label">Process</label>
+      <button type="button" id="process-button" class="btn-css">Process</button>
+
+      <label for="visualize-button" class="btn-label">Visualize</label>
+      <button type="button" id="visualize-button" class="btn-css">Visualize</button>
       
-      <!-- Setup Sensitivity Slider -->
+      <!-- Setup Sensitivity Slider-->
       <label for="sensSlider">Adjust Camera Sensitivity:</label>
       <input type="range" min="1" max="10" value="5" step="0.5" class="slider" id="sensSlider">
 
-      <a href="#" style="float: right;">Help</a>
     </div>
+
     
-    <!-- Main Script -->
-    <script type="module" src="{% static 'js/visualization.js' %}" defer></script>
   </body>
 </html>

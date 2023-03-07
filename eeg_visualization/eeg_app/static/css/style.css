@@ -1,7 +1,13 @@
 body { margin: 0; }
 canvas { display: block; }
 
+/*
 .navbar input[type="file"] {
+    display: none;
+}
+*/
+
+.navbar .btn-css {
     display: none;
 }
 
@@ -11,10 +17,7 @@ canvas { display: block; }
     overflow: hidden;   
 }
 
-.navbar h2 {
-    padding-left: 20px;
-}
-
+/*
 .navbar a {
     float: left;
     color: #f2f2f2;
@@ -34,7 +37,9 @@ canvas { display: block; }
     background-color: #316cf4;
     color: white;
 }
+*/
 
+/*Makes the button labels align on the left and sets their characteristics*/
 .navbar label {
     float: left;
     color: #f2f2f2;
@@ -45,7 +50,8 @@ canvas { display: block; }
     border-left: 1px solid white;
 }
 
-.navbar .file-btn:hover {
+/*Changes the button colors when you hover over them*/
+.navbar .btn-label:hover {
     background-color: #ddd;
     color: black;
     cursor: pointer;

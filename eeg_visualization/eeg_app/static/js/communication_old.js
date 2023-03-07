@@ -1,3 +1,4 @@
+/*
 fileToSend = "";
 
 
@@ -26,3 +27,5 @@ function Post() {
         console.log(request.response);
     }
 }
+
+*/
