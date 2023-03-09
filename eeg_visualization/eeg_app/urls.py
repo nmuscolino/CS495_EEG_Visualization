@@ -7,6 +7,6 @@ urlpatterns = [
     path('upload', views.upload, name='upload'),
     path('positions', views.Positions, name="positions"),
     path('colors', views.Colors, name="colors"),
-    path('getdata', views.handleGet, name='handleGet'),
+    path('getvisualizationdata', views.GetVisualizationData, name='getvisualizationdata'),
     path('process', views.Process, name='process'),
 ]

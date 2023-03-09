@@ -1,12 +1,6 @@
 body { margin: 0; }
 canvas { display: block; }
 
-/*
-.navbar input[type="file"] {
-    display: none;
-}
-*/
-
 .navbar .btn-css {
     display: none;
 }
@@ -16,28 +10,6 @@ canvas { display: block; }
     color: #f2f2f2;
     overflow: hidden;   
 }
-
-/*
-.navbar a {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-    border-left: 1px solid white;
-}
-
-.navbar a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-.navbar a.active {
-    background-color: #316cf4;
-    color: white;
-}
-*/
 
 /*Makes the button labels align on the left and sets their characteristics*/
 .navbar label {
@@ -61,11 +33,3 @@ canvas { display: block; }
     padding: 14px 16px;
     cursor: pointer;
 }
-
-/*
-.positioned {
-    position: absolute;
-    top: 5px;
-    right: 30px;
-}
-*/
