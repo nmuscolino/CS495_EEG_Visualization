@@ -3,10 +3,7 @@ import open3d as o3d
 import pandas as pd
 from sklearn import cluster
 import json
-<<<<<<< HEAD
-=======
 import os
->>>>>>> 15566b1be26f854a178b9177f3905b4291117bca
 
 class PointCloudDataFrame(pd.DataFrame):
     @property
