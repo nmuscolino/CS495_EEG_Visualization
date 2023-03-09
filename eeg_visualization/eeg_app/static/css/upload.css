@@ -54,13 +54,13 @@ canvas { display: block; }
 
 .upload-bar button {
     color: white;
-    background-color: rgb(159, 0, 159);
+    background-color: purple;
     border-radius: 10px;
     
 }
 
 .upload-bar button:hover {
-    background-color: rgb(104, 0, 202);
+    background-color: magenta;
 }
 
 table, th, td {
