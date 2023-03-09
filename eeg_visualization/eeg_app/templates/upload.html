@@ -1,7 +1,8 @@
 <head>
     <title>Upload Page</title>
-    <link rel="stylesheet" href="upload.css">
-    <script src="upload.js" defer></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href={% static 'css/upload.css' %}>
+    <script src={% static 'js/upload.js' %} defer></script>
 </head>
 
 <body>

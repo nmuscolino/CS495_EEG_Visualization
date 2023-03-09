@@ -10,8 +10,8 @@ data = []
 def home(request):
     return render(request, "home.html")
 
-def input(request):
-    return render(request, "input.html")
+def upload(request):
+    return render(request, "upload.html")
 
 @csrf_exempt
 def handlePost(request):
