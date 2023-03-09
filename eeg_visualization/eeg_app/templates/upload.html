@@ -1,0 +1,84 @@
+<head>
+    <title>Upload Page</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href={% static 'css/upload.css' %}>
+    <script src={% static 'js/upload.js' %} defer></script>
+</head>
+
+<body>
+    <div class="navigation-bar">
+        <div style="display: inline-block">
+            <label for="home">Home</label>
+            <label for="upload">Upload</label>
+            <label for="visualize">Visualize</label>
+            <button id="home" style="display: none;"></button>
+            <button id="upload" style="display: none;"></button>
+            <button id="visualize" style="display: none;"></button>
+        </div>
+        <div id="title" , style="display: inline-block; padding-left: 23%">
+            <h2 style="position: relative">EEG Visualization T</h2>
+        </div>
+    </div>
+
+    <div id="instruction-bar">
+        <h3>Instructions</h3>
+        <p>
+            1. Add a name to refer to the data (spaces not allowed).<br>
+            2. Select the upload type (point cloud or text)<br>
+            3. Select the file (.pts and .txt accepted)<br>
+            4. Click the upload button
+        </p>
+    </div>
+
+    <div class="upload-bar">
+            <span class="labels" style="padding-left: 10%;">Name data as: </span>
+            <input type="text" id="name-of-file">
+    
+            <select name="ftype" id="ftype-selector">
+                <option value="">Select a Data Type</option>
+                <option value="ptCloud">Point Cloud</option>
+                <option value="txt">Text File</option>
+            </select>
+    
+            <input type="file" id="file-input" style="display: none">
+            <button id="file-select-button">Select File</button>
+            <span id=file-name-label class="labels" style="padding-right: 10%"></span>
+
+            <button id="upload-button" disabled="disabled">Upload</button>
+    </div>
+
+
+    <div id="table-div">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>BlakeScan</td>
+                <td>01/15/23</td>
+                <td>Uploading</td>
+            </tr>
+            <tr>
+                <td>JackScan</td>
+                <td>01/30/23</td>
+                <td>Processing</td>
+            </tr>
+            <tr>
+                <td>NickScan</td>
+                <td>02/12/23</td>
+                <td>Complete</td>
+            </tr>
+            <tr>
+                <td>WardScan</td>
+                <td>02/26/23</td>
+                <td>Complete</td>
+            </tr>
+        </table>
+    </div>
+
+    
+
+
+</body>

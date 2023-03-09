@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    background-color: rgb(62, 62, 62);
+
+}
+canvas { display: block; }
+
+.navigation-bar {
+    position: sticky; /*sticky not working*/
+    top: 0px;
+    background-color: rgb(10, 10, 10);
+    color: #f2f2f2;
+    overflow: hidden;   
+}
+
+.navigation-bar label {
+    padding-top: 100%;
+    padding-bottom: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.navigation-bar label:hover {
+    background-color: rgb(71, 71, 71);
+}
+
+#instruction-bar {
+    color: white;
+    overflow: hidden;
+    margin: auto;
+    width: 90%;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.upload-bar {
+    background-color: rgb(49, 55, 253);
+    margin: auto;
+    width: 90%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+}
+
+.upload-bar .label-class:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.upload-bar .labels {
+    color: white;
+    font-style: normal;
+}
+
+.upload-bar button {
+    color: white;
+    background-color: purple;
+    border-radius: 10px;
+    
+}
+
+.upload-bar button:hover {
+    background-color: magenta;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+    border-radius: 10px;
+}
+
+th {
+    background-color: rgb(106, 126, 214);
+}
+
+tr:nth-child(odd) {
+    background-color: aqua;
+}
+
+tr:nth-child(even) {
+    background-color: aquamarine;
+}
+
+#table-div {
+    margin: auto;
+    background-color: rgb(49, 55, 253);
+    width: 90%;
+    padding: 10px;
+    padding-bottom: 30px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}

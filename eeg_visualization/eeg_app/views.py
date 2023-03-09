@@ -4,27 +4,35 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from . import process
 
-data = []
-
 # Create your views here.
 def home(request):
     return render(request, "home.html")
 
-def input(request):
-    return render(request, "input.html")
+def upload(request):
+    return render(request, "upload.html")
 
 @csrf_exempt
-def handlePost(request):
-    data.append(request.body)
+def Positions(request):
+    process.add_positions(request.body)
+    return HttpResponse()
+
+@csrf_exempt
+def Colors(request):
+    process.add_colors(request.body)
     return HttpResponse()
 
 def handleGet(request):
-    print(len(data))
-    positions = process.process_data(data)
+    #print(len(data))
+    #positions = process.process_data(data)
+    #positions = json.dumps(positions)
+    f = open('eeg_app/media/clusters.json')
+    data = json.load(f)
+    positions = json.dumps(data)
+    #data.clear()
+    return HttpResponse(positions)
+
+def Process(request):
+    positions = process.process_data()
     positions = json.dumps(positions)
-    #f = open('eeg_app/media/clusters.json')
-    #data = json.load(f)
-    #positions = json.dumps(data)
-    data.clear()
     return HttpResponse(positions)
 
