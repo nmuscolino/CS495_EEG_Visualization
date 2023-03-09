@@ -15,20 +15,16 @@ def input(request):
 
 @csrf_exempt
 def handlePost(request):
-    #print("print working")
-    #print(len(request.body))
-    #print("after second print")
     data.append(request.body)
-
-    x = {
-    "sensor1": [1, 5, 7],
-    "sensor2": [2, 3, 6],
-    "sensor3": [5.2, 3.1, 1.6]
-    }
-    y = json.dumps(x)
-    return HttpResponse(y)
+    return HttpResponse()
 
 def handleGet(request):
+    print(len(data))
     positions = process.process_data(data)
     positions = json.dumps(positions)
+    #f = open('eeg_app/media/clusters.json')
+    #data = json.load(f)
+    #positions = json.dumps(data)
+    data.clear()
     return HttpResponse(positions)
+

@@ -1,12 +1,7 @@
 import numpy as np
 import open3d as o3d
 import pandas as pd
-from sklearn import cluster
-import json
-<<<<<<< HEAD
-=======
-import os
->>>>>>> 15566b1be26f854a178b9177f3905b4291117bca
+
 
 class PointCloudDataFrame(pd.DataFrame):
     @property
@@ -90,81 +85,3 @@ class PointCloudDataFrame(pd.DataFrame):
 
         with open(filename, 'w') as f:
             f.writelines([' '.join(map(str, row)) + '\n' for row in rows])
-
-class Chunk:
-    def __init__(self, sequenceNum, data):
-        self.sequenceNum = sequenceNum
-        self.data = str(data, 'UTF-8')
-
-
-
-
-
-chunks = []
-
-def Parse(chunk):
-    header = str(chunk[0:3], 'UTF-8')
-    #print(header)
-    #print(type(header))
-    sequenceNum = ""
-    dataStart = 0
-    for i in range(0,3):
-        if header[i] == '#':
-            dataStart = i + 1
-            break
-        else:
-            sequenceNum = sequenceNum + header[i]
-
-    sequenceNum = int(sequenceNum)
-    #print("sequenceNum is: " + str(sequenceNum))
-    #print(chunk[dataStart:10])
-    chunks.append(Chunk(sequenceNum, chunk[dataStart:]))
-
-
-#Not tested
-def SortingCriteria(elem):
-    return elem.sequenceNum
-
-
-def Combine(chunkList):
-    chunks.sort(key=SortingCriteria)
-    dataString = ""
-    for chunk in chunks:
-       dataString = dataString + chunk.data
-
-    return dataString
-
-def ProcessFile(path):
-    pcd = o3d.io.read_point_cloud(path)
-    pcd_down = pcd.voxel_down_sample(voxel_size=0.001)  # 1mm
-    df = PointCloudDataFrame.from_pcd(pcd_down)
-    df_filter1 = df[(df['s'] < 0.075) & (df['v'] > 0.2)]
-    pcd_filter1 = df_filter1.to_pcd()
-    df_filter2 = df[(df['s'] < 0.075) & (df['v'] > 0.2) & (df['z'] > 0.1)]
-    pcd_filter2 = df_filter2.to_pcd()
-    _, ind = pcd_filter2.remove_radius_outlier(nb_points=48, radius=0.005)
-    pcd_inliers = pcd_filter2.select_by_index(ind)
-    pcd_inliers.paint_uniform_color([0.8, 0.8, 0.8])
-    model = cluster.KMeans(n_clusters=128, n_init='auto')
-    model.fit(pcd_inliers.points)
-    dictionary = {str(i): list(k) for (i, k) in enumerate(model.cluster_centers_)}
-    json_object = json.dumps(dictionary)
-    return json_object
-
-def process_data(input):
-    #print("in process")
-
-    for chunk in input:
-        Parse(chunk)
-
-    dataString = Combine(chunks)
-
-    f = open("eeg_app/media/point_cloud.pts", "w")
-    f.write(dataString)
-    f.close()
-
-    positions = ProcessFile('eeg_app/media/point_cloud.pts')
-    os.remove("eeg_app/media/point_cloud.pts")
-    chunks.clear()
-    return positions
-    
