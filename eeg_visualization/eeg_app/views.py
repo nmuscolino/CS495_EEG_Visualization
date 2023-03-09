@@ -21,14 +21,11 @@ def Colors(request):
     process.add_colors(request.body)
     return HttpResponse()
 
-def handleGet(request):
-    #print(len(data))
-    #positions = process.process_data(data)
-    #positions = json.dumps(positions)
+def GetVisualizationData(request):
     f = open('eeg_app/media/clusters.json')
     data = json.load(f)
     positions = json.dumps(data)
-    #data.clear()
+    f.close()
     return HttpResponse(positions)
 
 def Process(request):
