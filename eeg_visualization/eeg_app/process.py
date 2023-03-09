@@ -4,6 +4,11 @@ import pandas as pd
 from sklearn import cluster
 import json
 import os
+import struct
+
+
+
+allData = [None] * 7
 
 class PointCloudDataFrame(pd.DataFrame):
     @property
@@ -95,44 +100,7 @@ class Chunk:
 
 
 
-
-
-chunks = []
-
-def Parse(chunk):
-    header = str(chunk[0:3], 'UTF-8')
-    #print(header)
-    #print(type(header))
-    sequenceNum = ""
-    dataStart = 0
-    for i in range(0,3):
-        if header[i] == '#':
-            dataStart = i + 1
-            break
-        else:
-            sequenceNum = sequenceNum + header[i]
-
-    sequenceNum = int(sequenceNum)
-    #print("sequenceNum is: " + str(sequenceNum))
-    #print(chunk[dataStart:10])
-    chunks.append(Chunk(sequenceNum, chunk[dataStart:]))
-
-
-#Not tested
-def SortingCriteria(elem):
-    return elem.sequenceNum
-
-
-def Combine(chunkList):
-    chunks.sort(key=SortingCriteria)
-    dataString = ""
-    for chunk in chunks:
-       dataString = dataString + chunk.data
-
-    return dataString
-
-def ProcessFile(path):
-    pcd = o3d.io.read_point_cloud(path)
+def ProcessData(pcd):
     pcd_down = pcd.voxel_down_sample(voxel_size=0.001)  # 1mm
     df = PointCloudDataFrame.from_pcd(pcd_down)
     df_filter1 = df[(df['s'] < 0.075) & (df['v'] > 0.2)]
@@ -148,20 +116,41 @@ def ProcessFile(path):
     json_object = json.dumps(dictionary)
     return json_object
 
-def process_data(input):
-    #print("in process")
+#Ward, can you please make this cleaner by using your class to create the dataframe?
+def process_data():
+    npAllData = np.concatenate((allData[0], allData[1], allData[2], allData[3], allData[4], allData[5], allData[6]), axis=1)
+    df = pd.DataFrame(npAllData[1:,], columns=['x', 'y', 'z', 'l', 'r', 'g', 'b'])
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(np.asarray(df[['x', 'y', 'z']]))
+    pcd.colors = o3d.utility.Vector3dVector(np.asarray(df[['r', 'g', 'b']]))
+    coordinates = ProcessData(pcd)
+    return coordinates
 
-    for chunk in input:
-        Parse(chunk)
 
-    dataString = Combine(chunks)
+def add_positions(dataFromPost):
+    data = np.frombuffer(dataFromPost, dtype=np.float32)
+    data = np.expand_dims(data, 1)
+    channel = chr(int(data[0]))
 
-    f = open("eeg_app/media/point_cloud.pts", "w")
-    f.write(dataString)
-    f.close()
+    if channel == 'x':
+        allData[0] = data
+    elif channel == 'y':
+        allData[1] = data
+    else:
+        allData[2] = data
 
-    positions = ProcessFile('eeg_app/media/point_cloud.pts')
-    os.remove("eeg_app/media/point_cloud.pts")
-    chunks.clear()
-    return positions
+
+def add_colors(dataFromPost):
+    data = np.frombuffer(dataFromPost, dtype=np.int8)
+    channel = chr(data[0]) #This is weird it only works here
+    data = np.expand_dims(data, 1)
+
+    if channel == 'l':
+        allData[3] = data
+    elif channel == 'r':
+        allData[4] = data
+    elif channel == 'g':
+        allData[5] = data
+    else:
+        allData[6] = data
     
