@@ -17,7 +17,6 @@ uploadButton.addEventListener('click', function() {
     Post(x, 'positions');
     Post(y, 'positions');
     Post(z, 'positions');
-    Post(l, 'colors');
     Post(r, 'colors');
     Post(g, 'colors');
     Post(b, 'colors');
@@ -50,49 +49,29 @@ function Compress(data) {
     x = new Float32Array(size);
     y = new Float32Array(size);
     z = new Float32Array(size);
-    l = new Uint8Array(size);
     r = new Uint8Array(size);
     g = new Uint8Array(size);
     b = new Uint8Array(size);
 
-    x[0] = 120.0; //ascii for x
-    y[0] = 121.0; //ascii for y
-    z[0] = 122.0; //ascii for z
-    l[0] = 108; //ascii for l
-    r[0] = 114; //ascii for r
-    g[0] = 103; //ascii for g
-    b[0] = 98; //ascii for b
+    x[0] = 'x'.charCodeAt(0);
+    y[0] = 'y'.charCodeAt(0);
+    z[0] = 'z'.charCodeAt(0);
+    r[0] = 'r'.charCodeAt(0);
+    g[0] = 'g'.charCodeAt(0);
+    b[0] = 'b'.charCodeAt(0);
 
     console.log(x[0]);
     console.log(y[0]);
 
     for (let i = 1; i < lines.length; i++) {
         var values = lines[i].split(" ");
-        for (let j = 0; j < values.length; j++) {
-            switch(j) {
-                case 0:
-                    x[i] = parseFloat(values[j]);
-                    break;
-                case 1:
-                    y[i] = parseFloat(values[j]);
-                    break;
-                case 2:
-                    z[i] = parseFloat(values[j]);
-                     break;
-                case 3:
-                    l[i] = parseInt(values[j]);
-                    break;
-                case 4:
-                    r[i] = parseInt(values[j]);
-                    break;
-                case 5:
-                    g[i] = parseInt(values[j]);
-                    break;
-                case 6:
-                    b[i] = parseInt(values[j]);
-                    break;
-            }
-        }
+
+        x[i] = parseFloat(values[0])
+        y[i] = parseFloat(values[1])
+        z[i] = parseFloat(values[2])
+        r[i] = parseInt(values[4]);
+        g[i] = parseInt(values[5]);
+        b[i] = parseInt(values[6]);
     }
 };
 
@@ -125,7 +104,7 @@ function Get(url) {
 
 function IncrementChunkCounter() {
     chunkCounter = chunkCounter + 1;
-    if (chunkCounter == 7) {
+    if (chunkCounter == 6) {
         Get('process');
     }
 }
