@@ -105,6 +105,7 @@ def preprocess(pcd):
     df = PointCloudDataFrame.from_pcd(pcd_down)
     df = df[(df['s'] < 0.075) & (df['v'] > 0.2)]
     df = df[(df['z'] > 0.1)]  # FIXME: Position filtering = bad
+    # TODO: Maybe do outlier removal here?
     return df.to_pcd()
 
 
@@ -117,6 +118,27 @@ def kmeans_clusters(pcd):
     model.fit(pcd_inliers.points)
 
     clusters_dict = {str(i): list(k) for (i, k) in enumerate(model.cluster_centers_)}
+    clusters_json = json.dumps(clusters_dict)
+    return clusters_json
+
+
+def dbscan_clusters(pcd):
+    pcd_filter = preprocess(pcd)
+    _, ind = pcd_filter.remove_radius_outlier(nb_points=56, radius=0.005)
+    pcd_inliers = pcd_filter.select_by_index(ind)
+    df_inliers = PointCloudDataFrame.from_pcd(pcd_inliers)
+   
+    model = cluster.DBSCAN(eps=0.002, min_samples=10)
+    model.fit(pcd_inliers.points)
+
+    labels = model.labels_ 
+    num_labels = len(set(labels).difference({-1}))
+    # print(num_labels)
+
+    clusters_dict = {}
+    for i in range(num_labels):
+        clusters_dict[str(i)]: list(np.mean(df_inliers[labels==i][['x', 'y', 'z']], axis=0))
+
     clusters_json = json.dumps(clusters_dict)
     return clusters_json
 
