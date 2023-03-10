@@ -3,13 +3,12 @@ import open3d as o3d
 import pandas as pd
 from sklearn import cluster
 import json
-import os
-import struct
 
 
+allData = {}
 
-allData = [None] * 7
 
+# TODO: could be better if this class was moved to a separate file, maybe in src directory
 class PointCloudDataFrame(pd.DataFrame):
     @property
     def _constructor(self):
@@ -93,64 +92,49 @@ class PointCloudDataFrame(pd.DataFrame):
         with open(filename, 'w') as f:
             f.writelines([' '.join(map(str, row)) + '\n' for row in rows])
 
+
+# TODO: Remove? It is doing nothing as of 3/9
 class Chunk:
     def __init__(self, sequenceNum, data):
         self.sequenceNum = sequenceNum
         self.data = str(data, 'UTF-8')
 
 
-
-def ProcessData(pcd):
+def preprocess(pcd):
     pcd_down = pcd.voxel_down_sample(voxel_size=0.001)  # 1mm
     df = PointCloudDataFrame.from_pcd(pcd_down)
-    df_filter1 = df[(df['s'] < 0.075) & (df['v'] > 0.2)]
-    pcd_filter1 = df_filter1.to_pcd()
-    df_filter2 = df[(df['s'] < 0.075) & (df['v'] > 0.2) & (df['z'] > 0.1)]
-    pcd_filter2 = df_filter2.to_pcd()
-    _, ind = pcd_filter2.remove_radius_outlier(nb_points=48, radius=0.005)
-    pcd_inliers = pcd_filter2.select_by_index(ind)
-    pcd_inliers.paint_uniform_color([0.8, 0.8, 0.8])
+    df = df[(df['s'] < 0.075) & (df['v'] > 0.2)]
+    df = df[(df['z'] > 0.1)]  # FIXME: Position filtering = bad
+    return df.to_pcd()
+
+
+def kmeans_clusters(pcd):
+    pcd_filter = preprocess(pcd)
+    _, ind = pcd_filter.remove_radius_outlier(nb_points=56, radius=0.005)
+    pcd_inliers = pcd_filter.select_by_index(ind)
+
     model = cluster.KMeans(n_clusters=128, n_init='auto')
     model.fit(pcd_inliers.points)
-    dictionary = {str(i): list(k) for (i, k) in enumerate(model.cluster_centers_)}
-    json_object = json.dumps(dictionary)
-    return json_object
 
-#Ward, can you please make this cleaner by using your class to create the dataframe?
+    clusters_dict = {str(i): list(k) for (i, k) in enumerate(model.cluster_centers_)}
+    clusters_json = json.dumps(clusters_dict)
+    return clusters_json
+
+
 def process_data():
-    npAllData = np.concatenate((allData[0], allData[1], allData[2], allData[3], allData[4], allData[5], allData[6]), axis=1)
-    df = pd.DataFrame(npAllData[1:,], columns=['x', 'y', 'z', 'l', 'r', 'g', 'b'])
-    pcd = o3d.geometry.PointCloud()
-    pcd.points = o3d.utility.Vector3dVector(np.asarray(df[['x', 'y', 'z']]))
-    pcd.colors = o3d.utility.Vector3dVector(np.asarray(df[['r', 'g', 'b']]))
-    coordinates = ProcessData(pcd)
+    df = PointCloudDataFrame(allData).update_colors()
+    pcd = df.to_pcd()
+    coordinates = kmeans_clusters(pcd)
     return coordinates
 
 
 def add_positions(dataFromPost):
     data = np.frombuffer(dataFromPost, dtype=np.float32)
-    data = np.expand_dims(data, 1)
     channel = chr(int(data[0]))
-
-    if channel == 'x':
-        allData[0] = data
-    elif channel == 'y':
-        allData[1] = data
-    else:
-        allData[2] = data
+    allData[channel] = data[1:]
 
 
 def add_colors(dataFromPost):
     data = np.frombuffer(dataFromPost, dtype=np.int8)
-    channel = chr(data[0]) #This is weird it only works here
-    data = np.expand_dims(data, 1)
-
-    if channel == 'l':
-        allData[3] = data
-    elif channel == 'r':
-        allData[4] = data
-    elif channel == 'g':
-        allData[5] = data
-    else:
-        allData[6] = data
-    
+    channel = chr(data[0])
+    allData[channel] = data[1:]
