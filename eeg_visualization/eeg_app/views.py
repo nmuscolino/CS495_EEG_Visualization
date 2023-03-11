@@ -33,3 +33,13 @@ def Process(request):
     positions = json.dumps(positions)
     return HttpResponse(positions)
 
+def GetDbData(request):
+    tableData = {
+        "BlakeScan": ["01/14/23", "Processing"],
+        "NickScan": ["01/16/23", "Ready"],
+        "JackScan": ["02/27/23", "Ready"],
+        "WardScan": ["01/13/23", "Ready"]
+    }
+    tableData = json.dumps(tableData)
+    return HttpResponse(tableData)
+
