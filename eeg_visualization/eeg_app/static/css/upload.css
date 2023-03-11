@@ -59,10 +59,6 @@ canvas { display: block; }
     
 }
 
-.upload-bar button:hover {
-    background-color: magenta;
-}
-
 table, th, td {
     border: 1px solid black;
     width: 33%;
