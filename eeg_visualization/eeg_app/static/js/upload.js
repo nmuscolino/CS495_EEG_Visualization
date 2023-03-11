@@ -11,8 +11,26 @@ const fileSelectButton = document.querySelector("#file-select-button");
 const fileNameLabel = document.querySelector("#file-name-label");
 fileNameLabel.textContent = '';
 
+const nameOfFile = document.querySelector('#name-of-file');
+nameOfFile.addEventListener('keyup', RemoveCharacters);
+nameOfFile.addEventListener('keydown', RemoveCharacters);
+
+function UpdateTable() {
+    let scanName = nameOfFile.value;
+    const date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+    let status = 'Uploading...';
+    let dateString = month.toString() + "/" + day.toString() + "/" + year.toString();
+    let rowData = [scanName, dateString, status];
+    let tr = CreateRow(rowData);
+    table.insertBefore(tr, table.children[1]);
+};
+
 const uploadButton = document.querySelector('#upload-button');
 uploadButton.addEventListener('click', function() {
+    UpdateTable();
     console.log(x[0]);
     console.log(x[1]);
     console.log(x[2]);
@@ -99,7 +117,9 @@ function Get(url) {
     getRequest.onreadystatechange = function() {
         if (getRequest.readyState == 4 && getRequest.status == 200) {
             var coordinates = getRequest.response;
+            table.children[1].children[2].textContent = 'Ready';
             console.log(coordinates);
+
         }
     }
 };
@@ -107,15 +127,14 @@ function Get(url) {
 function IncrementChunkCounter() {
     chunkCounter = chunkCounter + 1;
     if (chunkCounter == 6) {
+        table.children[1].children[2].textContent = 'Processing...';
         Get('process');
     }
 }
 
 //New Code
 
-const nameOfFile = document.querySelector('#name-of-file');
-nameOfFile.addEventListener('keyup', RemoveCharacters);
-nameOfFile.addEventListener('keydown', RemoveCharacters);
+
 
 function RemoveCharacters() {
     const regExp = new RegExp('[^0-9a-zA-Z_]')
