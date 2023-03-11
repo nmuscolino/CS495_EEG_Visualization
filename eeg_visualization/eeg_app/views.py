@@ -35,7 +35,7 @@ def Process(request):
 
 def GetDbData(request):
     tableData = {
-        "BlakeScan": ["01/14/23", "Processing"],
+        "BlakeScan": ["01/14/23", "Ready"],
         "NickScan": ["01/16/23", "Ready"],
         "JackScan": ["02/27/23", "Ready"],
         "WardScan": ["01/13/23", "Ready"]

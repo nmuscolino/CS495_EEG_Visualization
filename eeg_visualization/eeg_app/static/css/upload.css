@@ -65,6 +65,7 @@ canvas { display: block; }
 
 table, th, td {
     border: 1px solid black;
+    width: 33%;
 }
 
 table {
