@@ -1,3 +1,6 @@
+import {genSpheres} from './visualization.js';
+
+
 const visualize_button = document.querySelector('#visualize-button');
 visualize_button.addEventListener('click', Get);
 
