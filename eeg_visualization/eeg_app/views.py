@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
 import json
 from . import process
+from .models import Scan
 
 # Create your views here.
 def home(request):
@@ -28,9 +30,16 @@ def GetVisualizationData(request):
     f.close()
     return HttpResponse(positions)
 
+@csrf_exempt
 def Process(request):
     positions = process.process_data()
     positions = json.dumps(positions)
+
+    # If the scan name is passed from the frontend, add an entry in the database
+    if request.method == "POST":
+        new_scan = Scan(scan_name=request.body.decode("utf-8"), scan_json=positions)
+        new_scan.save()
+
     return HttpResponse(positions)
 
 def GetDbData(request):

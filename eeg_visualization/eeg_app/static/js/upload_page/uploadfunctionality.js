@@ -85,6 +85,11 @@ function ProcessDataOnBackend() {
     getRequest.onreadystatechange = function() {
         if (getRequest.readyState == 4 && getRequest.status == 200) {
             var coordinates = getRequest.response;
+            
+            const scanName = document.querySelector('#name-of-file');
+            console.log(scanName.value);
+            Post(scanName.value, 'process');
+            
             ChangeStatus('Ready');
             RecoverFromUpload();
             console.log("Coordinates Recieved.");
