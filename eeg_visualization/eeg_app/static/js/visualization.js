@@ -4,9 +4,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 export function genSpheres(coordinates) {
     var spheres = [];
-    var coordinateObj = JSON.parse(coordinates);
-    var coordinateObj2 = JSON.parse(coordinateObj);
-    //something weird where i had to parse twice to get an object
+    var coordinateObj2 = JSON.parse(coordinates);
+    //something weird where i had to parse twice to get an object, not needed at the moment...
     for (var i = 0; i < Object.keys(coordinateObj2).length; i++) {
         var cur = coordinateObj2[Object.keys(coordinateObj2)[i]];
         var sphere = new THREE.SphereGeometry(0.01, 32, 32); // (size, resolution.x, resolution.y)
@@ -28,10 +27,6 @@ export function createScene(spheres, coordinateObj) {
         for (var i = 0; i < Object.keys(coordinateObj).length; i++) {
             // Create a sphere
             var cur = coordinateObj[Object.keys(coordinateObj)[i]];
-            console.log(cur[0]);
-            console.log(cur[1]);
-            console.log(cur[2])
-            console.log(typeof cur[2]);
 
             // Initialize the bounds of the x coordinates with the first x-value
             if (minX == null && maxX == null) {
@@ -66,7 +61,6 @@ export function createScene(spheres, coordinateObj) {
 
 function renderScene(startingX, startingY, startingZ, spheres) {
     // Create a group to hold the spheres
-    console.log("in create scene");
     var group = new THREE.Group();
 
     // Add each sphere to the group
@@ -91,9 +85,6 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     camera.position.x = startingX;
     camera.position.y = startingY;
     camera.position.z = startingZ;
-    console.log(camera.position.x);
-    console.log(camera.position.y);
-    console.log(camera.position.z); 
 
     // Set the renderer size
     renderer.setSize(window.innerWidth, window.innerHeight);

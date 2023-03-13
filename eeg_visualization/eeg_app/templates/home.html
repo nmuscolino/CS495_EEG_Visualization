@@ -16,9 +16,9 @@
     </script>
     <!-- Import CSS from static files -->
     {% load static %}
-   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+   <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
    <script type="module" src="{% static 'js/visualization.js' %}" defer></script>
-   <script type="module" src="{% static 'js/communication.js' %}" defer></script>
+   <script type="module" src="{% static 'js/home.js' %}" defer></script>
    
  
   </head>
@@ -27,12 +27,6 @@
     <!-- Navigation Bar Header -->
     <div class="navbar">
       <h2>EEG Visualization</h2>
-
-      <label for="file-button" class="btn-label">Upload File</label>
-      <input type="file" id="file-button" class="btn-css">
-      
-      <label for="process-button" class="btn-label">Process</label>
-      <button type="button" id="process-button" class="btn-css">Process</button>
 
       <label for="visualize-button" class="btn-label">Visualize</label>
       <button type="button" id="visualize-button" class="btn-css">Visualize</button>

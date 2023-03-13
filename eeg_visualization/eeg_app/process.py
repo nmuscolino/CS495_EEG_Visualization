@@ -3,8 +3,12 @@ import open3d as o3d
 import pandas as pd
 from sklearn import cluster
 import json
-import os
 
+
+allData = {}
+
+
+# TODO: could be better if this class was moved to a separate file, maybe in src directory
 class PointCloudDataFrame(pd.DataFrame):
     @property
     def _constructor(self):
@@ -88,80 +92,71 @@ class PointCloudDataFrame(pd.DataFrame):
         with open(filename, 'w') as f:
             f.writelines([' '.join(map(str, row)) + '\n' for row in rows])
 
+
+# TODO: Remove? It is doing nothing as of 3/9
 class Chunk:
     def __init__(self, sequenceNum, data):
         self.sequenceNum = sequenceNum
         self.data = str(data, 'UTF-8')
 
 
-
-
-
-chunks = []
-
-def Parse(chunk):
-    header = str(chunk[0:3], 'UTF-8')
-    #print(header)
-    #print(type(header))
-    sequenceNum = ""
-    dataStart = 0
-    for i in range(0,3):
-        if header[i] == '#':
-            dataStart = i + 1
-            break
-        else:
-            sequenceNum = sequenceNum + header[i]
-
-    sequenceNum = int(sequenceNum)
-    #print("sequenceNum is: " + str(sequenceNum))
-    #print(chunk[dataStart:10])
-    chunks.append(Chunk(sequenceNum, chunk[dataStart:]))
-
-
-#Not tested
-def SortingCriteria(elem):
-    return elem.sequenceNum
-
-
-def Combine(chunkList):
-    chunks.sort(key=SortingCriteria)
-    dataString = ""
-    for chunk in chunks:
-       dataString = dataString + chunk.data
-
-    return dataString
-
-def ProcessFile(path):
-    pcd = o3d.io.read_point_cloud(path)
+def preprocess(pcd):
     pcd_down = pcd.voxel_down_sample(voxel_size=0.001)  # 1mm
     df = PointCloudDataFrame.from_pcd(pcd_down)
-    df_filter1 = df[(df['s'] < 0.075) & (df['v'] > 0.2)]
-    pcd_filter1 = df_filter1.to_pcd()
-    df_filter2 = df[(df['s'] < 0.075) & (df['v'] > 0.2) & (df['z'] > 0.1)]
-    pcd_filter2 = df_filter2.to_pcd()
-    _, ind = pcd_filter2.remove_radius_outlier(nb_points=48, radius=0.005)
-    pcd_inliers = pcd_filter2.select_by_index(ind)
-    pcd_inliers.paint_uniform_color([0.8, 0.8, 0.8])
+    df = df[(df['s'] < 0.075) & (df['v'] > 0.2)]
+    df = df[(df['z'] > 0.1)]  # FIXME: Position filtering = bad
+    # TODO: Maybe do outlier removal here?
+    return df.to_pcd()
+
+
+def kmeans_clusters(pcd):
+    pcd_filter = preprocess(pcd)
+    _, ind = pcd_filter.remove_radius_outlier(nb_points=56, radius=0.005)
+    pcd_inliers = pcd_filter.select_by_index(ind)
+
     model = cluster.KMeans(n_clusters=128, n_init='auto')
     model.fit(pcd_inliers.points)
-    dictionary = {str(i): list(k) for (i, k) in enumerate(model.cluster_centers_)}
-    json_object = json.dumps(dictionary)
-    return json_object
 
-def process_data(input):
-    #print("in process")
+    clusters_dict = {str(i): list(k) for (i, k) in enumerate(model.cluster_centers_)}
+    clusters_json = json.dumps(clusters_dict)
+    return clusters_json
 
-    for chunk in input:
-        Parse(chunk)
 
-    dataString = Combine(chunks)
+def dbscan_clusters(pcd):
+    pcd_filter = preprocess(pcd)
+    _, ind = pcd_filter.remove_radius_outlier(nb_points=56, radius=0.005)
+    pcd_inliers = pcd_filter.select_by_index(ind)
+    df_inliers = PointCloudDataFrame.from_pcd(pcd_inliers)
+   
+    model = cluster.DBSCAN(eps=0.002, min_samples=10)
+    model.fit(pcd_inliers.points)
 
-    f = open("eeg_app/media/point_cloud.pts", "w")
-    f.write(dataString)
-    f.close()
+    labels = model.labels_ 
+    num_labels = len(set(labels).difference({-1}))
+    # print(num_labels)
 
-    positions = ProcessFile('eeg_app/media/point_cloud.pts')
-    os.remove("eeg_app/media/point_cloud.pts")
-    chunks.clear()
-    return positions
-    
+    clusters_dict = {}
+    for i in range(num_labels):
+        clusters_dict[str(i)]: list(np.mean(df_inliers[labels==i][['x', 'y', 'z']], axis=0))
+
+    clusters_json = json.dumps(clusters_dict)
+    return clusters_json
+
+
+def process_data():
+    df = PointCloudDataFrame(allData).update_colors()
+    pcd = df.to_pcd()
+    coordinates = kmeans_clusters(pcd)
+    return coordinates
+
+
+def add_positions(dataFromPost):
+    data = np.frombuffer(dataFromPost, dtype=np.float32)
+    channel = chr(int(data[0]))
+    allData[channel] = data[1:]
+
+
+def add_colors(dataFromPost):
+    data = np.frombuffer(dataFromPost, dtype=np.int8)
+    channel = chr(data[0])
+    allData[channel] = data[1:]
