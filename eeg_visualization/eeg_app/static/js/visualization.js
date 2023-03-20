@@ -1,12 +1,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     
-export function resetCamera(camera, x, y, z) {
-    // Set postion values
-    camera.position.x = x;
-    camera.position.y = y;
-    camera.position.z = z;
-    camera.updateProjectionMatrix(); // Update camera position
+export function resetCamera(camera, pos, rot, controls) {
+    controls.reset();           // Reset controls (resets panning changes)
+    camera.position.copy(pos);  // Reset camera position
+    camera.rotation.copy(rot);  // Reset camera rotation
 };
 
 export function genSpheres(coordinates) {
@@ -15,7 +13,7 @@ export function genSpheres(coordinates) {
     for (var i = 0; i < Object.keys(coordinateObj).length; i++) {
         var cur = coordinateObj[Object.keys(coordinateObj)[i]];
         var sphere = new THREE.SphereGeometry(0.01, 32, 32); // (size, resolution.x, resolution.y)
-        sphere.translate(cur[0]*5, cur[1]*5, cur[2]*5 - 1);  // Translate sphere to it's position (-1 on the z centers the cluster)
+        sphere.translate(cur[0]*5, cur[1]*5 - 0.3, cur[2]*5 - 1);  // Translate sphere to it's position (-0.3 on the x axis and -1 on the z centers the cluster)
         sphere.name = Object.keys(coordinateObj)[i];
         spheres.push(sphere);
     }
@@ -79,6 +77,9 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.rotateSpeed = 0.5; // Default camera sensitivity
 
+    // Rotate group (cluster) 90 degrees before adding to scene
+    group.rotation.x = - (Math.PI / 2);
+
     // Add the group to the scene and setup default camera position
     scene.add(group);
 
@@ -86,7 +87,11 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     camera.position.x = startingX;
     camera.position.y = startingY;
     camera.position.z = startingZ;
-    camera.lookAt(new THREE.Vector3(0, 0, 0))
+    camera.lookAt(new THREE.Vector3(0, 0, 0));  // Camera faces origin
+
+    // Save default camera postion and rotation
+    const initialCamPos = camera.position.clone();
+    const initialCamRot = camera.rotation.clone();
 
     // Set the renderer size
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -106,7 +111,7 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     var resetButton = document.getElementById("camera-reset");
 
     resetButton.addEventListener("click", function() {
-        resetCamera(camera, startingX, startingY, startingZ);
+        resetCamera(camera, initialCamPos, initialCamRot, controls);
     })
 
     // Listen for window resize events
