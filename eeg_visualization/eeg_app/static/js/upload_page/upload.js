@@ -17,7 +17,7 @@ fileSelector.addEventListener('change', PrepareForUpload);
 const uploadButton = document.querySelector('#upload-button'); // The button that triggers the upload
 uploadButton.addEventListener('click', UploadData);
 
-LoadTable();
+//LoadTable();
 
 
 

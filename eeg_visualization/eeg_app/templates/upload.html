@@ -54,7 +54,20 @@
     </div>
 
     <div id="table-div">
-        <table id="data-table"></table>
+        <table id="data-table">
+            <tr>
+                <th>Scan Name</th>
+                <th>Date Uploaded</th>
+                <th>Status</th>
+            </tr>
+            {% for scan in scans %}
+            <tr>
+                <td>{{ scan.scan_name }}</td>
+                <td>{{ scan.upload_date|date:"m/d/y" }}</td>
+                <td>Ready</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 
     

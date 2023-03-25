@@ -69,7 +69,7 @@ function Post(data, url) {
 function IncrementChunkCounter() {
     chunkCounter = chunkCounter + 1;
     if (chunkCounter == 6) {
-        ChangeStatus('Processing');
+        ChangeStatus('Processing... Do not refresh or close the page');
         ProcessDataOnBackend();
         chunkCounter = 0;
     }
@@ -77,7 +77,7 @@ function IncrementChunkCounter() {
 
 //Get Request
 function ProcessDataOnBackend() {
-    ChangeStatus('Processing...');
+    ChangeStatus('Processing... Do not refresh or close the page');
     'use strict';
     const getRequest = new XMLHttpRequest();
     getRequest.open('GET', 'process', true);

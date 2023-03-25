@@ -6,10 +6,10 @@ export function LoadTable() {
     getRequest.open('GET', 'getdbdata', true);
     getRequest.send();
     getRequest.onreadystatechange = function() {
-        if (getRequest.readyState == 4 && getRequest.status == 200) {
+        /*if (getRequest.readyState == 4 && getRequest.status == 200) {
             let dbData = getRequest.response;
             BuildTable(table, JSON.parse(dbData));
-        }
+        }*/
     }
 };
 
@@ -21,7 +21,7 @@ export function UpdateTable() {
     let month = date.getMonth();
     let day = date.getDate();
     let dateString = month.toString() + "/" + day.toString() + "/" + year.toString();
-    let rowData = [scanName, dateString, 'Uploading...'];
+    let rowData = [scanName, dateString, 'Uploading... Do not refresh or close the page'];
     let tr = CreateRow(rowData, 'td');
     table.insertBefore(tr, table.children[1]);
 };

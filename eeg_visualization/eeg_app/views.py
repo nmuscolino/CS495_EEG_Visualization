@@ -11,7 +11,9 @@ def home(request):
     return render(request, "home.html")
 
 def upload(request):
-    return render(request, "upload.html")
+    scans = Scan.objects.all()
+    context = {"scans": scans}
+    return render(request, "upload.html", context)
 
 @csrf_exempt
 def Positions(request):
@@ -43,12 +45,12 @@ def Process(request):
     return HttpResponse(positions)
 
 def GetDbData(request):
-    tableData = {
-        "BlakeScan": ["01/14/23", "Ready"],
-        "NickScan": ["01/16/23", "Ready"],
-        "JackScan": ["02/27/23", "Ready"],
-        "WardScan": ["01/13/23", "Ready"]
-    }
+    #tableData = {
+    #    "BlakeScan": ["01/14/23", "Ready"],
+    #    "NickScan": ["01/16/23", "Ready"],
+    #    "JackScan": ["02/27/23", "Ready"],
+    #    "WardScan": ["01/13/23", "Ready"]
+    #}
     tableData = json.dumps(tableData)
     return HttpResponse(tableData)
 
