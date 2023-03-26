@@ -92,3 +92,11 @@ tr:nth-child(even) {
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
 }
+
+#error-message-div {
+    padding-left: 40%;
+}
+
+#error-message {
+    color: red;
+}
