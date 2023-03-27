@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 import json
@@ -11,7 +12,9 @@ def home(request):
     return render(request, "home.html")
 
 def upload(request):
-    return render(request, "upload.html")
+    #scans = Scan.objects.all()
+    #context = {"scans": scans}
+    return render(request, "upload.html")#, context)
 
 @csrf_exempt
 def Positions(request):
@@ -43,12 +46,18 @@ def Process(request):
     return HttpResponse(positions)
 
 def GetDbData(request):
-    tableData = {
-        "BlakeScan": ["01/14/23", "Ready"],
-        "NickScan": ["01/16/23", "Ready"],
-        "JackScan": ["02/27/23", "Ready"],
-        "WardScan": ["01/13/23", "Ready"]
-    }
-    tableData = json.dumps(tableData)
-    return HttpResponse(tableData)
+    #tableData = {
+    #    "BlakeScan": ["01/14/23", "Ready"],
+    #    "NickScan": ["01/16/23", "Ready"],
+    #    "JackScan": ["02/27/23", "Ready"],
+    #    "WardScan": ["01/13/23", "Ready"]
+    #}
+    #tableData = json.dumps(tableData)
+
+    # Obtain a QuerySet of all scans in the database, ordered by most recent upload date
+    tableData = Scan.objects.all().order_by("-upload_date")
+
+    # Convert the data to JSON format and return it as an HTTPResponse
+    tableData_json = serializers.serialize("json", tableData, fields=("scan_name", "upload_date"))
+    return HttpResponse(tableData_json)
 
