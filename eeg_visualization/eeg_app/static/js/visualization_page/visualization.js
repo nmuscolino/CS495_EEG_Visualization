@@ -97,7 +97,8 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     // Append the renderer to the body
-    document.body.appendChild(renderer.domElement);
+    const sceneDiv = document.querySelector('#visualization');
+    sceneDiv.appendChild(renderer.domElement);
     
     // Camera sensitivity slider
     var sensSlider = document.getElementById("sensSlider");
@@ -123,6 +124,7 @@ function renderScene(startingX, startingY, startingZ, spheres) {
         renderer.setSize(width, height); // Update scene size to match window
     });
     
+    
     // Render scene
     var render = function () {
         requestAnimationFrame(render);
@@ -131,4 +133,7 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     };
 
     render();
+    
+
+
 }   
