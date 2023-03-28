@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
@@ -6,6 +6,7 @@ from datetime import datetime
 import json
 from . import process
 from .models import Scan
+
 
 # Create your views here.
 def home(request):
@@ -63,4 +64,11 @@ def GetDbData(request):
     # Convert the data to JSON format and return it as an HTTPResponse
     tableData_json = serializers.serialize("json", tableData, fields=("scan_name", "upload_date"))
     return HttpResponse(tableData_json)
+
+
+def GetJsonFromDB(request, id=None):
+    id = int(id)
+    tableData = get_object_or_404(Scan, id = id)
+    print(tableData.scan_json)
+    return HttpResponse(tableData.scan_json)
 
