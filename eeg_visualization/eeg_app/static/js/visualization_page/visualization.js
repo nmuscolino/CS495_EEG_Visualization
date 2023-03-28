@@ -9,11 +9,11 @@ export function resetCamera(camera, pos, rot, controls) {
 
 export function genSpheres(coordinates) {
     var spheres = [];
-    var coordinateObj2 = JSON.parse(coordinates);
-    console.log(typeof coordinateObj2);
-    var coordinateObj = JSON.parse(coordinateObj2);
-    console.log(typeof coordinateObj);
-    console.log(Object.keys(coordinateObj).length);
+    var coordinateObj = JSON.parse(coordinates);
+    //console.log(typeof coordinateObj2);
+    //var coordinateObj = JSON.parse(coordinateObj2);
+    //console.log(typeof coordinateObj);
+    //console.log(Object.keys(coordinateObj).length);
     for (var i = 0; i < Object.keys(coordinateObj).length; i++) {
         var cur = coordinateObj[Object.keys(coordinateObj)[i]];
         var sphere = new THREE.SphereGeometry(0.01, 32, 32); // (size, resolution.x, resolution.y)
