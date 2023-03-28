@@ -11,6 +11,9 @@ from .models import Scan
 def home(request):
     return render(request, "home.html")
 
+def visualize(request):
+    return render(request, "visualize.html")
+
 def upload(request):
     #scans = Scan.objects.all()
     #context = {"scans": scans}
