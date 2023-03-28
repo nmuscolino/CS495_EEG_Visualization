@@ -19,7 +19,9 @@
    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
    <script type="module" src="{% static 'js/visualization_page/visualization.js' %}" defer></script>
    <script type="module" src="{% static 'js/visualization_page/home.js' %}" defer></script>
-   
+
+   <!--<script type="text/javascript" src="{% static 'js/visualization_page/GetWithID.js' %}"></script> -->
+  
  
   </head>
 
@@ -45,10 +47,10 @@
     <div id="menu" style="width: 20%; height: 100%; background-color: red; vertical-align: top; display: inline-block">
       
       <div style="display: block">
-        <button type="button" value="Scan1" onclick="GetCalculatedData(this.value)">Scan 1</button>
-        <button type="button" value="Scan2" onclick="GetCalculatedData(this.value)">Scan 2</button>
-        <button type="button" value="Scan3" onclick="GetCalculatedData(this.value)">Scan 3</button>
-        <button type="button" value="Scan4" onclick="GetCalculatedData(this.value)">Scan 4</button>
+        <button type="button" id="button1" value="1">Scan 1</button>
+        <button type="button" value="2" onclick="GetWithID(this.value)">Scan 2</button>
+        <button type="button" value="3" onclick="GetWithID(this.value)">Scan 3</button>
+        <button type="button" value="4" onclick="GetWithID(this.value)">Scan 4</button>
       </div>
   
     </div>
