@@ -30,6 +30,17 @@ def Colors(request):
     process.add_colors(request.body)
     return HttpResponse()
 
+@csrf_exempt
+def PostJSON(request):
+    print("here")
+    requestBody = request.body.decode("utf-8")
+    elements = requestBody.split('!')
+    print(elements[0])
+    print(elements[1])
+    new_scan = Scan(scan_name=elements[0], scan_json=elements[1])
+    new_scan.save()
+    return HttpResponse()
+
 def GetVisualizationData(request):
     f = open('eeg_app/media/clusters.json')
     data = json.load(f)
@@ -67,6 +78,7 @@ def GetDbData(request):
 
 
 def GetJsonFromDB(request, id=None):
+    print("here in lookup")
     id = int(id)
     tableData = get_object_or_404(Scan, id = id)
     print(tableData.scan_json)

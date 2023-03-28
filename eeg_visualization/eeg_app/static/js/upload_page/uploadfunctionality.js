@@ -9,10 +9,37 @@ export function UploadData() {
     const fileSelector = document.querySelector('#file-input');
     const reader = new FileReader();
     reader.onload = function() {
-        Compress(reader.result);
+        console.log(typeof fileSelector.files[0].name);
+        console.log(fileSelector.files[0].name);
+        //determine what the file type is
+        if (fileSelector.files[0].name.split('.').pop() == 'json') {
+            console.log("in json if");
+            PostJSON(reader.result, 'postjsondata');
+        }
+        else {
+            console.log("in else");
+            Compress(reader.result);
+        }
+        
+        
     }
     reader.readAsText(fileSelector.files[0])
 };
+
+function PostJSON(data, url) {
+    //get the scan name, this could maybe go in a better place
+    const scanName = document.querySelector('#name-of-file');
+    console.log(scanName.value);
+
+    let dataToSend = scanName.value + "!" + data
+
+    'use strict';
+    const postRequest = new XMLHttpRequest();
+    postRequest.open('POST', url, true);
+    postRequest.send(dataToSend);
+    ChangeStatus('Ready');
+    RecoverFromUpload();
+}
 
 function Compress(data) {
     var lines = data.split("\r\n");
