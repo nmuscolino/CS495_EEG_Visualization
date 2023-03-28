@@ -96,9 +96,19 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     // Set the renderer size
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    // Append the renderer to the body
+    // Append the scene to the correct div and replace old one if necessary
     const sceneDiv = document.querySelector('#visualization');
-    sceneDiv.appendChild(renderer.domElement);
+    if (sceneDiv.hasChildNodes()) {
+        let oldChild = sceneDiv.childNodes[0];
+        sceneDiv.replaceChild(renderer.domElement, oldChild);
+    }
+    else {
+        sceneDiv.appendChild(renderer.domElement);
+    }
+    
+
+
+        
     
     // Camera sensitivity slider
     var sensSlider = document.getElementById("sensSlider");
