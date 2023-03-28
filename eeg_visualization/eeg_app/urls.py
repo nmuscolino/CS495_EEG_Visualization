@@ -10,4 +10,5 @@ urlpatterns = [
     path('getvisualizationdata', views.GetVisualizationData, name='getvisualizationdata'),
     path('process', views.Process, name='process'),
     path('getdbdata', views.GetDbData, name='getdbdata'),
+    path('visualize', views.visualize, name='visualize'),
 ]
