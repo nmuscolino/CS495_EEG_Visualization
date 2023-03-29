@@ -2,6 +2,12 @@ import {genSpheres} from './visualize.js';
 
 let dbObj;
 
+
+//!!!!
+//Please do not modify this file either without very good reason. 
+//The problem is unlikely to be found here
+
+//Get the data from the database
 function LoadDBData() {
     'use strict';
     const getRequest = new XMLHttpRequest();
@@ -15,10 +21,9 @@ function LoadDBData() {
     }   
 }
 
+//Create the menu to select a scan
 function BuildMenu(dbData) {
     dbObj = JSON.parse(dbData);
-
-
     const menuDiv = document.querySelector('#menu');
 
     for (var i = 0; i < Object.keys(dbObj).length; i++) {
@@ -32,15 +37,14 @@ function BuildMenu(dbData) {
     }
 };
 
-
+//Callback that gets the json for the scan name and calls genSpheres
 function GenerateVisualization() {
-    console.log(this.textContent);
     let jsonString = FindJsonByScanName(this.textContent);
     genSpheres(jsonString);
 };
 
+//Search through the database object for the matching scan name
 function FindJsonByScanName(scanName) {
-    console.log(dbObj);
     for (var i = 0; i < Object.keys(dbObj).length; i++) {
         var cur = dbObj[Object.keys(dbObj)[i]];
         var curScanName = cur["fields"]["scan_name"];
@@ -52,44 +56,3 @@ function FindJsonByScanName(scanName) {
 }
 
 LoadDBData();
-
-
-
-
-
-
-
-/*
-function Get() {
-    'use strict';
-    const getRequest = new XMLHttpRequest();
-    getRequest.open('GET', 'getvisualizationdata', true);
-    getRequest.send();
-
-    getRequest.onreadystatechange = function() {
-        if (getRequest.readyState == 4 && getRequest.status == 200) {
-            var coordinates = getRequest.response;
-            genSpheres(coordinates);
-        }
-    }
-};
-
-function GetWithID(id) {
-    'use strict';
-    const getRequest = new XMLHttpRequest();
-    let path = 'getjsonfromdb/' + id;
-    console.log(path);
-
-    getRequest.open('GET', path, true);
-    getRequest.send();
-
-    getRequest.onreadystatechange = function() {
-        if (getRequest.readyState == 4 && getRequest.status == 200) {
-            var coordinates = getRequest.response;
-            console.log(coordinates);
-            genSpheres(coordinates);
-        }
-    }
-};
-
-*/

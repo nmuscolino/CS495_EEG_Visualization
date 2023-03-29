@@ -1,5 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+//!!!
+//Please do not permanently modify this file when debugging the backend issue. 
+//It is very unlikely that the problem is here, since this code works well with preprocessed data
     
 export function resetCamera(camera, pos, rot, controls) {
     controls.reset();           // Reset controls (resets panning changes)
@@ -7,13 +11,13 @@ export function resetCamera(camera, pos, rot, controls) {
     camera.rotation.copy(rot);  // Reset camera rotation
 };
 
+
+//!!!
+//Please do not permanently modify this file when debugging the backend issue. 
+//It is very unlikely that the problem is here, since this code works well with preprocessed data
 export function genSpheres(coordinates) {
     var spheres = [];
     var coordinateObj = JSON.parse(coordinates);
-    //console.log(typeof coordinateObj2);
-    //var coordinateObj = JSON.parse(coordinateObj2);
-    //console.log(typeof coordinateObj);
-    //console.log(Object.keys(coordinateObj).length);
     for (var i = 0; i < Object.keys(coordinateObj).length; i++) {
         var cur = coordinateObj[Object.keys(coordinateObj)[i]];
         var sphere = new THREE.SphereGeometry(0.01, 32, 32); // (size, resolution.x, resolution.y)
