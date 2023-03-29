@@ -6,6 +6,10 @@ import { PLYLoader } from 'three/addons/loaders/PLYLoader'
 
 let chunkCounter = 0;
 
+//!!!!
+//It is quite possible that the issue is found in this file
+//Modify as needed. 
+
 export function UploadData() {
     UploadingCSS();
     UpdateTable();
@@ -16,15 +20,33 @@ export function UploadData() {
     const reader = new FileReader();
     reader.onload = function() {
         if (fileType == "ply") 
-            CompressPly(reader.result)
+            CompressPly(reader.result);
+        else if (fileType == "json")
+            console.log("in json if");
+            PostJSON(reader.result, 'postjsondata');
         else if (fileType == "pts") 
             CompressPts(reader.result);
     }
     if (fileType == "ply") 
         reader.readAsDataURL(file);
-    else if (fileType == "pts") 
+    else if (fileType == "pts" || fileType == "json") 
         reader.readAsText(file);
 };
+
+function PostJSON(data, url) {
+    //get the scan name, this could maybe go in a better place
+    const scanName = document.querySelector('#name-of-file');
+    console.log(scanName.value);
+
+    let dataToSend = scanName.value + "!" + data
+
+    'use strict';
+    const postRequest = new XMLHttpRequest();
+    postRequest.open('POST', url, true);
+    postRequest.send(dataToSend);
+    ChangeStatus('Ready');
+    RecoverFromUpload();
+}
 
 function CompressPts(data) {
     var lines = data.split("\r\n");
