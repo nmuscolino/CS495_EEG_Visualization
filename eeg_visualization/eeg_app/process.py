@@ -100,18 +100,19 @@ class Chunk:
         self.data = str(data, 'UTF-8')
 
 
-def preprocess(pcd):
-    pcd_down = pcd.voxel_down_sample(voxel_size=0.001)  # 1mm
-    df = PointCloudDataFrame.from_pcd(pcd_down)
-    df = df[(df['s'] < 0.075) & (df['v'] > 0.2)]
-    df = df[(df['z'] > 0.1)]  # FIXME: Position filtering = bad
+def preprocess(pcd_raw):
+    # FIXME: This exact function call is used in filter.ipynb, but it results in about 15% as many points here. ????
+    pcd = pcd_raw.voxel_down_sample(voxel_size=0.001)  # 1mm
+
+    df = PointCloudDataFrame.from_pcd(pcd)
+    df = df[(df['s'] < 0.15) & (df['v'] > 0.2)]
     # TODO: Maybe do outlier removal here?
     return df.to_pcd()
 
 
 def kmeans_clusters(pcd):
     pcd_filter = preprocess(pcd)
-    _, ind = pcd_filter.remove_radius_outlier(nb_points=56, radius=0.005)
+    _, ind = pcd_filter.remove_radius_outlier(nb_points=32, radius=0.005)  # FIXME: change nb_points to 56, once preprocess downsampling is fixed
     pcd_inliers = pcd_filter.select_by_index(ind)
 
     model = cluster.KMeans(n_clusters=128, n_init='auto')
@@ -151,12 +152,12 @@ def process_data():
 
 
 def add_positions(dataFromPost):
-    data = np.frombuffer(dataFromPost, dtype=np.float32)
+    data = np.frombuffer(dataFromPost, dtype=np.float32).astype(float)
     channel = chr(int(data[0]))
     allData[channel] = data[1:]
 
 
 def add_colors(dataFromPost):
-    data = np.frombuffer(dataFromPost, dtype=np.int8)
+    data = np.frombuffer(dataFromPost, dtype=np.uint8).astype(int)
     channel = chr(data[0])
     allData[channel] = data[1:]
