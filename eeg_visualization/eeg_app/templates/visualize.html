@@ -18,7 +18,7 @@
     {% load static %}
    <link rel="stylesheet" type="text/css" href="{% static 'css/visualize.css' %}">
    <link rel="stylesheet" type="text/css" href="{% static 'css/navigationbar.css' %}">
-   <script type="module" src="{% static 'js/visualization_page/visualization.js' %}" defer></script>
+   <script type="module" src="{% static 'js/visualization_page/visualize.js' %}" defer></script>
    <script type="module" src="{% static 'js/visualization_page/home.js' %}" defer></script>
 
    <!--<script type="text/javascript" src="{% static 'js/visualization_page/GetWithID.js' %}"></script> -->
@@ -28,10 +28,8 @@
   <body>
       <div class="navigation-bar">
           <div style="display: inline-block">
-            <label for="upload">Upload</label>
-            <label for="visualize">Visualize</label>
-            <button id="upload" style="display: none;"></button>
-            <button id="visualize" style="display: none;"></button>
+            <a id="upload" href="upload">Upload</a>
+            <a id="visualize" href="visualize">Visualize</a>
           </div>
           
           <div id="title" , style="display: inline-block; padding-left: 23%">

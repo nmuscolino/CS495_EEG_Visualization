@@ -1,7 +1,5 @@
 import {genSpheres} from './visualize.js';
 
-//const button1 = document.querySelector('#button1');
-//button1.addEventListener("click", () => { GetWithID('18') });
 let dbObj;
 
 function LoadDBData() {
@@ -29,10 +27,29 @@ function BuildMenu(dbData) {
         var scanJson = cur["fields"]["scan_json"];
         var label = document.createElement("P");
         label.textContent = scanName;
-        label.addEventListener('click', () => {genSpheres(scanJson)});    //anonymous function is used to pass variable
+        label.addEventListener('click', GenerateVisualization);    //anonymous function is used to pass variable
         menuDiv.appendChild(label);
     }
 };
+
+
+function GenerateVisualization() {
+    console.log(this.textContent);
+    let jsonString = FindJsonByScanName(this.textContent);
+    genSpheres(jsonString);
+};
+
+function FindJsonByScanName(scanName) {
+    console.log(dbObj);
+    for (var i = 0; i < Object.keys(dbObj).length; i++) {
+        var cur = dbObj[Object.keys(dbObj)[i]];
+        var curScanName = cur["fields"]["scan_name"];
+        if (curScanName === scanName) {
+            let scanJson = cur["fields"]["scan_json"];
+            return scanJson;
+        }
+    } 
+}
 
 LoadDBData();
 

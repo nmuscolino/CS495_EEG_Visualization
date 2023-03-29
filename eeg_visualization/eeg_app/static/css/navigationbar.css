@@ -13,14 +13,13 @@ canvas { display: block; }
     overflow: hidden;   
 }
 
-.navigation-bar label {
-    padding-top: 100%;
-    padding-bottom: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
+.navigation-bar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
 }
 
-.navigation-bar label:hover {
+.navigation-bar a:hover {
     color: red;
-    cursor: pointer;
+    text-decoration: none;
 }
