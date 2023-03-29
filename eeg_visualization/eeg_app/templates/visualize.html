@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>BCI Vis Test</title>
+    <title>EEG Visualization</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -16,43 +16,41 @@
     </script>
     <!-- Import CSS from static files -->
     {% load static %}
-   <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
-   <script type="module" src="{% static 'js/visualization_page/visualization.js' %}" defer></script>
+   <link rel="stylesheet" type="text/css" href="{% static 'css/visualize.css' %}">
+   <link rel="stylesheet" type="text/css" href="{% static 'css/navigationbar.css' %}">
+   <script type="module" src="{% static 'js/visualization_page/visualize.js' %}" defer></script>
    <script type="module" src="{% static 'js/visualization_page/home.js' %}" defer></script>
 
    <!--<script type="text/javascript" src="{% static 'js/visualization_page/GetWithID.js' %}"></script> -->
-  
  
   </head>
 
   <body>
-    <!-- Navigation Bar Header -->
-    <div class="navbar">
-      <h2>EEG Visualization</h2>
+      <div class="navigation-bar">
+          <div style="display: inline-block">
+            <a id="upload" href="upload">Upload</a>
+            <a id="visualize" href="visualize">Visualize</a>
+          </div>
+          
+          <div id="title" , style="display: inline-block; padding-left: 23%">
+            <h2 style="position: relative">EEG Visualization</h2>
+          </div>
+      </div>
 
-      <label for="visualize-button" class="btn-label">Visualize</label>
-      <button type="button" id="visualize-button" class="btn-css">Visualize</button>
-      
-      <!-- Setup Reset Camera Button -->
-      <label for="camera-reset">Reset View</label>
-      <button type="button" id="camera-reset" class="btn-css">Reset View</button>
+      <div class="controls">
+          <!-- Setup Reset Camera Button -->
+          <label id="reset-label" for="camera-reset">Reset View</label>
+          <button type="button" id="camera-reset" class="btn-css">Reset View</button>
 
-      <!-- Setup Sensitivity Slider-->
-      <label for="sensSlider">Adjust Camera Sensitivity:</label>
-      <input type="range" min="1" max="10" value="5" step="0.5" class="slider" id="sensSlider">
-    </div>
+          <!-- Setup Sensitivity Slider -->
+          <label for="sensSlider">Adjust Camera Sensitivity:</label>
+          <input type="range" min="1" max="10" value="5" step="0.5" class="slider" id="sensSlider">
+      </div>
 
 
   <div style="width: 100%; height: 100%; background-color: black;">
-    <div id="menu" style="width: 20%; height: 100%; background-color: red; vertical-align: top; display: inline-block">
-      
-      <div style="display: block">
-        <button type="button" id="button1" value="1">Scan 1</button>
-        <button type="button" value="2" onclick="GetWithID(this.value)">Scan 2</button>
-        <button type="button" value="3" onclick="GetWithID(this.value)">Scan 3</button>
-        <button type="button" value="4" onclick="GetWithID(this.value)">Scan 4</button>
-      </div>
-  
+    <div id="menu" style="width: 20%; height: 100%; background-color: rgb(48,48,48); vertical-align: top; display: inline-block">
+      <h2>Available Scans</h2>
     </div>
 
     <div id="visualization" style="width: 79%; height: 100%; background-color: black; display: inline-block"></div>

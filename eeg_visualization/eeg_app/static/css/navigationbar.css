@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    background-color: rgb(62, 62, 62);
+
+}
+canvas { display: block; }
+
+.navigation-bar {
+    position: sticky; /*sticky not working*/
+    top: 0px;
+    background-color: black;
+    color: white;
+    overflow: hidden;   
+}
+
+.navigation-bar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.navigation-bar a:hover {
+    color: red;
+    text-decoration: none;
+}
