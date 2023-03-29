@@ -101,11 +101,14 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     const initialCamPos = camera.position.clone();
     const initialCamRot = camera.rotation.clone();
 
-    // Set the renderer size
-    renderer.setSize(window.innerWidth, window.innerHeight);
+   
 
     // Append the scene to the correct div and replace old one if necessary
     const sceneDiv = document.querySelector('#visualization');
+
+     // Set the renderer size
+     renderer.setSize(sceneDiv.clientWidth, sceneDiv.clientHeight);
+
     if (sceneDiv.hasChildNodes()) {
         let oldChild = sceneDiv.childNodes[0];
         sceneDiv.replaceChild(renderer.domElement, oldChild);
