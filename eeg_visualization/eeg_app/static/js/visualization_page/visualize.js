@@ -134,8 +134,9 @@ function renderScene(startingX, startingY, startingZ, spheres) {
 
     // Listen for window resize events
     window.addEventListener("resize", (event) => {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        const sceneDiv = document.querySelector('#visualization');
+        const width = sceneDiv.clientWidth;
+        const height = sceneDiv.clientHeight;
         camera.aspect = width / height;
         camera.updateProjectionMatrix(); // Update camera position
         renderer.setSize(width, height); // Update scene size to match window
