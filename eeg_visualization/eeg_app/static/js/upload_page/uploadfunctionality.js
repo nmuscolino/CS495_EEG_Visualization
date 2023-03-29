@@ -19,13 +19,18 @@ export function UploadData() {
 
     const reader = new FileReader();
     reader.onload = function() {
-        if (fileType == "ply") 
+        if (fileType == "ply") {
+            //console.log("in ply if");
             CompressPly(reader.result);
-        else if (fileType == "json")
-            console.log("in json if");
+        }
+        else if (fileType == "json") {
+            //console.log("in json if");
             PostJSON(reader.result, 'postjsondata');
-        else if (fileType == "pts") 
+        }
+        else if (fileType == "pts") {
+            //console.log("in pts if");
             CompressPts(reader.result);
+        }
     }
     if (fileType == "ply") 
         reader.readAsDataURL(file);

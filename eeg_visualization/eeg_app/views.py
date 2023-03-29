@@ -38,7 +38,7 @@ def PostJSON(request):
 @csrf_exempt
 def Process(request):
     positions = process.process_data()
-    positions = json.dumps(positions)
+    #positions = json.dumps(positions) # This is already done in process.py
 
     # If the scan name is passed from the frontend, add an entry in the database
     if request.method == "POST":
