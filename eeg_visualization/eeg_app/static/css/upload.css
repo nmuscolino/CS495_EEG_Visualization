@@ -1,29 +1,3 @@
-body {
-    margin: 0;
-    background-color: rgb(62, 62, 62);
-
-}
-canvas { display: block; }
-
-.navigation-bar {
-    position: sticky; /*sticky not working*/
-    top: 0px;
-    background-color: rgb(10, 10, 10);
-    color: #f2f2f2;
-    overflow: hidden;   
-}
-
-.navigation-bar label {
-    padding-top: 100%;
-    padding-bottom: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.navigation-bar label:hover {
-    background-color: rgb(71, 71, 71);
-}
-
 #instruction-bar {
     color: white;
     overflow: hidden;
@@ -34,7 +8,7 @@ canvas { display: block; }
 }
 
 .upload-bar {
-    background-color: rgb(49, 55, 253);
+    background-color: black;
     margin: auto;
     width: 90%;
     border-top-left-radius: 10px;
@@ -53,44 +27,18 @@ canvas { display: block; }
 }
 
 .upload-bar button {
-    color: white;
-    background-color: purple;
+    color: black;
+    background-color: white;
     border-radius: 10px;
+    border-color: black;
     
 }
 
-table, th, td {
-    border: 1px solid black;
-    width: 33%;
-}
-
-table {
-    width: 90%;
-    margin: auto;
-    border-collapse: collapse;
-    border-radius: 10px;
-}
-
-th {
-    background-color: rgb(106, 126, 214);
-}
-
-tr:nth-child(odd) {
-    background-color: aqua;
-}
-
-tr:nth-child(even) {
-    background-color: aquamarine;
-}
-
-#table-div {
-    margin: auto;
-    background-color: rgb(49, 55, 253);
-    width: 90%;
-    padding: 10px;
-    padding-bottom: 30px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+#name-of-file {
+    display: inline-block;
+    background-color: white;
+    color: white;
+    width: 100%;
 }
 
 #error-message-div {

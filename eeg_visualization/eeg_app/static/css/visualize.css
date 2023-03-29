@@ -1,35 +1,44 @@
-body { margin: 0; }
-canvas { display: block; }
-
-.navbar .btn-css {
+.controls .btn-css {
     display: none;
 }
 
-.navbar {
-    background-color: #333;
+.controls {
+    background-color: rgb(48,48,48);
     color: #f2f2f2;
     overflow: hidden;   
 }
 
 /*Makes the button labels align on the left and sets their characteristics*/
-.navbar label {
+.controls label {
     float: left;
-    color: #f2f2f2;
+    color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
-    border-left: 1px solid white;
 }
 
 /*Changes the button colors when you hover over them*/
-.navbar .btn-label:hover {
-    background-color: #ddd;
-    color: black;
+#reset-label:hover {
+    background-color: rgb(48,48,48);
+    color: red;
     cursor: pointer;
 }
 
-.navbar input[type="range"] {
+.controls input[type="range"] {
     padding: 14px 16px;
+    cursor: pointer;
+}
+
+#menu h2 {
+    color: white;
+}
+
+#menu p {
+    color: white;
+}
+
+#menu p:hover {
+    color: red;
     cursor: pointer;
 }

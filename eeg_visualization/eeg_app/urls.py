@@ -13,4 +13,5 @@ urlpatterns = [
     path('visualize', views.visualize, name='visualize'),
     path('getjsonfromdb/<int:id>', views.GetJsonFromDB, name='getjsonfromdb'),
     path('postjsondata', views.PostJSON, name='postjsondata'),
+    path('getdbdatawithjson', views.GetDbDataWithJson, name='getdbdatawithjson'),
 ]

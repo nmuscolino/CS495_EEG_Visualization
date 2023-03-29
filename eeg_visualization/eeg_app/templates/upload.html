@@ -2,16 +2,16 @@
     <title>Upload Page</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href={% static 'css/upload.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'css/table.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'css/navigationbar.css' %}>
     <script type="module" src={% static 'js/upload_page/upload.js' %} defer></script>
 </head>
 
 <body>
     <div class="navigation-bar">
         <div style="display: inline-block">
-            <label for="home">Home</label>
             <label for="upload">Upload</label>
             <label for="visualize">Visualize</label>
-            <button id="home" style="display: none;"></button>
             <button id="upload" style="display: none;"></button>
             <button id="visualize" style="display: none;"></button>
         </div>
@@ -35,7 +35,7 @@
             </div>
             
             <div style="display: inline-block; width: 20%">
-                <input type="text" id="name-of-file" style="display: inline-block; background-color: purple; color: white; width: 100%">
+                <input type="text" id="name-of-file">
             </div>
          
             <input type="file" id="file-input" accept=".pts, .json" style="display: none;">

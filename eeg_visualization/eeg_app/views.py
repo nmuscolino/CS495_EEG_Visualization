@@ -77,6 +77,12 @@ def GetDbData(request):
     return HttpResponse(tableData_json)
 
 
+def GetDbDataWithJson(request):
+    tableData = Scan.objects.all().order_by("-upload_date")
+    # Convert the data to JSON format and return it as an HTTPResponse
+    tableData_json = serializers.serialize("json", tableData, fields=("scan_name", "upload_date", "scan_json"))
+    return HttpResponse(tableData_json)
+
 def GetJsonFromDB(request, id=None):
     print("here in lookup")
     id = int(id)
