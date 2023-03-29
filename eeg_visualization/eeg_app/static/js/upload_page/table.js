@@ -50,7 +50,7 @@ function BuildTable(table, data) {
         //let date = data[Object.keys(data)[i]][0];
         //let status = data[Object.keys(data)[i]][1];
         let scanName = data[Object.keys(data)[i]].fields.scan_name;
-        let date = data[Object.keys(data)[i]].fields.upload_date;
+        let date = data[Object.keys(data)[i]].fields.upload_date.substring(0, 10);
         let status = "Ready";
         let rowData = [scanName, date, status];
         table.appendChild(CreateRow(rowData, 'td'));
