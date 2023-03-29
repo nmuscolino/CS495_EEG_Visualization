@@ -1,5 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+//!!!
+//Please do not permanently modify this file when debugging the backend issue. 
+//It is very unlikely that the problem is here, since this code works well with preprocessed data
     
 export function resetCamera(camera, pos, rot, controls) {
     controls.reset();           // Reset controls (resets panning changes)
@@ -7,6 +11,10 @@ export function resetCamera(camera, pos, rot, controls) {
     camera.rotation.copy(rot);  // Reset camera rotation
 };
 
+
+//!!!
+//Please do not permanently modify this file when debugging the backend issue. 
+//It is very unlikely that the problem is here, since this code works well with preprocessed data
 export function genSpheres(coordinates) {
     var spheres = [];
     var coordinateObj = JSON.parse(coordinates);
@@ -96,8 +104,15 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     // Set the renderer size
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    // Append the renderer to the body
-    document.body.appendChild(renderer.domElement);
+    // Append the scene to the correct div and replace old one if necessary
+    const sceneDiv = document.querySelector('#visualization');
+    if (sceneDiv.hasChildNodes()) {
+        let oldChild = sceneDiv.childNodes[0];
+        sceneDiv.replaceChild(renderer.domElement, oldChild);
+    }
+    else {
+        sceneDiv.appendChild(renderer.domElement);
+    }
     
     // Camera sensitivity slider
     var sensSlider = document.getElementById("sensSlider");
@@ -123,6 +138,7 @@ function renderScene(startingX, startingY, startingZ, spheres) {
         renderer.setSize(width, height); // Update scene size to match window
     });
     
+    
     // Render scene
     var render = function () {
         requestAnimationFrame(render);
@@ -131,4 +147,7 @@ function renderScene(startingX, startingY, startingZ, spheres) {
     };
 
     render();
+    
+
+
 }   
