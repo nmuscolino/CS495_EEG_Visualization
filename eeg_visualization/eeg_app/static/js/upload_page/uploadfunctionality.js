@@ -1,7 +1,6 @@
 import { RecoverFromUpload, UploadingCSS } from "./interactivity.js";
 import {ChangeStatus, UpdateTable} from "./table.js";
 
-import * as THREE from 'three';
 import { PLYLoader } from 'three/addons/loaders/PLYLoader'
 
 let chunkCounter = 0;
@@ -19,23 +18,31 @@ export function UploadData() {
 
     const reader = new FileReader();
     reader.onload = function() {
-        if (fileType == "ply") {
-            //console.log("in ply if");
-            CompressPly(reader.result);
-        }
-        else if (fileType == "json") {
-            //console.log("in json if");
-            PostJSON(reader.result, 'postjsondata');
-        }
-        else if (fileType == "pts") {
-            //console.log("in pts if");
-            CompressPts(reader.result);
+        switch (fileType) {
+            case "ply":
+                //console.log("in ply case");
+                CompressPly(reader.result);
+            break;
+            case "json":
+                //console.log("in json case");
+                PostJSON(reader.result, 'postjsondata');
+            break;
+            case "pts":
+                //console.log("in pts case");
+                CompressPts(reader.result);
+            break;
         }
     }
-    if (fileType == "ply") 
-        reader.readAsDataURL(file);
-    else if (fileType == "pts" || fileType == "json") 
-        reader.readAsText(file);
+    
+    switch (fileType) {
+        case "ply":
+            reader.readAsArrayBuffer(file);
+        break;
+        case "json":
+        case "pts":
+            reader.readAsText(file);
+        break;
+    }
 };
 
 function PostJSON(data, url) {
@@ -55,7 +62,7 @@ function PostJSON(data, url) {
 
 function CompressPts(data) {
     var lines = data.split("\r\n");
-    var size = parseInt(lines[0]);
+    var size = parseInt(lines[0])+1;
 
     let x = new Float32Array(size);
     let y = new Float32Array(size);
@@ -81,44 +88,42 @@ function CompressPts(data) {
         g[i] = parseInt(values[5]);
         b[i] = parseInt(values[6]);
     }
+
     CallPosts(x, y, z, r, g, b);
 };
 
 function CompressPly(data) {
-    const loader = new PLYLoader();
-    loader.load(
-        data,
-        function (geometry) {
-            let positions = geometry.attributes.position;
-            let colors = geometry.attributes.color;
-            let size = positions.count+1;
+    let loader = new PLYLoader();
+    let geometry = loader.parse(data);
 
-            let x = new Float32Array(size);
-            let y = new Float32Array(size);
-            let z = new Float32Array(size);
-            let r = new Uint8Array(size);
-            let g = new Uint8Array(size);
-            let b = new Uint8Array(size);
+    let positions = geometry.attributes.position;
+    let colors = geometry.attributes.color;
+    let size = positions.count+1;
 
-            x[0] = 'x'.charCodeAt(0);
-            y[0] = 'y'.charCodeAt(0);
-            z[0] = 'z'.charCodeAt(0);
-            r[0] = 'r'.charCodeAt(0);
-            g[0] = 'g'.charCodeAt(0);
-            b[0] = 'b'.charCodeAt(0);
+    let x = new Float32Array(size);
+    let y = new Float32Array(size);
+    let z = new Float32Array(size);
+    let r = new Uint8Array(size);
+    let g = new Uint8Array(size);
+    let b = new Uint8Array(size);
 
-            for (var i = 1; i < size; i++) {
-                x[i] = positions.getX(i-1);
-                y[i] = positions.getY(i-1);
-                z[i] = positions.getX(i-1);
-                r[i] = colors.getX(i-1)*255;
-                g[i] = colors.getY(i-1)*255;
-                b[i] = colors.getX(i-1)*255;
-            }
+    x[0] = 'x'.charCodeAt(0);
+    y[0] = 'y'.charCodeAt(0);
+    z[0] = 'z'.charCodeAt(0);
+    r[0] = 'r'.charCodeAt(0);
+    g[0] = 'g'.charCodeAt(0);
+    b[0] = 'b'.charCodeAt(0);
 
-            CallPosts(x, y, z, r, g, b);
-        }
-    )
+    for (var i = 1; i < size; i++) {
+        x[i] = positions.getX(i-1);
+        y[i] = positions.getY(i-1);
+        z[i] = positions.getZ(i-1);
+        r[i] = colors.getX(i-1)*255;
+        g[i] = colors.getY(i-1)*255;
+        b[i] = colors.getZ(i-1)*255;
+    }
+
+    CallPosts(x, y, z, r, g, b);
 }
 
 function CallPosts(x, y, z, r, g, b) {
