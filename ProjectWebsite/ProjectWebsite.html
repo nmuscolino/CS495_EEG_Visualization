@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <title>Group 11 Project Website</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet", href="ProjectWebsite.css"/>
+    </head>
+    <body>
+        <div>
+            <h1>Visualizing EEG Electrodes</h1>
+        </div>
+        <div id="border">
+            <h2>Project Goals</h2>
+            <p>
+                The purpose of this project is to create an intuitive system that allows users 
+                to visualize the positions of EEG electrodes in 3D space. This system also
+                enables users to view the name and coordinate data of each electrode.
+            </p>
+        </div>
+        <div id="border">
+            <h2>Tools and Frameworks</h2>
+            
+            <h3>Scaniverse</h3>
+            <p>
+                An iOS photogrammetry app that we used for scanning the EEG device and it's 
+                electrodes. This app is free to use and exports in point cloud formats.
+            </p>
+
+            <h3>Django</h3>
+            <p>
+                We ended up choosing Django for our web hosting framework as we wanted 
+                something that was easy to set up and utilized Python for its API.
+            </p>
+
+            <h3>Open3D</h3>
+            <p>
+                For processing the point cloud data generated from the scans we used the 
+                Open3D library. This tool allowed us to downsample and filter the data rather 
+                quickly resulting in a functional demo by end of the first sprint.
+            </p>
+
+            <h3>Three.js</h3>
+            <p>
+                The front-end visualization is written using the three.js library. After the 
+                point cloud data is processed, the name and position of each electrode are 
+                passed to the front-end as a JSON file. Three.js has many high-level functions
+                that made it easy to render and manipulate the cluster of electrodes as spheres 
+                in 3D space.
+            </p>
+            <h3>AWS</h3>
+            <p>
+                AWS is used to register domain names, host our project website, and deploy 
+                application to the web. We wanted to use this cloud service because it is 
+                widely used in industry.
+            </p>
+            <h3>Docker</h3>
+            <p>
+                Docker is used to containerize our application to reduce comlications in 
+                deployment. This service was chosen as it is the industry standard for 
+                containers.
+            </p>
+            <h3>Apache</h3>
+            <p>
+                Apache is used as the production web server. This was chosen because it is 
+                more robust than the test server built into Django.
+            </p>
+        </div>
+        <div id="border">
+            <h2>User Experience</h2>
+            <p id="block">
+                Our goal is to make the entire user experience as fluid and intuitive as possible. 
+                First, the EEG subject sits stationary while the scan is being 
+                performed. Using the Scaniverse iOS app, the user slowly circles the subject 
+                while keeping the camera focused on the EEG cap. After the scan is complete, 
+                it begins processing which takes roughly a minute. The data can then be 
+                exported in a point cloud format. The file is then uploaded to the 
+                database via the front-end upload page. This page can be accessed from a 
+                mobile browser in order to avoid the hassle of traditional file transfer 
+                methods. Once the data has finished uploading to the database, the file 
+                can be selected from the visualization page and rendered as a cluster of 
+                spheres. The visualization can be manipulated by panning, zooming, and 
+                orbiting the camera. There are also options to reset the camera view and 
+                change the camera sensitivity. 
+
+            </p>
+            <img src="DALLE_Scan_Image.png" alt="Silhouette of scan proccess" style="width: 200px; height: 217px;">
+            <img src="arrow.png" alt="Arrow" style="width: 100px; height: 100px;">
+            <img src="uploadpage.png" alt="Upload page screenshot" style="width: 300px; height: 152px;">
+            <img src="arrow.png" alt="Arrow" style="width: 100px; height: 100px;">
+            <img src="visualizationpage.png" alt="visualization page screenshot" style="width: 300px; height: 152px;">
+        </div>
+        <div id="border">
+            <h2>Team Members</h2>
+            <p>
+                John Holmquist, Nicholas Muscolino, Ward Jaeger, Blake Long
+            </p>
+        </div>
+    </body>
+
+</html>
