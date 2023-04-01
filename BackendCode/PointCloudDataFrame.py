@@ -22,6 +22,23 @@ class PointCloudDataFrame(pd.DataFrame):
         df[['intensity', 'r', 'g', 'b']] = df[['intensity', 'r', 'g', 'b']].astype(int)
 
         return df.update_colors()
+    
+    @classmethod
+    def read_label(cls, filename: str):
+        with open(filename) as f:
+            num_points = int(f.readline())
+            point_data = [line.strip().split() for line in f.readlines()]
+
+        df = cls(
+            data=point_data,
+            columns=['x', 'y', 'z', 'r', 'g', 'b', 'label'],
+        )
+        df[['x', 'y', 'z']] = df[['x', 'y', 'z']].astype(float)
+        df[['r', 'g', 'b']] = df[['r', 'g', 'b']].astype(int)
+        df['label'].fillna('', inplace=True)
+        df[['label']] = df[['label']].astype(str)
+
+        return df.update_colors()
 
     @classmethod
     def from_pcd(cls, pcd: o3d.geometry.PointCloud):
@@ -80,8 +97,15 @@ class PointCloudDataFrame(pd.DataFrame):
             f.write(f'{len(df)}\n')
             f.writelines([' '.join(map(str, row)) + '\n' for row in rows])
 
-    def write_xyz(self, filename: str):
-        rows = self[['x', 'y', 'z']].itertuples(index=False)
+    def write_label(self, filename: str):
+        df = self.copy()
+        if df['r'].dtype == float:
+            df[['r', 'g', 'b']] = round(df[['r', 'g', 'b']] * 255).astype(int)
+        if 'label' not in df:
+            df['label'] = ''
+    
+        rows = df[['x', 'y', 'z', 'r', 'g', 'b', 'label']].itertuples(index=False)
 
         with open(filename, 'w') as f:
+            f.write(f'{len(df)}\n')
             f.writelines([' '.join(map(str, row)) + '\n' for row in rows])
