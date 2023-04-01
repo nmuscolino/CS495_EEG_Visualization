@@ -21,7 +21,8 @@ export function UpdateTable() {
     let month = date.getMonth() + 1;
     let monthString = (month < 10 ? "0" + month.toString() : month.toString());
     let day = date.getDate();
-    let dateString = year.toString() + "-" + monthString + "-" + day.toString();
+    let dayString = (day < 10 ? "0" + day.toString() : day.toString());
+    let dateString = year.toString() + "-" + monthString + "-" + dayString;
     let rowData = [scanName, dateString, 'Uploading... Do not refresh or close the page'];
     let tr = CreateRow(rowData, 'td');
     table.insertBefore(tr, table.children[1]);
