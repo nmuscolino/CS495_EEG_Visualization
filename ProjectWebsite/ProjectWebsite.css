@@ -16,28 +16,106 @@ h1 {
 
 h2 {
     text-align: center;
+    font-size: 30px;
 }
 
 h3 {
-    text-align: center;
-    font-size: 15px;
+    text-align: left;
+    font-size: 20px;
 }
 
 p {
+    text-align: left;
+}
+
+img {
+    padding: 0;
+}
+
+.row {
+    margin-left: 10%;
+    margin-right: 10%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 760px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.inner-column {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.box {
+    height: 100%;
+    width: 100%;
+    border: 1px solid black;
+    box-sizing: border-box;
     text-align: center;
-    margin-left: 80px;
-    margin-right: 80px;
+    padding-left: 10%;
+    padding-right: 25%;
+}
+
+#TL {
+    border-top-left-radius: 10px;
+}
+
+#TR {
+    border-top-right-radius: 10px;
+}
+
+#BL {
+    border-bottom-left-radius: 10px;
+}
+
+#BR {
+    border-bottom-right-radius: 10px;
+}
+
+#Top {
+    border-style: solid;
+    border-width: 0px;
+    border-bottom-width: 3px;
 }
 
 #border {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    margin-left: 200px;
-    margin-right: 200px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding-left: 5%;
+    padding-right: 5%;
+    border-style: solid;
+    border-radius: 15px;
+}
+
+#border2 {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 8%;
+    margin-right: 8%;
+    padding: 1%;
     border-style: solid;
     border-radius: 15px;
 }
 
 #block {
     text-align: left;
+}
+
+#inner-img {
+    padding-top: 60%;
+    padding-left: 80%;
+}
+
+#arrow {
+    padding-top: 50px;
+    padding-bottom: 50px;
 }

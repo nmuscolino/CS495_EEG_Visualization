@@ -4,10 +4,10 @@
         <title>Group 11 Project Website</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet", href="ProjectWebsite.css"/>
+        <link rel="stylesheet" href="ProjectWebsite.css"/>
     </head>
     <body>
-        <div>
+        <div id="Top">
             <h1>EEG Visualization</h1>
         </div>
         <div id="border">
@@ -18,54 +18,131 @@
                 enables users to view the name and coordinate data of each electrode.
             </p>
         </div>
-        <div id="border">
-            <h2>Tools and Frameworks</h2>
-            
-            <h3>Scaniverse</h3>
-            <p>
-                An iOS photogrammetry app that we used for scanning the EEG device and it's 
-                electrodes. This app is free to use and exports in point cloud formats.
-            </p>
+        <h2>Tools and Frameworks</h2>
 
-            <h3>Django</h3>
-            <p>
-                We ended up choosing Django for our web hosting framework as we wanted 
-                something that was easy to set up and utilized Python for its API.
-            </p>
-
-            <h3>Open3D</h3>
-            <p>
-                For processing the point cloud data generated from the scans we used the 
-                Open3D library. This tool allowed us to downsample and filter the data rather 
-                quickly resulting in a functional demo by end of the first sprint.
-            </p>
-
-            <h3>Three.js</h3>
-            <p>
-                The front-end visualization is written using the three.js library. After the 
-                point cloud data is processed, the name and position of each electrode are 
-                passed to the front-end as a JSON file. Three.js has many high-level functions
-                that made it easy to render and manipulate the cluster of electrodes as spheres 
-                in 3D space.
-            </p>
-            <h3>AWS</h3>
-            <p>
-                AWS is used to register domain names, host our project website, and deploy 
-                application to the web. We wanted to use this cloud service because it is 
-                widely used in industry.
-            </p>
-            <h3>Docker</h3>
-            <p>
-                Docker is used to containerize our application to reduce comlications in 
-                deployment. This service was chosen as it is the industry standard for 
-                containers.
-            </p>
-            <h3>Apache</h3>
-            <p>
-                Apache is used as the production web server. This was chosen because it is 
-                more robust than the test server built into Django.
-            </p>
+        <div class="row">
+            <div class="column">
+                <div class="box" id="TL">
+                    <div class="inner-column">
+                        <div>
+                            <h3>Scaniverse</h3>
+                            <p>
+                                An iOS photogrammetry app that we used for scanning the EEG device and it's 
+                                electrodes. This app is free to use and exports in point cloud formats.
+                            </p>
+                        </div>
+                        <div>
+                            <img src="images/scaniverse.png" alt="Scaniverse Logo" style="width: 80px; height: 80px;" id="inner-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="inner-column">
+                        <div>
+                            <h3>Django</h3>
+                            <p>
+                                We ended up choosing Django for our web hosting framework as we wanted 
+                                something that was easy to set up and utilized Python for its API.
+                            </p>    
+                        </div>
+                        <div>
+                            <img src="images/django.png" alt="Django Logo" style="width: 80px; height: 80px;" id="inner-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="inner-column">
+                        <div>  
+                            <h3>Open3D</h3>
+                            <p>
+                                For processing the point cloud data generated from the scans we used the 
+                                Open3D library. This tool allowed us to downsample and filter the data rather 
+                                quickly resulting in a functional demo by end of the first sprint.
+                            </p>
+                        </div>
+                        <div>
+                            <img src="images/open3d.png" alt="Open3D Logo" style="width: 80px; height: 70px;" id="inner-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="box" id="BL">
+                    <div class="inner-column">
+                        <div>
+                            <h3>SQLite</h3>
+                            <p>
+                                We used SQLite as our database system. This library was a great fit for our 
+                                needs as it is free to use, compact, and widely used in the industry.
+                            </p>  
+                        </div>
+                        <div>
+                            <img src="images/sqlite.png" alt="SQLite Logo" style="width: 80px; height: 90px;" id="inner-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="box" id="TR">
+                    <div class="inner-column">
+                        <div>
+                            <h3>Three.js</h3>
+                            <p>
+                                The front-end visualization is written using the three.js library. Three.js has 
+                                many high-level functions that made it easy to render and manipulate the cluster 
+                                of electrodes as spheres in 3D space.
+                            </p>    
+                        </div>
+                        <div>
+                            <img src="images/threejs.png" alt="Three.js Logo" style="width: 80px; height: 80px;" id="inner-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="inner-column">
+                        <div>
+                            <h3>AWS</h3>
+                            <p>
+                                AWS is used to register domain names, host our project website, and deploy 
+                                application to the web. We wanted to use this cloud service because it is 
+                                widely used in industry.
+                            </p>
+                        </div>
+                        <div>
+                            <img src="images/aws.png" alt="AWS Logo" style="width: 90px; height: 60px;" id="inner-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="inner-column">
+                        <div>
+                            <h3>Docker</h3>
+                            <p>
+                                Docker is used to containerize our application to reduce comlications in 
+                                deployment. This service was chosen as it is the industry standard for 
+                                containers.
+                            </p>
+                        </div>
+                        <div>
+                            <img src="images/docker.png" alt="Docker Logo" style="width: 80px; height: 60px;" id="inner-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="box" id="BR">
+                    <div class="inner-column">
+                        <div>
+                            <h3>Apache</h3>
+                            <p>
+                                Apache is used as the production web server. This was chosen because it is 
+                                more robust than the test server built into Django.
+                            </p>         
+                        </div>
+                        <div>
+                            <img src="images/apache.png" alt="Apache Logo" style="width: 70px; height: 90px;" id="inner-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div id="border">
             <h2>User Experience</h2>
             <p id="block">
@@ -82,13 +159,14 @@
                 spheres. The visualization can be manipulated by panning, zooming, and 
                 orbiting the camera. There are also options to reset the camera view and 
                 change the camera sensitivity. 
-
             </p>
-            <img src="DALLE_Scan_Image.png" alt="Silhouette of scan proccess" style="width: 200px; height: 217px;">
-            <img src="arrow.png" alt="Arrow" style="width: 100px; height: 100px;">
-            <img src="uploadpage.png" alt="Upload page screenshot" style="width: 300px; height: 152px;">
-            <img src="arrow.png" alt="Arrow" style="width: 100px; height: 100px;">
-            <img src="visualizationpage.png" alt="visualization page screenshot" style="width: 300px; height: 152px;">
+        </div>
+        <div id="border2">
+            <img src="images/DALLE_Scan_Image.png" alt="Silhouette of scan proccess" style="width: 200px; height: 217px;">
+            <img src="images/arrow.png" alt="Arrow" style="width: 100px; height: 100px;" id="arrow">
+            <img src="images/uploadpage.png" alt="Upload page screenshot" style="width: 400px; height: 202px;">
+            <img src="images/arrow.png" alt="Arrow" style="width: 100px; height: 100px;" id="arrow">
+            <img src="images/visualizationpage.png" alt="visualization page screenshot" style="width: 400px; height: 202px;">
         </div>
         <div id="border">
             <h2>Team Members</h2>
