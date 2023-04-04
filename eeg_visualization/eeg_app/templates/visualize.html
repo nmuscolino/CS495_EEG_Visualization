@@ -4,24 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Import three.js Libraries from a CDN -->
-    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.150.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.150.0/examples/jsm/"
-        }
-      }
-    </script>
     <!-- Import CSS from static files -->
     {% load static %}
    <link rel="stylesheet" type="text/css" href="{% static 'css/visualize.css' %}">
    <link rel="stylesheet" type="text/css" href="{% static 'css/navigationbar.css' %}">
    <script type="module" src="{% static 'js/visualization_page/visualize.js' %}" defer></script>
    <script type="module" src="{% static 'js/visualization_page/home.js' %}" defer></script>
-
-   <!--<script type="text/javascript" src="{% static 'js/visualization_page/GetWithID.js' %}"></script> -->
  
   </head>
 
