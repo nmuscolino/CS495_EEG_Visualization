@@ -88,6 +88,11 @@ p {
     align-items: center;
 }
 
+.citation {
+    font-size: 8px;
+    text-align: center;
+}
+
 #TL {
     border-top-left-radius: 10px;
 }
