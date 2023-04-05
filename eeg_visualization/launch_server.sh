@@ -20,6 +20,8 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py collectstatic
 
+sudo chmod 755 -R /home/ubuntu
+
 sudo systemctl start nginx
 sudo systemctl start gunicorn.socket
 sudo systemctl enable gunicorn.socket
