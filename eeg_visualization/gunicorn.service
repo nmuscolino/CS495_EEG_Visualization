@@ -6,7 +6,7 @@ After=network.target
 [Service]
 User=ubuntu
 Group=www-data
-WorkingDirectory=/home/john/eeg_visualization
+WorkingDirectory=/home/ubuntu/Project/CS495_EEG_Visualization/eeg_visualization
 ExecStart=/usr/bin/gunicorn \
           --access-logfile - \
           --workers 1 \
