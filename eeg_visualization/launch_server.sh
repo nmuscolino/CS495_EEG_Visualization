@@ -6,10 +6,10 @@ sudo apt-get install python3-pip -y
 sudo apt-get install gunicorn -y
 sudo apt-get install nginx -y
 
-sudo python3 -m pip install --no-cache-dir --upgrade pip
-sudo python3 -m pip install --no-cache-dir --upgrade open3d
-sudo python3 -m pip install --no-cache-dir --upgrade Django
-sudo python3 -m pip install --no-cache-dir --upgrade scikit-learn
+python3 -m pip install --no-cache-dir --upgrade pip
+python3 -m pip install --no-cache-dir --upgrade open3d
+python3 -m pip install --no-cache-dir --upgrade Django
+python3 -m pip install --no-cache-dir --upgrade scikit-learn
 
 sudo cp gunicorn.service /etc/systemd/system/gunicorn.service
 sudo cp gunicorn.socket /etc/systemd/system/gunicorn.socket
