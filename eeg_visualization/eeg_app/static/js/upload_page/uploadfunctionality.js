@@ -1,7 +1,9 @@
 import { RecoverFromUpload, UploadingCSS } from "./interactivity.js";
 import {ChangeStatus, UpdateTable} from "./table.js";
 
-import { PLYLoader } from 'three/addons/loaders/PLYLoader'
+//import { PLYLoader } from 'three/addons/loaders/PLYLoader.js'
+
+import { PLYLoader } from "../../ThreeJS/PLYLoader.js";
 
 let chunkCounter = 0;
 

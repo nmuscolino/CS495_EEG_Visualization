@@ -1,5 +1,5 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import * as THREE from '../../ThreeJS/three.module.js';
+import { OrbitControls } from '../../ThreeJS/OrbitControls.js';
 
 //!!!
 //Please do not permanently modify this file when debugging the backend issue. 
