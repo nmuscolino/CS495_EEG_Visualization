@@ -36,12 +36,12 @@ ssh -i /path/key.pem ubuntu@publicipv4address
 Then run the following commands exactly as they appear below:
 
 mkdir Project
-cd Project https://github.com/nmuscolino/CS495_EEG_Visualization.git \n
-git clone \n
-cd CS495_EEG_Visualization \n
-cd eeg_visualization \n
-chmod 755 launch_server.sh \n
-./launch_server.sh n\
+cd Project https://github.com/nmuscolino/CS495_EEG_Visualization.git <br>
+git clone <br>
+cd CS495_EEG_Visualization <br>
+cd eeg_visualization <br>
+chmod 755 launch_server.sh <br>
+./launch_server.sh <br>
 
 Now you should be able to navigate to your domain name and see the website
 
