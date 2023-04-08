@@ -35,8 +35,9 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'accounts',
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -55,6 +56,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'eeg_visualization.urls'
+LOGIN_REDIRECT_URL = '/upload'
+LOGIN_URL = '/accounts/login'
 
 TEMPLATES = [
     {

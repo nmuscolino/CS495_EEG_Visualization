@@ -17,6 +17,10 @@
         <div id="title" , style="display: inline-block; padding-left: 23%">
             <h2 style="position: relative">EEG Visualization</h2>
         </div>
+        <div style="float: right; text-align: center">
+            <p>{{ request.user.username }}</p>
+            <a id="logout" href="{% url 'logout' %}">Log Out</a>
+        </div>
     </div>
 
     <div id="instruction-bar">
