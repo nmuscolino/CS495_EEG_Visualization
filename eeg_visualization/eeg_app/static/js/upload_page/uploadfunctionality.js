@@ -1,36 +1,40 @@
 import { RecoverFromUpload, UploadingCSS } from "./interactivity.js";
 import {ChangeStatus, UpdateTable} from "./table.js";
-
-//import { PLYLoader } from 'three/addons/loaders/PLYLoader.js'
-
 import { PLYLoader } from "../../ThreeJS/PLYLoader.js";
+import { StatusMessage } from "./interactivity.js";
 
 let chunkCounter = 0;
 
-//!!!!
-//It is quite possible that the issue is found in this file
-//Modify as needed. 
-
 export function UploadData() {
+    console.log("here")
+    const file = document.querySelector('#file-input').files[0];
+    
+    const scanName = document.querySelector('#name-of-file').value;
+
+    if (file === undefined) {
+        StatusMessage("Error: Select a file.", 'red');
+        return;
+    }
+    else if (scanName === '') {
+        StatusMessage("Error: Name the scan.", 'red');
+        return;
+    }
+
+    const fileType = file.name.split('.').pop();
+
     UploadingCSS();
     UpdateTable();
-
-    const file = document.querySelector('#file-input').files[0];
-    const fileType = file.name.split('.').pop();
 
     const reader = new FileReader();
     reader.onload = function() {
         switch (fileType) {
             case "ply":
-                //console.log("in ply case");
                 CompressPly(reader.result);
             break;
             case "json":
-                //console.log("in json case");
                 PostJSON(reader.result, 'postjsondata');
             break;
             case "pts":
-                //console.log("in pts case");
                 CompressPts(reader.result);
             break;
         }
@@ -152,7 +156,8 @@ function Post(data, url) {
 function IncrementChunkCounter() {
     chunkCounter = chunkCounter + 1;
     if (chunkCounter == 6) {
-        ChangeStatus('Processing... Do not refresh or close the page');
+        ChangeStatus('Processing...');
+        StatusMessage('Status: Processing... (Please do not refresh or close the page)', 'green');
         ProcessDataOnBackend();
         chunkCounter = 0;
     }
@@ -160,22 +165,21 @@ function IncrementChunkCounter() {
 
 //Get Request
 function ProcessDataOnBackend() {
-    ChangeStatus('Processing... Do not refresh or close the page');
+
     'use strict';
     const getRequest = new XMLHttpRequest();
     getRequest.open('GET', 'process', true);
     getRequest.send();
     getRequest.onreadystatechange = function() {
         if (getRequest.readyState == 4 && getRequest.status == 200) {
-            var coordinates = getRequest.response;
-            
             const scanName = document.querySelector('#name-of-file');
-            console.log(scanName.value);
             Post(scanName.value, 'process');
             
             ChangeStatus('Ready');
             RecoverFromUpload();
-            console.log("Coordinates Recieved.");
+        }
+        else if (getRequest.status >= 500) {
+            StatusMessage('Error: Error occurred while processing data. Please refresh the page and try again.', 'red');
         }
     }
 };

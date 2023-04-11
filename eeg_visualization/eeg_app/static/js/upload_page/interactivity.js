@@ -1,6 +1,6 @@
 export function RemoveCharacters() {
     const nameOfFile = document.querySelector('#name-of-file');
-    const regExp = new RegExp('[^0-9a-zA-Z_]')
+    const regExp = new RegExp('[^0-9a-zA-Z_-]')
     var res = nameOfFile.value.replace(regExp, '');
     nameOfFile.value = res;
 };
@@ -34,13 +34,11 @@ export function RecoverFromUpload() {
     nameOfFile.disabled = false;
     nameOfFile.style.backgroundColor = 'white';
     nameOfFile.value = '';
-    const errorMessage = document.querySelector('#error-message');
-    errorMessage.textContent = "Done.";
+    StatusMessage('Status: Done. Ready for new upload.', 'green');
 };
 
 export function UploadingCSS() {
-    const errorMessage = document.querySelector('#error-message');
-    errorMessage.textContent = "Uploading... Do not refresh page";
+    StatusMessage('Status: Uploading... (Please do not refresh or close the page', 'green');
     const body = document.querySelector('body');
     body.style.cursor = 'wait';
     const fileSelectButton = document.querySelector('#file-select-button');
@@ -53,3 +51,9 @@ export function UploadingCSS() {
     nameOfFile.style.backgroundColor = 'gray';
     nameOfFile.disabled = true;
 };
+
+export function StatusMessage(msg, color) {
+    const statusMessage = document.querySelector('#status-message');
+    statusMessage.textContent = msg;
+    statusMessage.style.color = color;
+}
