@@ -42,42 +42,6 @@ export function genSpheres(coordinates) {
     renderScene(coordinateObj, spheres);
 };
 
-function setCamera(scene, coordinateObj, camera) {
-    const positions = Object.values(coordinateObj);
-    var posVectors = [];
-
-    // Create three.js vectors for each position
-    for (var i = 0; i < positions.length; i++) {
-        var currPos = positions[i];
-        var x = currPos[0];
-        var y = currPos[1];
-        var z = currPos[2];
-        var vector = new THREE.Vector3(x, y, z);
-        posVectors.push(vector);
-    }
-
-    // Set up bounding box
-    const boundingBox = new THREE.Box3().setFromPoints(posVectors);
-    const center = boundingBox.getCenter(new THREE.Vector3());
-    const size = boundingBox.getSize(new THREE.Vector3());
-  
-    // Debug bounding box visualization
-    const geometry = new THREE.BufferGeometry().setFromPoints(posVectors);
-    const bboxHelper = new THREE.BoxHelper(new THREE.Mesh(geometry), 0x0000ff);
-    scene.add(bboxHelper)
-
-    //Calculate distance from center of cluster (bounding box) to the camera
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const fov = camera.fov * (Math.PI / 180);
-    var distance = Math.abs(maxDim / 4 * Math.tan(fov * 2));
-
-    distance *= 0.9;   // Add offset to back camera up a bit
-
-    camera.position.z = distance;   // Set camera position
-
-    return center;
-}
-
 function renderScene(coordObj, spheres) {
     // Create a group to hold the spheres
     var group = new THREE.Group();
@@ -94,10 +58,14 @@ function renderScene(coordObj, spheres) {
     var renderer = new THREE.WebGLRenderer();
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.rotateSpeed = 0.5; // Default camera sensitivity
-
+    
     // Calculate camera starting position
     const center = setCamera(scene, coordObj, camera);
-
+    
+    // Prevent camera clipping spheres
+    camera.near = 0.01;
+    camera.updateProjectionMatrix();
+    
     // Camera look at center of cluster
     controls.target = center;
     controls.saveState();
@@ -106,7 +74,7 @@ function renderScene(coordObj, spheres) {
     group.rotateX(-Math.PI / 2);
     group.position.y -= 0.3;
     group.position.add(center);
-
+    
     // Add the group to the scene and setup default camera position
     scene.add(group);
 
@@ -123,10 +91,10 @@ function renderScene(coordObj, spheres) {
 
     // Append the scene to the correct div and replace old one if necessary
     const sceneDiv = document.querySelector('#visualization');
-
-     // Set the renderer size
-     renderer.setSize(sceneDiv.clientWidth, sceneDiv.clientHeight);
-
+    
+    // Set the renderer size
+    renderer.setSize(sceneDiv.clientWidth, sceneDiv.clientHeight);
+    
     if (sceneDiv.hasChildNodes()) {
         let oldChild = sceneDiv.childNodes[0];
         sceneDiv.replaceChild(renderer.domElement, oldChild);
@@ -149,7 +117,7 @@ function renderScene(coordObj, spheres) {
     resetButton.addEventListener("click", function() {
         resetCamera(camera, initialCamPos, initialCamRot, controls);
     })
-
+    
     // Listen for window resize events
     window.addEventListener("resize", (event) => {
         const sceneDiv = document.querySelector('#visualization');
@@ -170,23 +138,73 @@ function renderScene(coordObj, spheres) {
         mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;       
         mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;       
     });
-     
+
     // Render scene
     var render = function () {
         // Update ray position
         raycaster.setFromCamera(mouse, camera);
-
+        
         // Get intersection objects
         const intersections = raycaster.intersectObjects(scene.children);
-        for ( var i = 0; i < intersections.length; i++) {
-            var obj = intersections[i].object;
-            obj.material.color.set(0xff0000);   // Color change test
+        if (intersections.length > 0 && intersections[0].object instanceof THREE.Mesh) {
+            var obj = intersections[0].object;
+            obj.material.color.set(0xff0000);   // Color change on select (red)
+
+            // Extract electrode data
+            const xPos = obj.position.x;
+            const yPos = obj.position.y;
+            const zPos = obj.position.z;
+            const name = obj.name;
+            
+            // Log data to console
+            console.log("Name: ", name, " Position: ", xPos, ", ", yPos, ", ", zPos);
+
+            // Change selected sphere color back to white
+            // setTimeout adds function call to the end of the js task queue
+            setTimeout(function(){ obj.material.color.set(0xffffff); }, 0);
         }
 
         requestAnimationFrame(render);
         controls.update();
         renderer.render(scene, camera);
     };
-
+    
     render();
 }   
+
+
+function setCamera(scene, coordinateObj, camera) {
+    const positions = Object.values(coordinateObj);
+    var posVectors = [];
+
+    // Create three.js vectors for each position
+    for (var i = 0; i < positions.length; i++) {
+        var currPos = positions[i];
+        var x = currPos[0];
+        var y = currPos[1];
+        var z = currPos[2];
+        var vector = new THREE.Vector3(x, y, z);
+        posVectors.push(vector);
+    }
+
+    // Set up bounding box
+    const boundingBox = new THREE.Box3().setFromPoints(posVectors);
+    const center = boundingBox.getCenter(new THREE.Vector3());
+    const size = boundingBox.getSize(new THREE.Vector3());
+    
+    // Debug bounding box visualization
+    // const geometry = new THREE.BufferGeometry().setFromPoints(posVectors);
+    // const bboxHelper = new THREE.BoxHelper(new THREE.Mesh(geometry), 0x0000ff);
+    // scene.add(bboxHelper)
+
+    //Calculate distance from center of cluster (bounding box) to the camera
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const fov = camera.fov * (Math.PI / 180);
+    var distance = Math.abs(maxDim / 4 * Math.tan(fov * 2));
+
+    distance *= 0.9;   // Add offset to back camera up a bit
+
+    camera.position.z = distance;   // Set camera position
+
+    return center;
+}
