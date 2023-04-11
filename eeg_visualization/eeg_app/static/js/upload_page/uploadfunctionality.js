@@ -1,16 +1,9 @@
 import { RecoverFromUpload, UploadingCSS } from "./interactivity.js";
 import {ChangeStatus, UpdateTable} from "./table.js";
-
-//import { PLYLoader } from 'three/addons/loaders/PLYLoader.js'
-
 import { PLYLoader } from "../../ThreeJS/PLYLoader.js";
 import { StatusMessage } from "./interactivity.js";
 
 let chunkCounter = 0;
-
-//!!!!
-//It is quite possible that the issue is found in this file
-//Modify as needed. 
 
 export function UploadData() {
     console.log("here")
@@ -19,7 +12,6 @@ export function UploadData() {
     const scanName = document.querySelector('#name-of-file').value;
 
     if (file === undefined) {
-        console.log("here");
         StatusMessage("Error: Select a file.", 'red');
         return;
     }
@@ -37,8 +29,6 @@ export function UploadData() {
     reader.onload = function() {
         switch (fileType) {
             case "ply":
-                console.log("in ply");
-                console.log(reader.result);
                 CompressPly(reader.result);
             break;
             case "json":
@@ -166,7 +156,8 @@ function Post(data, url) {
 function IncrementChunkCounter() {
     chunkCounter = chunkCounter + 1;
     if (chunkCounter == 6) {
-        ChangeStatus('Processing... Do not refresh or close the page');
+        ChangeStatus('Processing...');
+        StatusMessage('Status: Processing... (Please do not refresh or close the page)', 'green');
         ProcessDataOnBackend();
         chunkCounter = 0;
     }
@@ -174,23 +165,18 @@ function IncrementChunkCounter() {
 
 //Get Request
 function ProcessDataOnBackend() {
-    ChangeStatus('Processing... Do not refresh or close the page');
-    StatusMessage('Status: Processing... (Please do not refresh or close the page)', 'green');
+
     'use strict';
     const getRequest = new XMLHttpRequest();
     getRequest.open('GET', 'process', true);
     getRequest.send();
     getRequest.onreadystatechange = function() {
         if (getRequest.readyState == 4 && getRequest.status == 200) {
-            var coordinates = getRequest.response;
-            
             const scanName = document.querySelector('#name-of-file');
-            console.log(scanName.value);
             Post(scanName.value, 'process');
             
             ChangeStatus('Ready');
             RecoverFromUpload();
-            console.log("Coordinates Recieved.");
         }
         else if (getRequest.status >= 500) {
             StatusMessage('Error: Error occurred while processing data. Please refresh the page and try again.', 'red');

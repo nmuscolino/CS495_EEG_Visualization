@@ -23,7 +23,7 @@ export function UpdateTable() {
     let day = date.getDate();
     let dayString = (day < 10 ? "0" + day.toString() : day.toString());
     let dateString = year.toString() + "-" + monthString + "-" + dayString;
-    let rowData = [scanName, dateString, 'Uploading... Do not refresh or close the page'];
+    let rowData = [scanName, dateString, 'Uploading...'];
     let tr = CreateRow(rowData, 'td');
     table.insertBefore(tr, table.children[1]);
 };
