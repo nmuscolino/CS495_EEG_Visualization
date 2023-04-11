@@ -1,20 +1,44 @@
-<h2>Signup Form</h2>
-<form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-        <p>
-            {{ field.label_tag }}
-            {{ field }}
-            {% if field.help_text %}
-                <small>{{ field.help_text }}</small>
-            {% endif %}
-            {% for error in field.errors %}
-                <p style="color: red">{{ error }}</p>
+<head>
+    <title>Signup Page</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href={% static 'css/navigationbar.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'css/accounts.css' %}>
+</head>
+
+<body>
+    <div class="navigation-bar">
+        <div style="display: inline-block">
+            <a id="upload" href="upload">Upload</a>
+            <a id="visualize" href="visualize">Visualize</a>
+        </div>
+        <div id="title" , style="display: inline-block; padding-left: 23%">
+            <h2 style="position: relative">EEG Visualization</h2>
+        </div>
+        <div style="float: right; padding-top: 27px">
+            <a id="login" href="{% url 'login' %}">Log In</a>
+        </div>
+    </div>
+
+    <div id="instruction-bar">
+        <h2>Signup Form</h2>
+        <form method="post" class="form-control">
+            {% csrf_token %}
+            {% for field in form %}
+                <p>
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                </p>
             {% endfor %}
-        </p>
-    {% endfor %}
-    <button type="submit">Sign Up</button>
-    <p>Already have an account?
-        <a href="{% url 'login' %}" class="btn btn-block">Log In</a>
-    </p>
-</form>
+            <button type="submit">Sign Up</button>
+            <p>Already have an account?
+                <a style="color: white" href="{% url 'login' %}" class="btn btn-block">Log In</a>
+            </p>
+        </form>
+    </div>
+</body>

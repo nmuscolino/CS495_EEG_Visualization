@@ -1,7 +1,26 @@
-<div class="card">
-    <div class="card-body">
-        <h4 class="card-title">You are logged out!</h4>
+<head>
+    <title>Logged Out Page</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href={% static 'css/navigationbar.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'css/accounts.css' %}>
+</head>
 
-        <a href="{% url 'login' %}">Log in again</a>
+<body>
+    <div class="navigation-bar">
+        <div style="display: inline-block">
+            <a id="upload" href="upload">Upload</a>
+            <a id="visualize" href="visualize">Visualize</a>
+        </div>
+        <div id="title" , style="display: inline-block; padding-left: 23%">
+            <h2 style="position: relative">EEG Visualization</h2>
+        </div>
     </div>
-</div>
+
+    <div id="instruction-bar">
+        <div>
+            <h4>You are logged out!</h4>
+    
+            <a style="color: white" href="{% url 'login' %}">Log in again</a>
+        </div>
+    </div>
+</body>
