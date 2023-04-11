@@ -1,0 +1,8 @@
+#instruction-bar {
+    color: white;
+    overflow: hidden;
+    margin: auto;
+    width: 90%;
+    border-radius: 5px;
+    padding: 10px;
+}
