@@ -1,28 +1,50 @@
-<div class="card">
-    <div class="card-body">
-        <h4 class="card-title">Log in to your account</h4>
-        
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}">
-    
-            {% for field in form %}
-                <p>
-                    {{ field.label_tag }}
-                    {{ field }}
-                    {% if field.help_text %}
-                        <small>{{ field.help_text }}</small>
-                    {% endif %}
-                    {% for error in field.errors %}
-                        <p style="color: red">{{ error }}</p>
-                    {% endfor %}
-                </p>
-            {% endfor %}
-    
-            <button type="submit" class="btn btn-primary btn-block">Log In</button>
-            <p>Don't have an account?
-                <a href="{% url 'signup' %}" class="btn btn-block">Sign Up</a>
-            </p>
-        </form>
+<head>
+    <title>Login Page</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href={% static 'css/navigationbar.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'css/accounts.css' %}>
+</head>
+
+<body>
+    <div class="navigation-bar">
+        <div style="display: inline-block">
+            <a id="upload" href="upload">Upload</a>
+            <a id="visualize" href="visualize">Visualize</a>
+        </div>
+        <div id="title" , style="display: inline-block; padding-left: 23%">
+            <h2 style="position: relative">EEG Visualization</h2>
+        </div>
+        <div style="float: right; padding-top: 27px">
+            <a id="signup" href="{% url 'signup' %}">Sign Up</a>
+        </div>
     </div>
-</div>
+
+    <div id="instruction-bar">
+        <div>
+            <h4>Log in to your account</h4>
+            
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}">
+        
+                {% for field in form %}
+                    <p>
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </p>
+                {% endfor %}
+        
+                <button type="submit" class="btn btn-primary btn-block">Log In</button>
+                <p>Don't have an account?
+                    <a style="color: white" href="{% url 'signup' %}" class="btn btn-block">Sign Up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
