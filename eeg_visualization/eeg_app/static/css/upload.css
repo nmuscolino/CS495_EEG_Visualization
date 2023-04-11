@@ -41,10 +41,13 @@
     width: 100%;
 }
 
-#error-message-div {
-    padding-left: 40%;
+#status-message-div {
+    background-color: black;
+    margin: auto;
+    width: 90%;
+    padding: 10px;
 }
 
-#error-message {
-    color: red;
+#status-message {
+    color: green;
 }

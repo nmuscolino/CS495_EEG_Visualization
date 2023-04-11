@@ -13,22 +13,22 @@ let chunkCounter = 0;
 //Modify as needed. 
 
 export function UploadData() {
-   
-
-
+    console.log("here")
     const file = document.querySelector('#file-input').files[0];
-    const fileType = file.name.split('.').pop();
     
     const scanName = document.querySelector('#name-of-file').value;
 
-    if (file === null) {
-        StatusMessage("Select a file.");
+    if (file === undefined) {
+        console.log("here");
+        StatusMessage("Error: Select a file.", 'red');
         return;
     }
     else if (scanName === '') {
-        StatusMessage("Name the scan.");
+        StatusMessage("Error: Name the scan.", 'red');
+        return;
     }
-    
+
+    const fileType = file.name.split('.').pop();
 
     UploadingCSS();
     UpdateTable();
@@ -37,15 +37,14 @@ export function UploadData() {
     reader.onload = function() {
         switch (fileType) {
             case "ply":
-                //console.log("in ply case");
+                console.log("in ply");
+                console.log(reader.result);
                 CompressPly(reader.result);
             break;
             case "json":
-                //console.log("in json case");
                 PostJSON(reader.result, 'postjsondata');
             break;
             case "pts":
-                //console.log("in pts case");
                 CompressPts(reader.result);
             break;
         }
@@ -176,6 +175,7 @@ function IncrementChunkCounter() {
 //Get Request
 function ProcessDataOnBackend() {
     ChangeStatus('Processing... Do not refresh or close the page');
+    StatusMessage('Status: Processing... (Please do not refresh or close the page)', 'green');
     'use strict';
     const getRequest = new XMLHttpRequest();
     getRequest.open('GET', 'process', true);
@@ -191,6 +191,9 @@ function ProcessDataOnBackend() {
             ChangeStatus('Ready');
             RecoverFromUpload();
             console.log("Coordinates Recieved.");
+        }
+        else if (getRequest.status >= 500) {
+            StatusMessage('Error: Error occurred while processing data. Please refresh the page and try again.', 'red');
         }
     }
 };
