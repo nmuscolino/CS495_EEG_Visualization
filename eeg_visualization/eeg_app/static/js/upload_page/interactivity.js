@@ -34,13 +34,11 @@ export function RecoverFromUpload() {
     nameOfFile.disabled = false;
     nameOfFile.style.backgroundColor = 'white';
     nameOfFile.value = '';
-    const errorMessage = document.querySelector('#error-message');
-    errorMessage.textContent = "Done.";
+    StatusMessage("Done.");
 };
 
 export function UploadingCSS() {
-    const errorMessage = document.querySelector('#error-message');
-    errorMessage.textContent = "Uploading... Do not refresh page";
+    StatusMessage("Uploading");
     const body = document.querySelector('body');
     body.style.cursor = 'wait';
     const fileSelectButton = document.querySelector('#file-select-button');
@@ -53,3 +51,8 @@ export function UploadingCSS() {
     nameOfFile.style.backgroundColor = 'gray';
     nameOfFile.disabled = true;
 };
+
+export function StatusMessage(msg) {
+    statusMessage = document.querySelector('#error-message');
+    statusMessage.value = msg;
+}

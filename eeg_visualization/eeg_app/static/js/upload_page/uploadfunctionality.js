@@ -4,6 +4,7 @@ import {ChangeStatus, UpdateTable} from "./table.js";
 //import { PLYLoader } from 'three/addons/loaders/PLYLoader.js'
 
 import { PLYLoader } from "../../ThreeJS/PLYLoader.js";
+import { StatusMessage } from "./interactivity.js";
 
 let chunkCounter = 0;
 
@@ -12,11 +13,25 @@ let chunkCounter = 0;
 //Modify as needed. 
 
 export function UploadData() {
-    UploadingCSS();
-    UpdateTable();
+   
+
 
     const file = document.querySelector('#file-input').files[0];
     const fileType = file.name.split('.').pop();
+    
+    const scanName = document.querySelector('#name-of-file').value;
+
+    if (file === null) {
+        StatusMessage("Select a file.");
+        return;
+    }
+    else if (scanName === '') {
+        StatusMessage("Name the scan.");
+    }
+    
+
+    UploadingCSS();
+    UpdateTable();
 
     const reader = new FileReader();
     reader.onload = function() {
