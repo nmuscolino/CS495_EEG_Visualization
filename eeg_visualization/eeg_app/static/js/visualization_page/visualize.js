@@ -11,14 +11,44 @@ export function resetCamera(camera, pos, rot, controls) {
     camera.rotation.copy(rot);  // Reset camera rotation
 };
 
+function UpdateCoordinates(name, xPos, yPos, zPos) {
+    if (xPos < 0) xPos = String(xPos).substring(0, 6);
+    else {
+        xPos = String(xPos).substring(0, 5);
+        xPos = ' ' + xPos;
+    }
 
-//!!!
-//Please do not permanently modify this file when debugging the backend issue. 
-//It is very unlikely that the problem is here, since this code works well with preprocessed data
+    if (yPos < 0) yPos = String(yPos).substring(0, 6);
+    else {
+        yPos = String(yPos).substring(0, 5);
+        yPos = ' ' + yPos;
+    }
+    
+    if (zPos < 0) zPos = String(zPos).substring(0, 6);
+    else {
+        zPos = String(zPos).substring(0, 5);
+        zPos = ' ' + zPos;
+    }
+
+    document.querySelector('#node-name').textContent = 'Electrode Name: ' + name;
+    document.querySelector('#x-coord').textContent = 'X: ' + xPos + '   ';
+    document.querySelector('#y-coord').textContent = 'Y: ' + yPos + '   ';
+    document.querySelector('#z-coord').textContent = 'Z: ' + zPos + '   ';
+}
+
+function ResetCoordinates() {
+    document.querySelector('#node-name').textContent = 'Electrode Name: ';
+    document.querySelector('#x-coord').textContent = 'X:          ';
+    document.querySelector('#y-coord').textContent = 'Y:          ';
+    document.querySelector('#z-coord').textContent = 'Z:          ';
+}
+
 export function genSpheres(coordinates) {
     var spheres = [];
     var coordinateObj = JSON.parse(coordinates);
+    console.log(coordinateObj);
     const positions = Object.values(coordinateObj);
+
 
     // Iterate through data
     for (var i = 0; i < positions.length; i++) {
@@ -157,11 +187,15 @@ function renderScene(coordObj, spheres) {
             const name = obj.name;
             
             // Log data to console
-            console.log("Name: ", name, " Position: ", xPos, ", ", yPos, ", ", zPos);
+            //console.log("Name: ", name, " Position: ", xPos, ", ", yPos, ", ", zPos);
+            UpdateCoordinates(name, xPos, yPos, zPos);
 
             // Change selected sphere color back to white
             // setTimeout adds function call to the end of the js task queue
             setTimeout(function(){ obj.material.color.set(0xffffff); }, 0);
+        }
+        else {
+            ResetCoordinates();
         }
 
         requestAnimationFrame(render);

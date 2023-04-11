@@ -40,6 +40,8 @@ function BuildMenu(dbData) {
 //Callback that gets the json for the scan name and calls genSpheres
 function GenerateVisualization() {
     let jsonString = FindJsonByScanName(this.textContent);
+    const scanName = document.querySelector('#scan-name');
+    scanName.textContent = 'Scan Name: ' + this.textContent;
     genSpheres(jsonString);
 };
 
