@@ -193,9 +193,9 @@ function setCamera(scene, coordinateObj, camera) {
     const size = boundingBox.getSize(new THREE.Vector3());
     
     // Debug bounding box visualization
-    const geometry = new THREE.BufferGeometry().setFromPoints(posVectors);
-    const bboxHelper = new THREE.BoxHelper(new THREE.Mesh(geometry), 0x0000ff);
-    scene.add(bboxHelper)
+    // const geometry = new THREE.BufferGeometry().setFromPoints(posVectors);
+    // const bboxHelper = new THREE.BoxHelper(new THREE.Mesh(geometry), 0x0000ff);
+    // scene.add(bboxHelper)
 
     //Calculate distance from center of cluster (bounding box) to the camera
     const maxDim = Math.max(size.x, size.y, size.z);
