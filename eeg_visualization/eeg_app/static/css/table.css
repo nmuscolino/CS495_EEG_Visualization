@@ -1,0 +1,34 @@
+table, th, td {
+    border: 1px solid white;
+    width: 33%;
+}
+
+table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+    border-radius: 10px;
+}
+
+th {
+    background-color: darkgray;
+    color: black;
+}
+
+tr:nth-child(odd) {
+    background-color: darkgray;
+}
+
+tr:nth-child(even) {
+    background-color: lightgray;
+}
+
+#table-div {
+    margin: auto;
+    background-color: black;
+    width: 90%;
+    padding: 10px;
+    padding-bottom: 30px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}

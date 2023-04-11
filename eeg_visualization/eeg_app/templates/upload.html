@@ -2,21 +2,24 @@
     <title>Upload Page</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href={% static 'css/upload.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'css/table.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'css/navigationbar.css' %}>
+    
     <script type="module" src={% static 'js/upload_page/upload.js' %} defer></script>
 </head>
 
 <body>
     <div class="navigation-bar">
         <div style="display: inline-block">
-            <label for="home">Home</label>
-            <label for="upload">Upload</label>
-            <label for="visualize">Visualize</label>
-            <button id="home" style="display: none;"></button>
-            <button id="upload" style="display: none;"></button>
-            <button id="visualize" style="display: none;"></button>
+            <a id="upload" href="upload">Upload</a>
+            <a id="visualize" href="visualize">Visualize</a>
         </div>
         <div id="title" , style="display: inline-block; padding-left: 23%">
             <h2 style="position: relative">EEG Visualization</h2>
+        </div>
+        <div style="float: right; text-align: center">
+            <p>{{ request.user.username }}</p>
+            <a id="logout" href="{% url 'logout' %}">Log Out</a>
         </div>
     </div>
 
@@ -24,7 +27,7 @@
         <h3>Instructions</h3>
         <p>
             1. Name the scan (alphanumeric characters and underscores allowed) <br>
-            2. Upload the point cloud file (.pts format) <br>
+            2. Upload either a point cloud (.pts) or a JSON file with the positions (.json) <br>
             3. Click the upload button
         </p>
     </div>
@@ -35,10 +38,10 @@
             </div>
             
             <div style="display: inline-block; width: 20%">
-                <input type="text" id="name-of-file" style="display: inline-block; background-color: purple; color: white; width: 100%">
+                <input type="text" id="name-of-file">
             </div>
          
-            <input type="file" id="file-input" accept=".pts" style="display: none;">
+            <input type="file" id="file-input" accept=".pts, .json, .ply" style="display: none;">
 
             <div style="display: inline-block; padding-left: 5%;">
                 <button id="file-select-button">Select File</button>
@@ -56,6 +59,11 @@
     <div id="table-div">
         <table id="data-table"></table>
     </div>
+
+
+    <div id="error-message-div">
+        <h3 id="error-message"></h3>
+    <div>
 
     
 

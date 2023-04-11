@@ -26,17 +26,21 @@ export function RecoverFromUpload() {
     const uploadButton = document.querySelector('#upload-button');
     fileSelectButton.disabled = false;
     uploadButton.disabled = false;
-    fileSelectButton.style.backgroundColor = 'purple';
-    uploadButton.style.backgroundColor = 'purple';
+    fileSelectButton.style.backgroundColor = 'white';
+    uploadButton.style.backgroundColor = 'white';
     const body = document.querySelector('body');
     body.style.cursor = 'default';
     const nameOfFile = document.querySelector('#name-of-file');
     nameOfFile.disabled = false;
-    nameOfFile.style.backgroundColor = 'purple';
+    nameOfFile.style.backgroundColor = 'white';
     nameOfFile.value = '';
+    const errorMessage = document.querySelector('#error-message');
+    errorMessage.textContent = "Done.";
 };
 
 export function UploadingCSS() {
+    const errorMessage = document.querySelector('#error-message');
+    errorMessage.textContent = "Uploading... Do not refresh page";
     const body = document.querySelector('body');
     body.style.cursor = 'wait';
     const fileSelectButton = document.querySelector('#file-select-button');

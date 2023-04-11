@@ -21,4 +21,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('eeg_app.urls')),
-] +static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('accounts/', include('accounts.urls')),
+    path('', include('accounts.urls')),
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

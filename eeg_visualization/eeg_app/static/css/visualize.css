@@ -1,0 +1,46 @@
+.controls .btn-css {
+    display: none;
+}
+
+.controls {
+    background-color: rgb(48,48,48);
+    color: #f2f2f2;
+    overflow: hidden;   
+}
+
+/*Makes the button labels align on the left and sets their characteristics*/
+.controls label {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/*Changes the button colors when you hover over them*/
+#reset-label:hover {
+    background-color: rgb(48,48,48);
+    color: red;
+    cursor: pointer;
+}
+
+.controls input[type="range"] {
+    padding: 14px 16px;
+    cursor: pointer;
+}
+
+#menu h2 {
+    color: white;
+    padding-left: 5px;
+}
+
+#menu p {
+    color: white;
+    padding-left: 10px;
+}
+
+#menu p:hover {
+    color: red;
+    cursor: pointer;
+}
