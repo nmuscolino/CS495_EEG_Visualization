@@ -44,3 +44,7 @@
     color: red;
     cursor: pointer;
 }
+
+#menu {
+    overflow-y: auto;
+}
