@@ -6,17 +6,16 @@ import { StatusMessage } from "./interactivity.js";
 let chunkCounter = 0;
 
 export function UploadData() {
-    console.log("here")
     const file = document.querySelector('#file-input').files[0];
     
     const scanName = document.querySelector('#name-of-file').value;
 
     if (file === undefined) {
-        StatusMessage("Error: Select a file.", 'red');
+        StatusMessage("Error: Select a file.", "red");
         return;
     }
     else if (scanName === '') {
-        StatusMessage("Error: Name the scan.", 'red');
+        StatusMessage("Error: Name the scan.", "red");
         return;
     }
 
