@@ -5,6 +5,15 @@ import { StatusMessage } from "./interactivity.js";
 
 let chunkCounter = 0;
 
+function DuplicateExists(newScanName) {
+    const table = document.querySelector('#data-table');
+    for (var i = 0; i < table.children.length; i++) {
+        let curName = table.children[i].children[0].textContent;
+        if (curName == newScanName) return true;
+    }
+    return false;
+}
+
 export function UploadData() {
     const file = document.querySelector('#file-input').files[0];
     
@@ -16,6 +25,10 @@ export function UploadData() {
     }
     else if (scanName === '') {
         StatusMessage("Error: Name the scan.", "red");
+        return;
+    }
+    else if (DuplicateExists(scanName)) {
+        StatusMessage("Error: Duplicate name. Rename the scan.", "red");
         return;
     }
 
