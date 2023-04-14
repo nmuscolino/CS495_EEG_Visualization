@@ -54,7 +54,7 @@ def Process(request):
 
 def GetDbData(request):
     # Obtain a QuerySet of all scans in the database, ordered by most recent upload date
-    tableData = Scan.objects.all().order_by("-upload_date")
+    tableData = Scan.objects.filter(user=request.user).order_by("-upload_date")
 
     # Convert the data to JSON format and return it as an HTTPResponse
     tableData_json = serializers.serialize("json", tableData, fields=("scan_name", "upload_date"))

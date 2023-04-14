@@ -38,7 +38,7 @@ export function RecoverFromUpload() {
 };
 
 export function UploadingCSS() {
-    StatusMessage('Status: Uploading... (Please do not refresh or close the page', 'green');
+    StatusMessage('Status: Uploading... (Please do not refresh or close the page)', 'green');
     const body = document.querySelector('body');
     body.style.cursor = 'wait';
     const fileSelectButton = document.querySelector('#file-select-button');

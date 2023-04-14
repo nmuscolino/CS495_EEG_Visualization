@@ -42,7 +42,7 @@ function CreateRow(rowData, type, scanID) {
         tr.appendChild(col);
     }
 
-    // If user is an admin, add delete column
+    // Add the delete column
     let deleteCol = '';
     // If element is the header, label the column 'Delete'
     if (type == 'th') {
@@ -56,21 +56,15 @@ function CreateRow(rowData, type, scanID) {
         deleteCol.innerText = 'Delete';
     }
     tr.appendChild(deleteCol);
-    
-    console.log(tr);
 
     return tr;
 };
 
 
 function BuildTable(table, data) {
-    // Change depending on whether user is an admin
     let headerData = ['Scan Name', 'Date Uploaded', 'Status', 'Delete'];
     table.appendChild(CreateRow(headerData, 'th'));
     for (let i = 0; i < Object.keys(data).length; i++) {
-        //let scanName = Object.keys(data)[i];
-        //let date = data[Object.keys(data)[i]][0];
-        //let status = data[Object.keys(data)[i]][1];
         let scanName = data[Object.keys(data)[i]].fields.scan_name;
         let date = data[Object.keys(data)[i]].fields.upload_date.substring(0, 10);
         let status = 'Ready';
