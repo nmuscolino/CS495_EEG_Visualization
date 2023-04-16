@@ -1,9 +1,7 @@
 import * as THREE from '../../ThreeJS/three.module.js';
 import { OrbitControls } from '../../ThreeJS/OrbitControls.js';
 
-//!!!
-//Please do not permanently modify this file when debugging the backend issue. 
-//It is very unlikely that the problem is here, since this code works well with preprocessed data
+
     
 export function resetCamera(camera, pos, rot, controls) {
     controls.reset();           // Reset controls (resets panning changes)
@@ -30,23 +28,38 @@ function UpdateCoordinates(name, xPos, yPos, zPos) {
         zPos = ' ' + zPos;
     }
 
-    document.querySelector('#node-name').textContent = 'Electrode Name: ' + name;
+    if (name.length == 1) name = name + '   ';
+    else if (name.length == 2) name = name + '  ';
+    else if (name.length == 3) name = name + ' ';
+
+    document.querySelector('#node-name').textContent = 'Electrode Name: ' + name + '   ';
     document.querySelector('#x-coord').textContent = 'X: ' + xPos + '   ';
     document.querySelector('#y-coord').textContent = 'Y: ' + yPos + '   ';
     document.querySelector('#z-coord').textContent = 'Z: ' + zPos + '   ';
+
+    document.querySelector('#node-name').style.color = 'red';
+    document.querySelector('#x-coord').style.color = 'red';
+    document.querySelector('#y-coord').style.color = 'red';
+    document.querySelector('#z-coord').style.color = 'red';
+
+
 }
 
 function ResetCoordinates() {
-    document.querySelector('#node-name').textContent = 'Electrode Name: ';
+    document.querySelector('#node-name').textContent = 'Electrode Name:        ';
     document.querySelector('#x-coord').textContent = 'X:          ';
     document.querySelector('#y-coord').textContent = 'Y:          ';
     document.querySelector('#z-coord').textContent = 'Z:          ';
+
+    document.querySelector('#node-name').style.color = 'white';
+    document.querySelector('#x-coord').style.color = 'white';
+    document.querySelector('#y-coord').style.color = 'white';
+    document.querySelector('#z-coord').style.color = 'white';
 }
 
 export function genSpheres(coordinates) {
     var spheres = [];
     var coordinateObj = JSON.parse(coordinates);
-    console.log(coordinateObj);
     const positions = Object.values(coordinateObj);
 
 
