@@ -53,10 +53,51 @@ function FindJsonByScanName(scanName) {
 }
 
 function DownloadFile() {
+    let name = document.querySelector('#scan-name').textContent;
+    name = name.split(' ');
+    name = name[2];
     
+    let json = FindJsonByScanName(name);
+    let jsonObj = JSON.parse(json);
+
+    let text = '';
+        
+    for (var i = 0; i < Object.keys(jsonObj).length; i++) {
+        let scanName = Object.keys(jsonObj)[i];
+        let data = jsonObj[scanName];
+
+        let xPos = data[0];
+        if (xPos < 0) xPos = String(xPos).substring(0, 6);
+        else {
+            xPos = String(xPos).substring(0, 5);
+            xPos = ' ' + xPos;
+        }
+
+        let yPos = data[1];
+        if (yPos < 0) yPos = String(yPos).substring(0, 6);
+        else {
+            yPos = String(yPos).substring(0, 5);
+            yPos = ' ' + yPos;
+        }
+        
+        let zPos = data[2];
+        if (zPos < 0) zPos = String(zPos).substring(0, 6);
+        else {
+            zPos = String(zPos).substring(0, 5);
+            zPos = ' ' + zPos;
+        }
+    
+        text = text + scanName + '\t' + xPos + '\t' + yPos + '\t' + zPos + '\n';
+    }
+
+    let fname = name + '.txt';
+    const a = document.querySelector('#download');
+    a.setAttribute('href', 'data:text/plain; charset=utf-8,' + encodeURIComponent(text));
+    a.setAttribute('download', fname);
+    a.click();
 }
 
 LoadDBData();
 
 const fileDownload = document.querySelector('#download-file'); //file input hidden button
-fileSelector.addEventListener('change', DownloadFile);
+fileDownload.addEventListener('click', DownloadFile);
