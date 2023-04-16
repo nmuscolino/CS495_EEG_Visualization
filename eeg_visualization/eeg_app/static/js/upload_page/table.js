@@ -11,6 +11,7 @@ export function LoadTable() {
             BuildTable(table, JSON.parse(dbData));
         }
     }
+    return 1;
 };
 
 export function UpdateTable() {
@@ -34,6 +35,7 @@ export function ChangeStatus(status) {
 
 function CreateRow(rowData, type, scanID) {
     let tr = document.createElement('tr');
+    let scanName = rowData[0];
 
     // Create the three columns always shown in the table
     for (let i = 0; i < 3; i++) {
@@ -52,14 +54,14 @@ function CreateRow(rowData, type, scanID) {
     // If element is a td, create a link to delete a scan
     else if (type == 'td') {
         deleteCol = document.createElement('a');
-        deleteCol.setAttribute('href', '/delete/' + scanID); // Update to delete view after adding it
+        deleteCol.setAttribute('href', '/delete/' + scanID);
+        deleteCol.onclick = function() {confirmation(scanName);};
         deleteCol.innerText = 'Delete';
     }
     tr.appendChild(deleteCol);
 
     return tr;
 };
-
 
 function BuildTable(table, data) {
     let headerData = ['Scan Name', 'Date Uploaded', 'Status', 'Delete'];
@@ -73,3 +75,14 @@ function BuildTable(table, data) {
         table.appendChild(CreateRow(rowData, 'td', scanID));
     }
 };
+
+// Confirm delete operation
+function confirmation(scanName) {
+    if (confirm("Delete this scan: " + scanName + "?")) {
+        return true;
+    } else {
+        event.preventDefault();
+        console.log("Cancelling deletion");
+        return false;
+    }
+}
