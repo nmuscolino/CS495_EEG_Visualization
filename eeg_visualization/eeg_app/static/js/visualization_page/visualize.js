@@ -1,9 +1,7 @@
 import * as THREE from '../../ThreeJS/three.module.js';
 import { OrbitControls } from '../../ThreeJS/OrbitControls.js';
 
-//!!!
-//Please do not permanently modify this file when debugging the backend issue. 
-//It is very unlikely that the problem is here, since this code works well with preprocessed data
+
     
 export function resetCamera(camera, pos, rot, controls) {
     controls.reset();           // Reset controls (resets panning changes)
@@ -30,23 +28,38 @@ function UpdateCoordinates(name, xPos, yPos, zPos) {
         zPos = ' ' + zPos;
     }
 
-    document.querySelector('#node-name').textContent = 'Electrode Name: ' + name;
+    if (name.length == 1) name = name + '   ';
+    else if (name.length == 2) name = name + '  ';
+    else if (name.length == 3) name = name + ' ';
+
+    document.querySelector('#node-name').textContent = 'Electrode Name: ' + name + '   ';
     document.querySelector('#x-coord').textContent = 'X: ' + xPos + '   ';
     document.querySelector('#y-coord').textContent = 'Y: ' + yPos + '   ';
     document.querySelector('#z-coord').textContent = 'Z: ' + zPos + '   ';
+
+    document.querySelector('#node-name').style.color = 'red';
+    document.querySelector('#x-coord').style.color = 'red';
+    document.querySelector('#y-coord').style.color = 'red';
+    document.querySelector('#z-coord').style.color = 'red';
+
+
 }
 
 function ResetCoordinates() {
-    document.querySelector('#node-name').textContent = 'Electrode Name: ';
+    document.querySelector('#node-name').textContent = 'Electrode Name:        ';
     document.querySelector('#x-coord').textContent = 'X:          ';
     document.querySelector('#y-coord').textContent = 'Y:          ';
     document.querySelector('#z-coord').textContent = 'Z:          ';
+
+    document.querySelector('#node-name').style.color = 'white';
+    document.querySelector('#x-coord').style.color = 'white';
+    document.querySelector('#y-coord').style.color = 'white';
+    document.querySelector('#z-coord').style.color = 'white';
 }
 
 export function genSpheres(coordinates) {
     var spheres = [];
     var coordinateObj = JSON.parse(coordinates);
-    console.log(coordinateObj);
     const positions = Object.values(coordinateObj);
 
 
@@ -90,7 +103,7 @@ function renderScene(coordObj, spheres) {
     controls.rotateSpeed = 0.5; // Default camera sensitivity
     
     // Calculate camera starting position
-    const center = setCamera(scene, coordObj, camera);
+    const center = setCamera(coordObj, camera);
     
     // Prevent camera clipping spheres
     camera.near = 0.01;
@@ -100,10 +113,8 @@ function renderScene(coordObj, spheres) {
     controls.target = center;
     controls.saveState();
 
-    // Rotate group (cluster) 90 degrees before adding to scene
-    group.rotateX(-Math.PI / 2);
-    group.position.y -= 0.3;
-    group.position.add(center);
+    // Rotate group 90 degrees on x-axis
+    rotateObject(group, center);
     
     // Add the group to the scene and setup default camera position
     scene.add(group);
@@ -207,7 +218,7 @@ function renderScene(coordObj, spheres) {
 }   
 
 
-function setCamera(scene, coordinateObj, camera) {
+function setCamera(coordinateObj, camera) {
     const positions = Object.values(coordinateObj);
     var posVectors = [];
 
@@ -225,20 +236,21 @@ function setCamera(scene, coordinateObj, camera) {
     const boundingBox = new THREE.Box3().setFromPoints(posVectors);
     const center = boundingBox.getCenter(new THREE.Vector3());
     const size = boundingBox.getSize(new THREE.Vector3());
-    
-    // Debug bounding box visualization
-    // const geometry = new THREE.BufferGeometry().setFromPoints(posVectors);
-    // const bboxHelper = new THREE.BoxHelper(new THREE.Mesh(geometry), 0x0000ff);
-    // scene.add(bboxHelper)
 
     //Calculate distance from center of cluster (bounding box) to the camera
     const maxDim = Math.max(size.x, size.y, size.z);
     const fov = camera.fov * (Math.PI / 180);
-    var distance = Math.abs(maxDim / 4 * Math.tan(fov * 2));
+    var distance = maxDim / 2 / Math.tan(fov / 2);
 
-    distance *= 0.9;   // Add offset to back camera up a bit
+    distance *= 1.7;   // Add offset to back camera up a bit
 
-    camera.position.z = distance;   // Set camera position
+    camera.position.z = center.z - distance;   // Set camera position
 
     return center;
+}
+
+function rotateObject(object, center) {
+    object.rotateX(-Math.PI / 2);   // Rotate object 90 degrees on the x-axis
+    object.position.y -= center.z;  // Account for center point offset
+    object.position.add(center);    // Translate object back to center point
 }

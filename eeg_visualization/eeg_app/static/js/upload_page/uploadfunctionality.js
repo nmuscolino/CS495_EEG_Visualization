@@ -5,18 +5,30 @@ import { StatusMessage } from "./interactivity.js";
 
 let chunkCounter = 0;
 
+function DuplicateExists(newScanName) {
+    const table = document.querySelector('#data-table');
+    for (var i = 0; i < table.children.length; i++) {
+        let curName = table.children[i].children[0].textContent;
+        if (curName == newScanName) return true;
+    }
+    return false;
+}
+
 export function UploadData() {
-    console.log("here")
     const file = document.querySelector('#file-input').files[0];
     
     const scanName = document.querySelector('#name-of-file').value;
 
     if (file === undefined) {
-        StatusMessage("Error: Select a file.", 'red');
+        StatusMessage("Error: Select a file.", "red");
         return;
     }
     else if (scanName === '') {
-        StatusMessage("Error: Name the scan.", 'red');
+        StatusMessage("Error: Name the scan.", "red");
+        return;
+    }
+    else if (DuplicateExists(scanName)) {
+        StatusMessage("Error: Duplicate name. Rename the scan.", "red");
         return;
     }
 
