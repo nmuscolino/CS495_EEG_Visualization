@@ -25,6 +25,12 @@
     cursor: pointer;
 }
 
+#download-file-label:hover {
+    background-color: rgb(48,48,48);
+    color: red;
+    cursor: pointer;
+}
+
 .controls input[type="range"] {
     padding: 14px 16px;
     cursor: pointer;

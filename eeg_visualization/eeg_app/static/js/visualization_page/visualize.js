@@ -1,9 +1,7 @@
 import * as THREE from '../../ThreeJS/three.module.js';
 import { OrbitControls } from '../../ThreeJS/OrbitControls.js';
 
-//!!!
-//Please do not permanently modify this file when debugging the backend issue. 
-//It is very unlikely that the problem is here, since this code works well with preprocessed data
+
     
 export function resetCamera(camera, pos, rot, controls) {
     controls.reset();           // Reset controls (resets panning changes)
