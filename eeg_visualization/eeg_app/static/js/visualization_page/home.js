@@ -2,11 +2,6 @@ import {genSpheres} from './visualize.js';
 
 let dbObj;
 
-
-//!!!!
-//Please do not modify this file either without very good reason. 
-//The problem is unlikely to be found here
-
 //Get the data from the database
 function LoadDBData() {
     'use strict';
@@ -57,4 +52,11 @@ function FindJsonByScanName(scanName) {
     } 
 }
 
+function DownloadFile() {
+    
+}
+
 LoadDBData();
+
+const fileDownload = document.querySelector('#download-file'); //file input hidden button
+fileSelector.addEventListener('change', DownloadFile);
