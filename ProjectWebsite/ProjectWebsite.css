@@ -139,6 +139,18 @@ p {
     border-radius: 15px;
 }
 
+#border3 {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 1%;
+    border-style: solid;
+    border-radius: 15px;
+}
+
 #border2 {
     margin-top: 5%;
     margin-bottom: 5%;
