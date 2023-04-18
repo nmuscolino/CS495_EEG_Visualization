@@ -49,7 +49,7 @@ def Process(request):
 
     # If the scan name is passed from the frontend, add an entry in the database
     if request.method == "POST":
-        new_scan = Scan(scan_name=request.body.decode("utf-8"), scan_json=positions)
+        new_scan = Scan(user=request.user, scan_name=request.body.decode("utf-8"), scan_json=positions)
         new_scan.save()
 
     return HttpResponse(positions)
