@@ -54,9 +54,13 @@ function FindJsonByScanName(scanName) {
 
 function DownloadFile() {
     let name = document.querySelector('#scan-name').textContent;
+    if (name == 'Scan Name:') {
+        return;
+    }
     name = name.split(' ');
     name = name[2];
     
+
     let json = FindJsonByScanName(name);
     let jsonObj = JSON.parse(json);
 
