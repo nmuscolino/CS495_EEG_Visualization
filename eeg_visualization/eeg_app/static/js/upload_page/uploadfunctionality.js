@@ -66,7 +66,6 @@ export function UploadData() {
 function PostJSON(data, url) {
     //get the scan name, this could maybe go in a better place
     const scanName = document.querySelector('#name-of-file');
-    console.log(scanName.value);
 
     let dataToSend = scanName.value + "!" + data
 
