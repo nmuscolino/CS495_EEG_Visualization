@@ -149,6 +149,7 @@ p {
     padding-bottom: 1%;
     border-style: solid;
     border-radius: 15px;
+    height: 100%;
 }
 
 #border2 {
