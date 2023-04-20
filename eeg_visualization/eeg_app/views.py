@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from datetime import datetime
+from django.db import transaction
 import json
 
 from . import process
@@ -44,6 +45,7 @@ def PostJSON(request):
 
 @csrf_exempt
 # Call backend code to compute electrode coordinates and save new entries to database
+@transaction.atomic
 def Process(request):
     positions = process.process_data()
 
