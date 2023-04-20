@@ -1,8 +1,122 @@
 import * as THREE from '../../ThreeJS/three.module.js';
 import { OrbitControls } from '../../ThreeJS/OrbitControls.js';
 
+// Global Variables
+let scene, camera, renderer, controls, group;
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
+function init() {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 1000);
+    renderer = new THREE.WebGLRenderer();
+
+    // Append the scene to the correct div and replace old one if necessary
+    const sceneDiv = document.querySelector('#visualization');
     
+    if (sceneDiv.hasChildNodes()) {
+        let oldChild = sceneDiv.childNodes[0];
+        sceneDiv.replaceChild(renderer.domElement, oldChild);
+    }
+    else {
+        sceneDiv.appendChild(renderer.domElement);
+    }
+
+    renderer.setSize(sceneDiv.clientWidth, sceneDiv.clientHeight);  // Set the renderer size
+
+    //Set up controls
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.rotateSpeed = 0.5;
+
+    // EVENT LISTENERS
+    // Camera sensitivity slider
+    var sensSlider = document.getElementById("sensSlider");
+
+    //Update mouse sensitivity when slider is released
+    sensSlider.addEventListener("mouseup", function() {
+        controls.rotateSpeed = sensSlider.value * 0.1;
+    })
+
+    // Save default camera postion and rotation
+    const initialCamPos = camera.position.clone();
+    const initialCamRot = camera.rotation.clone();
+
+    // Camera reset button
+    var resetButton = document.getElementById("camera-reset");
+
+    resetButton.addEventListener("click", function() {
+        resetCamera(camera, initialCamPos, initialCamRot, controls);
+    })
+    
+    // Listen for window resize events
+    window.addEventListener("resize", (event) => {
+        const sceneDiv = document.querySelector('#visualization');
+        const width = sceneDiv.clientWidth;
+        const height = sceneDiv.clientHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix(); // Update camera position
+        renderer.setSize(width, height); // Update scene size to match window
+    });
+
+    window.addEventListener('mousemove', (event) => {
+        // Normalize device coordinates (-1 to 1)
+        // Since renderer is not full-size normalize using coordinates of its bounding box
+        var rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;       
+        mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;       
+    });
+}
+
+// Group memory management
+function createGroup(spheres) {
+    const group = new THREE.Group();
+    for (var i = 0; i < spheres.length; i++) {
+        group.add(spheres[i]);  // Add each sphere to new group
+    }
+    return group;
+}
+
+// Clear group
+function resetGroup() {
+    if (group) {
+        scene.remove(group);
+    }
+}
+
+function animate() {
+    // Update ray position
+    raycaster.setFromCamera(mouse, camera);
+        
+    // Get intersection objects
+    const intersections = raycaster.intersectObjects(scene.children);
+    if (intersections.length > 0 && intersections[0].object instanceof THREE.Mesh) {
+        var obj = intersections[0].object;
+        obj.material.color.set(0xff0000);   // Color change on select (red)
+
+        // Extract electrode data
+        const xPos = obj.position.x;
+        const yPos = obj.position.y;
+        const zPos = obj.position.z;
+        const name = obj.name;
+        
+        // Log data to console
+        //console.log("Name: ", name, " Position: ", xPos, ", ", yPos, ", ", zPos);
+        UpdateCoordinates(name, xPos, yPos, zPos);
+
+        // Change selected sphere color back to white
+        // setTimeout adds function call to the end of the js task queue
+        setTimeout(function(){ obj.material.color.set(0xffffff); }, 0);
+    }
+    else {
+        ResetCoordinates();
+    }
+
+    // Call 'animate' again (render loop)
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+}
+
 export function resetCamera(camera, pos, rot, controls) {
     controls.reset();           // Reset controls (resets panning changes)
     camera.position.copy(pos);  // Reset camera position
@@ -58,165 +172,34 @@ function ResetCoordinates() {
 }
 
 export function genSpheres(coordinates) {
-    var spheres = [];
     var coordinateObj = JSON.parse(coordinates);
     const positions = Object.values(coordinateObj);
-
+    var spheres = [];
 
     // Iterate through data
     for (var i = 0; i < positions.length; i++) {
         const position = positions[i];
 
-        // Extract coordinates
-        var x = position[0];
-        var y = position[1];
-        var z = position[2];
-
         // Sphere parameters
         const sphereGeo = new THREE.SphereGeometry(0.0025, 32, 32);   // Size and resolution
         const sphereMat = new THREE.MeshBasicMaterial({color: 0xffffff});   // White color
         const sphere = new THREE.Mesh(sphereGeo, sphereMat);    // Create mesh
-
-        sphere.position.set(x, y, z);                   // Translate spheres
+        sphere.position.set(position[0], position[1], position[2]);                   // Translate spheres
         sphere.name = Object.keys(coordinateObj)[i];    // Extract name
         spheres.push(sphere);                           // Add to spheres array
     }
-    //Begin rendering the scene
-    renderScene(coordinateObj, spheres);
-};
-
-function renderScene(coordObj, spheres) {
-    // Create a group to hold the spheres
-    var group = new THREE.Group();
-
-    // Add each sphere to the group
-    for (var i = 0; i < spheres.length; i++) {
-        var sphere = spheres[i];
-        group.add(sphere);
-    }
-
-    // Create a scene, camera, and renderer
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var renderer = new THREE.WebGLRenderer();
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.rotateSpeed = 0.5; // Default camera sensitivity
     
-    // Calculate camera starting position
-    const center = setCamera(coordObj, camera);
-    
-    // Prevent camera clipping spheres
-    camera.near = 0.01;
-    camera.updateProjectionMatrix();
-    
-    // Camera look at center of cluster
-    controls.target = center;
-    controls.saveState();
-
-    // Rotate group 90 degrees on x-axis
-    rotateObject(group, center);
-    
-    // Add the group to the scene and setup default camera position
+    // Update group object
+    resetGroup();
+    group = createGroup(spheres);
     scene.add(group);
 
-    // Debug center point visualization
-    // const testGeo = new THREE.SphereGeometry(0.01, 32, 32);   // Size and resolution
-    // const testMat = new THREE.MeshBasicMaterial({color: 0x00ff00});   // Green color
-    // const testSphere = new THREE.Mesh(testGeo, testMat);    // Create mesh
-    // testSphere.position.set(center.x, center.y, center.z);
-    // scene.add(testSphere);
-
-    // Save default camera postion and rotation
-    const initialCamPos = camera.position.clone();
-    const initialCamRot = camera.rotation.clone();
-
-    // Append the scene to the correct div and replace old one if necessary
-    const sceneDiv = document.querySelector('#visualization');
-    
-    // Set the renderer size
-    renderer.setSize(sceneDiv.clientWidth, sceneDiv.clientHeight);
-    
-    if (sceneDiv.hasChildNodes()) {
-        let oldChild = sceneDiv.childNodes[0];
-        sceneDiv.replaceChild(renderer.domElement, oldChild);
-    }
-    else {
-        sceneDiv.appendChild(renderer.domElement);
-    }
-    
-    // Camera sensitivity slider
-    var sensSlider = document.getElementById("sensSlider");
-
-    //Update mouse sensitivity when slider is released
-    sensSlider.addEventListener("mouseup", function() {
-        controls.rotateSpeed = sensSlider.value * 0.1;
-    })
-
-    // Camera reset button
-    var resetButton = document.getElementById("camera-reset");
-
-    resetButton.addEventListener("click", function() {
-        resetCamera(camera, initialCamPos, initialCamRot, controls);
-    })
-    
-    // Listen for window resize events
-    window.addEventListener("resize", (event) => {
-        const sceneDiv = document.querySelector('#visualization');
-        const width = sceneDiv.clientWidth;
-        const height = sceneDiv.clientHeight;
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix(); // Update camera position
-        renderer.setSize(width, height); // Update scene size to match window
-    });
-    
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    window.addEventListener('mousemove', (event) => {
-        // Normalize device coordinates (-1 to 1)
-        // Since renderer is not full-size normalize using coordinates of its bounding box
-        var rect = renderer.domElement.getBoundingClientRect();
-        mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;       
-        mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;       
-    });
-
-    // Render scene
-    var render = function () {
-        // Update ray position
-        raycaster.setFromCamera(mouse, camera);
-        
-        // Get intersection objects
-        const intersections = raycaster.intersectObjects(scene.children);
-        if (intersections.length > 0 && intersections[0].object instanceof THREE.Mesh) {
-            var obj = intersections[0].object;
-            obj.material.color.set(0xff0000);   // Color change on select (red)
-
-            // Extract electrode data
-            const xPos = obj.position.x;
-            const yPos = obj.position.y;
-            const zPos = obj.position.z;
-            const name = obj.name;
-            
-            // Log data to console
-            //console.log("Name: ", name, " Position: ", xPos, ", ", yPos, ", ", zPos);
-            UpdateCoordinates(name, xPos, yPos, zPos);
-
-            // Change selected sphere color back to white
-            // setTimeout adds function call to the end of the js task queue
-            setTimeout(function(){ obj.material.color.set(0xffffff); }, 0);
-        }
-        else {
-            ResetCoordinates();
-        }
-
-        requestAnimationFrame(render);
-        controls.update();
-        renderer.render(scene, camera);
-    };
-    
-    render();
-}   
-
+    // Reorient and center the cluster of points
+    const center = setCamera(coordinateObj, camera);    // Calculate initial camera position
+    controls.target = center;                           // Point camera at center of cluster
+    controls.saveState();                               // Update controls
+    rotateObject(group, center);                        // Rotate group -90 degrees on x-axis
+};
 
 function setCamera(coordinateObj, camera) {
     const positions = Object.values(coordinateObj);
@@ -254,3 +237,6 @@ function rotateObject(object, center) {
     object.position.y -= center.z;  // Account for center point offset
     object.position.add(center);    // Translate object back to center point
 }
+
+init();
+animate();
