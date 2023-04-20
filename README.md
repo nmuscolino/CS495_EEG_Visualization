@@ -18,6 +18,16 @@ As before, check for any JavaScript errors in the console developer tools when u
 
 Use these testing procedures when testing the app locally hosted and when hosting on the internet.
 
+<h2>Test Procedures (Sprint 3)</h2>
+
+In addition to test procedures from Sprint 2, it is important to test creating user accounts and switching between them. Upon creating a new account from the signup page, check the Django admin panel to ensure the new user account was added to the database. (Admin accounts must be created from the console using Django commands, or existing admins can give other accounts admin roles.) Logging in and out and switching between users should be a straightforward process.
+
+Check to ensure that only scans uploaded by the current user are shown in the table. Verify which scans belong to each user from the admin panel.
+
+To test the app's performance, try uploading several files consecutively to ensure it can handle multiple uploads in quick succession. Confirm error messaging is working by attempting to upload without providing a name or a file.
+
+To test the visualization, try switching between available scans very quickly and adjusting the perspective in the visualization window. Ensure the frame rate remains consistent and the web app does not slow down.
+
 <h2>Note:</h2>
 
 We followed a tutorial on DigitalOcean's website to learn how to host the web app using Nginx and Gunicorn. <br>
