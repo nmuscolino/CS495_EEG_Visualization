@@ -13,6 +13,7 @@ table {
 th {
     background-color: darkgray;
     color: black;
+    padding: 5px;
 }
 
 tr:nth-child(odd) {

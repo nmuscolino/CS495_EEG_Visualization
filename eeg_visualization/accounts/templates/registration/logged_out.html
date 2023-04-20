@@ -8,8 +8,8 @@
 <body>
     <div class="navigation-bar">
         <div style="display: inline-block">
-            <a id="upload" href="upload">Upload</a>
-            <a id="visualize" href="visualize">Visualize</a>
+            <a id="upload" href="{% url 'upload' %}">Upload</a>
+            <a id="visualize" href="{% url 'visualize' %}">Visualize</a>
         </div>
         <div id="title" , style="display: inline-block; padding-left: 23%">
             <h2 style="position: relative">EEG Visualization</h2>

@@ -1,6 +1,7 @@
 import { LoadTable } from "./table.js";
-import { RemoveCharacters, SelectFile, PrepareForUpload} from "./interactivity.js";
+import { RemoveCharacters, SelectFile, PrepareForUpload } from "./interactivity.js";
 import {UploadData} from "./uploadfunctionality.js";
+//import { ModalEventListeners } from "./modal.js";
 
 
 const nameOfFile = document.querySelector('#name-of-file');
@@ -18,20 +19,3 @@ const uploadButton = document.querySelector('#upload-button'); // The button tha
 uploadButton.addEventListener('click', UploadData);
 
 LoadTable();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -66,7 +66,6 @@ export function UploadData() {
 function PostJSON(data, url) {
     //get the scan name, this could maybe go in a better place
     const scanName = document.querySelector('#name-of-file');
-    console.log(scanName.value);
 
     let dataToSend = scanName.value + "!" + data
 
@@ -177,21 +176,18 @@ function IncrementChunkCounter() {
 
 //Get Request
 function ProcessDataOnBackend() {
-
-    'use strict';
-    const getRequest = new XMLHttpRequest();
-    getRequest.open('GET', 'process', true);
-    getRequest.send();
-    getRequest.onreadystatechange = function() {
-        if (getRequest.readyState == 4 && getRequest.status == 200) {
-            const scanName = document.querySelector('#name-of-file');
-            Post(scanName.value, 'process');
-            
-            ChangeStatus('Ready');
-            RecoverFromUpload();
+        'use strict';
+        const postRequest = new XMLHttpRequest();
+        postRequest.open('POST', 'process', true);
+        const scanName = document.querySelector('#name-of-file');
+        postRequest.send(scanName.value);
+        postRequest.onreadystatechange = function() {
+            if (postRequest.readyState == 4 && postRequest.status == 200) {
+                    ChangeStatus('Ready');
+                    RecoverFromUpload();
+            }
+            else if (postRequest.status >= 500) {
+                StatusMessage('Error: Error occurred while processing data. Please refresh the page and try again.', 'red');
+            }
         }
-        else if (getRequest.status >= 500) {
-            StatusMessage('Error: Error occurred while processing data. Please refresh the page and try again.', 'red');
-        }
-    }
 };
