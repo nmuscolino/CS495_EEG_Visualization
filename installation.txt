@@ -16,6 +16,7 @@ Install Django in the new environment if it is not already installed. Approve an
 This should automatically install Django version 4.1.
 
 You should now be able to make migrations with 
+	python manage.py makemigrations
 	python manage.py migrate
 from within the Anaconda environment.
 
